@@ -1,0 +1,29 @@
+class Solution {
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start_node, int end_node) {
+        //bellman ford Algorithm
+        //initialze the array where it holds the maxm prob to reach to node i from start node
+        double[] maxProb=new double[n];
+        maxProb[start_node]=1.0;
+
+        //perform up to n-1 iterations , n-nodes , in each iteration check it edges and update the prob of reaching the neighbouring node
+        for(int i=0;i<n-1;i++){
+            boolean updated= false;
+            for(int j=0;j<edges.length;j++){
+                int u=edges[j][0]; 
+                int v=edges[j][1];
+                double prob=succProb[j];
+                //for each (u,v) if peob of reaching v through u i.e dist[u]*succProb[i] is greater than current know prob to reach v then update it same for u
+                if(maxProb[u]*prob > maxProb[v]){
+                    maxProb[v]=maxProb[u]*prob;
+                    updated=true;
+                }
+                if(maxProb[v]*prob>maxProb[u]){
+                    maxProb[u]=maxProb[v]*prob;
+                    updated=true;
+                }
+            }
+            if(!updated) break;
+        }
+        return maxProb[end_node]; //last will contain the maxm prob
+    }
+}
