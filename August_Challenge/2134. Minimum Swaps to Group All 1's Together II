@@ -1,0 +1,26 @@
+class Solution {
+    public int minSwaps(int[] nums) {
+        int totalOne=0;
+        for(int i=0;i<nums.length;i++){ // coint no. of ones or windowSize
+            if(nums[i]==1)
+            totalOne++;
+        }
+        int n=nums.length;
+        int []arr=new int[2*n];  // double it as for circular array
+        for(int i=0;i<2*n;i++){
+            arr[i]=nums[i%n];
+        }
+        int ans=Integer.MIN_VALUE;
+        int windowOne=0;
+        for(int i=0;i<2*n;i++){
+            if(arr[i]==1)
+            windowOne++;
+
+            if(i>=totalOne && arr[i-totalOne]==1){  //if i incerase window size and last element is 1 then decrease currentone by 1
+                windowOne--;
+            }
+            ans=Math.max(ans,windowOne);
+        }
+        return totalOne-ans;   
+    }
+}
