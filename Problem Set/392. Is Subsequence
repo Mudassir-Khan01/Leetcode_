@@ -1,0 +1,18 @@
+class Solution {
+    public boolean isSubsequence(String s, String t) {
+        int i=0, j=0;
+
+        if(s.isEmpty())
+        return true;
+
+        while(j<t.length()){
+            if(i<s.length() && s.charAt(i)==t.charAt(j)){
+                i++; // if same character move i ahead
+            }
+            j++; // always move j forward 
+            if(i==s.length()) // we successfully reached at end of string s then its true
+            return true;
+        }
+        return false;
+    }
+}
