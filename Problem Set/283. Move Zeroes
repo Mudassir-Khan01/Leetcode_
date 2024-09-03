@@ -1,0 +1,16 @@
+class Solution {
+    public void moveZeroes(int[] nums) {
+        int index=0;
+        int nonzeroindex=0;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]!=0){//if it is zero let that index stay as it is and move the one to get a valur to be replaced
+            //swap
+            int temp=nums[index];
+            nums[index]=nums[nonzeroindex];
+            nums[nonzeroindex]=temp;
+            nonzeroindex++;
+            }
+index++;
+        }
+    }
+}
