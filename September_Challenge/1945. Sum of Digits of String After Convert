@@ -1,0 +1,23 @@
+class Solution {
+    public int getLucky(String s, int k) {
+        int sum=0;
+        for(char ch:s.toCharArray()){
+            int pos=ch-'a'+1; //convert it to number starting from 1 so a-a+1
+            while(pos>0){   //for 2 digit number it will work
+                sum+=pos%10;
+                pos/=10;
+            }
+        }
+
+        while(k>1){   //if k==1 just skip this while else go through it
+            int newSum=0;   //at each iteration of k reset the newSum to 0
+            while(sum>0){
+                newSum+=sum%10;
+                sum/=10;
+            }
+            k--;
+            sum=newSum;   //store it in sum
+        }
+        return sum;
+    }
+}
