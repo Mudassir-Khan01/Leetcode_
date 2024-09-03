@@ -1,0 +1,27 @@
+class Solution {
+    public int compress(char[] chars) {
+        StringBuilder sb=new StringBuilder();
+        sb.append(chars[0]);
+        int count=1; // one appended so count=1;
+        int i=1; // start from index i
+        while(i<chars.length){
+            if(chars[i]==chars[i-1]){ // if same character then count increase
+                count++;
+            }else{ // got a different character 
+            if(count>1){// if count is greater than 1 then append cpunt as well
+            sb.append(count);
+            }
+            sb.append(chars[i]); //now append the new character and set count to 1 ie the count of the current character
+            count=1;
+            }
+            i++;
+        }
+        if(count>1)
+        sb.append(count); //this is the count of the last character
+
+        for(int j=0;j<sb.length();j++){
+            chars[j]=sb.charAt(j); //we have to update in the original array 
+        }
+        return sb.length();// length of the sb is the answer
+    }
+}
