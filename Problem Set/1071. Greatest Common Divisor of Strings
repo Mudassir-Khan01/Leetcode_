@@ -1,0 +1,26 @@
+class Solution {
+    public String gcdOfStrings(String str1, String str2) {
+        if(!(str1+str2).equals(str2+str1)) // if concat of both equals string not equals then return empty string
+        return "";
+       int gcdd= gcd(str1.length(), str2.length());   // find gcd of thier length
+       return str1.substring(0,gcdd); // then get the substring 
+    }
+    private int gcd(int a, int b){ // GCD Important
+        if(a==b) return a;
+        if(a>b) return gcd(a-b,b);
+        return gcd(a,b-a);
+    }
+
+    // priavte int gcd(int a , int b){
+    //     if(b==0) return a;
+    //     return gcd(b,a%b);
+    // }
+    // private int gcd(int a, int b) {
+    //     while (b != 0) {
+    //         int temp = b;
+    //         b = a % b;
+    //         a = temp;
+    //     }
+    //     return a;
+    // }
+}
