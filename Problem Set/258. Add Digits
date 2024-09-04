@@ -1,0 +1,13 @@
+class Solution {
+    public int addDigits(int num) {
+        while(num>9){
+            int newSum=0;
+            while(num>0){ //sum of each digit which is greater than 9
+                newSum+=num%10;
+                num/=10;
+            }
+            num=newSum; //num to be checked so we here we update num
+        }
+        return num;
+    }
+}
