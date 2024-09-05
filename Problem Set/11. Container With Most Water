@@ -1,0 +1,17 @@
+class Solution {
+    public int maxArea(int[] height) {
+        int left=0; //leftmost 
+        int right=height.length-1;  //rightmost 
+        int max=0;
+        while(left<right){ 
+            int area=(right-left)*(Math.min(height[left], height[right])); //calculate area between left and right 
+            max=Math.max(max,area);// store the max area
+            if(height[left]<height[right]){  // the one with larger height will remain as it is , so pointer with less height will move
+                left++;
+            }else{
+                right--;
+            }
+        }
+        return max;
+    }
+}
