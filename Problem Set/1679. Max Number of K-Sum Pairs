@@ -1,0 +1,22 @@
+class Solution {
+    public int maxOperations(int[] nums, int k) {
+        Arrays.sort(nums); // so that number are arranged in ascending order
+        int n=nums.length;
+        int left=0;
+        int right=n-1;
+        int count=0;
+        while(left<right){
+            int sum=nums[left]+nums[right];
+            if(sum==k){
+                left++;
+                right--;
+                count++;
+            }else if(sum<k){  //if sum increases the k , then we need to take a little larger value so left++
+                left++;
+            }else{
+                right--;
+            }
+        }
+        return count;
+    }
+}
