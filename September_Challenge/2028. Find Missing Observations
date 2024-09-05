@@ -1,0 +1,27 @@
+class Solution {
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        int m=rolls.length;
+        int sum=0;
+        for(int i=0;i<m;i++){ // to calculate the sum of the current rolls 
+            sum+=rolls[i];
+        }
+
+        int missingSum=(mean*(m+n))-sum;  // to find the missing Sum (mean*length)-sum
+
+        if(missingSum<n || missingSum>6*n)
+        return new int[]{}; // edge cases return rmpty array
+
+        int ans[]=new int[n];
+        int average=missingSum/n;  //to get the average value to be stored in ans
+        int remainder=missingSum%n; // to get anyt remiander to be added in ans
+
+        for(int i=0;i<n;i++){
+            ans[i]=average;  //normally insert the avearge
+            if(remainder>0){
+                ans[i]++; //if any remainder there then increase frequency of the value by 1
+                remainder--; // decrease the remiander count
+            }
+        }
+        return ans;
+    }
+}
