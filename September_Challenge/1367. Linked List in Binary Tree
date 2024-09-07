@@ -1,0 +1,45 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public boolean isSubPath(ListNode head, TreeNode root) { // this is for starting lookup 
+        if(head==null) return true; // reached the end of LL means all values there in tree so return tru
+        if(root==null) return false;// still head is not null and root has reached its end then return false
+        if(head.val==root.val){
+        if (solve(head.next, root.right)|| solve(head.next , root.left )) // go through its child 
+        return true;
+        } 
+        if(isSubPath(head, root.right)) return true; // if first head not equal to root.val then go to its Child with same head
+        if(isSubPath(head, root.left)) return true; 
+        return false; // if none returns true then return false
+    }
+
+    private boolean solve(ListNode head, TreeNode root){  // this fn is for its child
+        if(head==null) return true;  // if it reaches null
+        if(root==null || head.val!=root.val) return false;  // if val not equal or root is null return false
+
+        return solve(head.next, root.left)|| solve(head.next, root.right);   // just go through its next value;
+    }
+}
