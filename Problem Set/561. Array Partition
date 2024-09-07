@@ -1,0 +1,21 @@
+class Solution {
+    public int arrayPairSum(int[] nums) {
+    //     PriorityQueue<Integer> minHeap=new PriorityQueue<>();
+    //     for(int num:nums)
+    //     minHeap.add(num);
+    
+    // int total=0;
+    // while(!minHeap.isEmpty()){
+    //     int first=minHeap.poll();
+    //     total+=first;
+    //     minHeap.poll();
+    // }
+    // return total;
+    Arrays.sort(nums); //sorting will already arrange it , just we have to take in pairs
+    int sum=0;
+    for(int i=0;i<nums.length;i+=2){
+        sum +=nums[i];
+    }
+    return sum;
+    }
+}
