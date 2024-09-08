@@ -1,0 +1,54 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        //Another method in Note
+        int count=0; // count the length of the LL
+        ListNode temp=head;
+        while(temp!=null){
+            count++;
+            temp=temp.next;
+        }
+        int front=count-n+1; // from front
+        int count1=0; // again start count to get the node from front to be deleted
+        ListNode dummy=new ListNode(0); // create a new dummy an dits next pointing to head;
+        dummy.next=head;
+        ListNode prev=dummy;
+        ListNode curr=head;
+        while(curr!=null){
+            count1++;
+            if(count1==front){
+                prev.next=curr.next;  // if thats the node to delete then skip that current
+            }
+            prev=curr;  // move ahead prev
+            curr=curr.next; // move ahead curr
+        }
+        return dummy.next;  // return new real head ie dummy.next
+
+        
+    }
+}
+
+//Another method
+ListNode dummy=new ListNode(0);// create a dummy node ,its next to head
+        dummy.next=head;
+        ListNode fast=dummy;
+        ListNode slow=dummy;
+
+        for(int i=0;i<n;i++){ // Move fast n step ahead
+            fast=fast.next;
+        }
+        while(fast.next!=null){  // move fast to the end so that slow reaches at n-1 position so at end just make it next to next.next
+            fast=fast.next;  //reaches end
+            slow=slow.next;// reaches at n-1 pos
+        }
+        slow.next=slow.next.next;  //reached at n-1 , just remove the nth Value;
+        return dummy.next;
