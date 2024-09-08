@@ -1,0 +1,51 @@
+class Solution {
+    public int numMagicSquaresInside(int[][] grid) {
+        if(grid.length<2 || grid[0].length<2) //it must be 3x3
+        return 0;
+
+        int ans=0;
+        for(int i=0;i<grid.length-2;i++){ // -2 to ensure it remains within the main grid
+            for(int j=0;j<grid[0].length-2;j++){
+                if(isGridMagic(i,j,grid)){
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    private boolean isGridMagic(int x, int y, int [][]grid){
+        boolean[]visited=new boolean[10];// for 1-9 numbers
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                int num=grid[x+i][y+j]; //extract the no.
+                if(num<1 || num>9) 
+                return false;
+
+                if(visited[num]) // if already visited return false
+                return false;
+
+                visited[num]=true; //else make it visited now
+            }
+        }
+
+        int col1=grid[x][y]+grid[x+1][y]+grid[x+2][y];// col remains same just sum it
+        int col2=grid[x][y+1]+grid[x+1][y+1]+grid[x+2][y+1];
+        int col3=grid[x][y+2]+grid[x+1][y+2]+grid[x+2][y+2];
+        if(col1!=col2 || col2!=col3 ||col1!=col3)
+        return false;
+
+        int row1=grid[x][y]+grid[x][y+1]+grid[x][y+2];// col remains same just sum it
+        int row2=grid[x+1][y]+grid[x+1][y+1]+grid[x+1][y+2];
+        int row3=grid[x+2][y]+grid[x+2][y+1]+grid[x+2][y+2];
+        if(row1!=row2 || row2!=row3 ||row1!=row3)
+        return false;
+
+        int diag1=grid[x][y]+grid[x+1][y+1]+grid[x+2][y+2];//diagonals
+        int diag2=grid[x][y+2]+grid[x+1][y+1]+grid[x+2][y];
+      if(diag1 != diag2)
+      return false;
+
+      return true;
+    }
+}
