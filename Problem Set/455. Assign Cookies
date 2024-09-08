@@ -1,0 +1,15 @@
+class Solution {
+    public int findContentChildren(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int child=0; // pointer for child ie g
+        int cookie=0;//pointer for cookie ie s
+        while(child<g.length && cookie<s.length){
+            if(s[cookie]>=g[child])
+            child++; //cookie satisfy the child move to the next child
+
+            cookie++;// move to next cookie in both cases 
+        }
+        return child;
+    }
+}
