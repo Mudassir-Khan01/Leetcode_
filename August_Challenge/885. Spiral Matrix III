@@ -1,0 +1,32 @@
+class Solution {
+    public int[][] spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
+        int [][]direction={
+            {0,1},{1,0},{0,-1},{-1,0}
+        };
+        int n=rows*cols;
+        int[][]result=new int[n][2]; //[[r,c],[r1,c1],....]
+        result[0][0]=rStart;
+        result[0][1]=cStart;
+        int count=1; //one cell already inserted
+        int step=1; //step increases after every 2 steps;
+        int index=0;
+        while(count<n){
+            for(int times=0;times<2;times++){// 2 times we will move after that step increases\
+            int dr=direction[index%4][0]; //direction row , %4 coz it should repeat
+            int dc=direction[index%4][1];
+            for(int i=0;i<step;i++ ){// how much u have to move depends on step
+               rStart+=dr;
+               cStart+=dc;
+               if(rStart>=0 && rStart<rows && cStart>=0 &&  cStart<cols ){
+                result[count][0]=rStart;
+                result[count][1]=cStart;
+                count++;
+               }
+            }
+            index++;// after we have travelled in a particular direction we can increase index
+            }
+            step++;
+        }
+        return result;
+    }
+}
