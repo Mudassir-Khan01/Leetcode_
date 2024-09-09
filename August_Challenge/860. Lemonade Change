@@ -1,0 +1,28 @@
+class Solution {
+    public boolean lemonadeChange(int[] bills) {
+        int countFive=0; //keep count of 5 and 10 note
+        int countTen=0;
+        for(int i=0;i<bills.length;i++){
+            if(bills[i]==5){
+                countFive++;
+            }else if(bills[i]==10){
+                if(countFive > 0){
+                    countFive--;
+                    countTen++;
+                }else{
+                    return false;
+                }
+            }else {
+                if(countFive > 0 && countTen > 0){ // 1-1 note of 5 and 10
+                    countFive--;
+                    countTen--;
+                }else if(countFive >= 3){ //3 notes of 5 
+                    countFive-=3;
+                }else{
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
