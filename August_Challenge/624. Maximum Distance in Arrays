@@ -1,0 +1,22 @@
+class Solution {
+    public int maxDistance(List<List<Integer>> arrays) {
+        int firstMin=arrays.getFirst().getFirst(); // get first min at index 0 of 0
+        int firstMax=arrays.getFirst().getLast(); // get first max at last index of 0
+        int maxDist=0;
+
+        for(int i=1;i<arrays.size();i++){
+            int secondMin=arrays.get(i).getFirst(); // get second min and max
+            int secondMax=arrays.get(i).getLast();
+ 
+ //max dist will be between max-min but of different array
+            maxDist=Math.max(maxDist,Math.abs(firstMax-secondMin));
+            maxDist=Math.max(maxDist,Math.abs(secondMax-firstMin));
+
+
+// now globally update  the min and max
+            firstMin=Math.min(firstMin, secondMin);
+            firstMax=Math.max(firstMax,secondMax);
+        }
+        return maxDist;
+    }
+}
