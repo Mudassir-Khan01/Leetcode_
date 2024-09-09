@@ -1,0 +1,30 @@
+class Solution {
+    public int smallestDistancePair(int[] nums, int k) {
+        Arrays.sort(nums);
+        int left=0; // min dist can be 0
+        int right=nums[nums.length-1]-nums[0]; // maximum dist can be diff of first and last
+        while(left<right){
+            int mid=(left+right)/2;
+            if(numPairDistances(nums, mid)>=k){
+                right=mid; // if count Distance more than k , bring right towards mid
+            }else{
+                left=mid+1;
+            }
+        }
+        return left;
+    }
+
+    private int numPairDistances(int[]nums, int mid){
+        int j=0;
+        int count=0;
+        //now difference between nums[j]-nums[i] <=mid then j++
+        // where j ends there we count the distance i.e j-i-1
+        for(int i=0;i<nums.length;i++){
+            while(j<nums.length && nums[j]-nums[i]<=mid){
+                j++;
+            }
+            count+=j-i-1;
+        }
+        return count;
+    }
+}
