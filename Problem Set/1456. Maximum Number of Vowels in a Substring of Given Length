@@ -1,0 +1,60 @@
+Method 1--
+class Solution {
+    public int maxVowels(String s, int k) { // 2 methods
+        Set<Character> set=new HashSet<>();
+        set.add('a');
+        set.add('e');
+        set.add('i');
+        set.add('o');
+        set.add('u'); //store every vowel for O(1) lookup
+        int count=0;
+        for(int i=0;i<k;i++){
+           if(set.contains(s.charAt(i)))
+            count++;
+        }
+        int maxVowel=count; //initalize with the count
+        //Slide the window and update the maximum number of vowels
+        for(int i=k;i<s.length();i++){
+            if(set.contains(s.charAt(i-k)))  // check if charcter leaving the indow is vowel , if yes decrement count
+            count--;
+
+            // if charcter entring the window is vowel , increment count
+            if(set.contains(s.charAt(i))) 
+            count++;
+
+            maxVowel=Math.max(maxVowel, count);
+        }
+        return maxVowel;
+    }
+}
+Method 2--
+class Solution {
+    public int maxVowels(String s, int k) {
+        int count=0;
+        for(int i=0;i<k;i++){
+            char ch=s.charAt(i);
+            if(isVowel(ch)) //calculate the count of the first window
+            count++;
+        }
+        int maxcount=count;
+        int startIndex=0;
+        int endIndex=k;
+        while(endIndex<s.length()){  //till the sliding window reaches end
+            char ch1=s.charAt(startIndex);  
+            startIndex++;    
+            if(isVowel(ch1))
+            count--;  // if the one leaving the window is vowel decrement count
+
+            char ch2=s.charAt(endIndex);
+            endIndex++;
+            if(isVowel(ch2))
+            count++;  // if the one entering the count increment count;
+
+            maxcount=Math.max(maxcount,count);  // get the max count
+        }
+        return maxcount;
+    }
+    private boolean isVowel(char ch) {
+        return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+    }
+}
