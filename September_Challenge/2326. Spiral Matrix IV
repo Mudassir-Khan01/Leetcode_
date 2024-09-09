@@ -1,0 +1,54 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public int[][] spiralMatrix(int m, int n, ListNode head) { //Similar to Spiral Matrix 1
+        int [][]matrix=new int[m][n];
+        for(int []mat:matrix){
+            Arrays.fill(mat,-1); // initalize the matrix and fill each cell with -1
+        }
+        int left=0, right=n-1; // for left an right pointer
+        int top=0, bottom=m-1; // for top and bottom pointer
+        while(head!=null){
+            //Moving left to right
+            for(int i=left;i<=right;i++){
+                if(head==null) break;
+                matrix[top][i]=head.val; // top remains same and col is changing so top, i
+                head=head.next; //move to the next value
+            }
+            top++; // increase counter of top 
+            
+            //Moving top to bottom
+            for(int i=top;i<=bottom;i++){
+                if(head==null) break;
+                matrix[i][right]=head.val; // row changes , right remains same so i, row
+                head=head.next;
+            }
+            right--; 
+
+            //Moving right to left
+            for(int i=right;i>=left;i--){
+                if(head==null) break;
+                matrix[bottom][i]=head.val; 
+                head=head.next;
+            }
+            bottom--;
+            
+            //Moving bottom to top
+            for(int i=bottom;i>=top;i--){
+                if(head==null) break;
+                matrix[i][left]=head.val;
+                head=head.next;
+            }
+            left++;
+        }
+        return matrix;
+    }
+}
