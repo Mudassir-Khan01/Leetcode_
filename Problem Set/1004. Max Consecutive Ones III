@@ -1,0 +1,20 @@
+class Solution {
+    public int longestOnes(int[] nums, int k) {
+        int zeroCount=0; // to count number of zeroes
+        int start=0;  // start counter to keep the track of element leaving
+        int maxOnes=0; //to store max ones 
+        for(int end=0; end<nums.length; end++){
+            if(nums[end] == 0)
+            zeroCount++; //count zeroes
+
+            while(zeroCount>k){ //now zeroes reaches the limit no more conversion of zeroes to 1 so try moving the window
+                if(nums[start]==0)
+                zeroCount--;
+
+                start++;
+            }
+            maxOnes=Math.max(maxOnes,end-start+1); // max between the maxOnes and size of window containing ones --end-start+1 will give me the window size
+        }
+        return maxOnes;
+    }
+}
