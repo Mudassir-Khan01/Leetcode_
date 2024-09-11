@@ -1,0 +1,45 @@
+class Solution {
+    public int minBitFlips(int start, int goal) {
+        //Method 1
+        // int count=0;
+        // int ans=start^goal;  // xor gives us the different bit (set bit or no. of 1's represent different bit)
+        // String bin = Integer.toBinaryString(ans); // Convert it to Binary String
+        // for(int i=0;i<bin.length();i++){ // Calculate number of 1's
+        //     if(bin.charAt(i)=='1')
+        //     count++;
+        // }
+        // return count;
+        
+        //Method 2
+        // int count=0;
+        // int ans=start^goal;// xor gives us the different bit (set bit or no. of 1's represent different bit)
+        // while(ans>0){
+        //     if((ans&1)==1){    // to find no. of ones if 1 & 1 gives 1 so count ++; if 0 & 1 gives 0 so doesnt count
+        //         count++;
+        //     }
+        //     ans=ans>>1;  // right shift to & with every digit
+        // }
+        // return count;
+
+        //Method 3
+        // int count=0;
+        // while(start>0 || goal>0){ 
+        //     if((start&1)!=(goal&1))  // same as above just we arent using xor ie if we get different bit on using &1 count increases
+        //     count++;
+
+        //     start=start>>1;  // right shift
+        //     goal=goal>>1;// right shift
+        // }
+        // return count;
+
+        //Method 4 
+        //Brian Kernighan’s Algorithm
+        int ans=start^goal;
+        int count=0;
+        while(ans>0){
+            ans=ans&(ans-1); // its a trick to convert rightmost 1 to 0 , thereby we can calculate no. of ones as well
+            count++;
+        }
+        return count;
+    }
+}
