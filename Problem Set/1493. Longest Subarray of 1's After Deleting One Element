@@ -1,0 +1,23 @@
+class Solution {
+    public int longestSubarray(int[] nums) { // same as Max consecutive ones iii with k=1
+        int zeroCount=0;
+        int start=0;
+        int maxOnes=0;
+        for(int end=0;end<nums.length;end++){
+            if(nums[end]==0)
+            zeroCount++;// Increment zeroCount when a zero is found
+// If there are more than 1 zero, shrink the window from the left
+            while(zeroCount>1){
+                if(nums[start]==0)
+                zeroCount--;// Decrease zeroCount when moving past a zero
+
+                start++;
+            }
+            // Calculate the maximum length of subarray containing 1's, after deleting one element
+            // thats y not end-start+1
+            maxOnes=Math.max(maxOnes,end-start);
+        }
+        // If there are no zeros, we must delete exactly one element, so subtract 1 from the result
+        return maxOnes==nums.length ? maxOnes-1:maxOnes;
+    }
+}
