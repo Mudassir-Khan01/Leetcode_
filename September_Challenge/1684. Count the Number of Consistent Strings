@@ -1,0 +1,38 @@
+class Solution {
+    public int countConsistentStrings(String allowed, String[] words) {
+        // Set<Character> set=new HashSet<>(); // put allowed character in set
+        // int count=0;
+        // for(char ch:allowed.toCharArray()){
+        //     set.add(ch);
+        // }
+        // for(String word:words){ // traverse it each character  of each word
+        //     int i;
+        //     for(i=0;i<word.length();i++){
+        //         if(!set.contains(word.charAt(i))) // if its not in set break
+        //         break;
+        //     }
+        //     if(i==word.length())  // if i reaches the end means character is there then count++
+        //     count++;
+        // }
+        // return count;
+
+        int count[]=new int[26];
+        int cnt=0;
+        for(char ch:allowed.toCharArray()){  // Calcualte the frequency of each character
+            count[ch-'a']++;
+        }
+        for(String word:words){
+            boolean isConsistent=true; // to calculate whether words are consistent or not
+            for(char ch:word.toCharArray()){
+                if(count[ch-'a']==0){ // if that character is not there in count
+                isConsistent=false; // not consisitent so false;
+                break; // break as no possible ans;
+                }
+            }
+                if(isConsistent) // if reaches end and isConsistent remains true means character is there so increment count;
+                    cnt++; 
+        }
+        return cnt;
+        }
+
+    }
