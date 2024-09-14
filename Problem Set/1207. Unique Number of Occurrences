@@ -1,0 +1,16 @@
+class Solution {
+    public boolean uniqueOccurrences(int[] arr) {
+        Map<Integer, Integer> map=new HashMap<>();
+        for(int ar:arr){
+            map.put(ar, map.getOrDefault(ar, 0) + 1);  // count the frequencies and store it in map
+        }
+        Set<Integer> set=new HashSet<>();
+        for(int i:map.values()){  // traverse the value set of map
+            if(set.contains(i)) // if set contains that value then return false else add it in set
+            return false;
+            else
+            set.add(i);
+        }
+        return true;
+    }
+}
