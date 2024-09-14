@@ -1,0 +1,22 @@
+class Solution {
+    public int longestSubarray(int[] nums) {
+        // to find maximum Bitwise AND then it must be max between same and largest element 
+        // so find the largest element and check it similar element exist in it (must be contiguous)
+        int max=0, count=0, ans=0;
+        for(int num:nums){
+            if(num==max){ // if num == max increase count
+            count++;
+            }else if(num>max){
+                // if num is greater then max then set count and ans to 1 and update max
+                count=ans=1;
+                max=num;
+            }else{
+                // num < max then it will decrease the bitwise AND and we have to find subarray(contiguous) so reset count to 0
+                count=0;
+            }
+            ans=Math.max(ans, count);
+        }
+        return ans;
+    
+    }
+}
