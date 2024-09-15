@@ -1,0 +1,23 @@
+class Solution {
+    public int deleteGreatestValue(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        // first of all Sort each row in ascending order so the last element will be
+        // having the greatest value in each row
+        for (int i = 0; i < m; i++) {
+            Arrays.sort(grid[i]);
+        }
+
+        // Since col decreases by one after each operations so we start from last
+        // Find the Greatest Element from each row
+        int result = 0;
+        for (int col = n - 1; col >= 0; col--) {
+            int maxElement = 0;
+            for (int row = 0; row < m; row++) {
+                maxElement = Math.max(maxElement, grid[row][col]); // get the maximum from each row as well
+            }
+            result += maxElement; // just ass the maxm element
+        }
+        return result;
+    }
+}
