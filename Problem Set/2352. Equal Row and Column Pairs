@@ -1,0 +1,26 @@
+class Solution {
+    public int equalPairs(int[][] grid) {
+        // first Store List of Rows value and its frequency in Map 
+        int n=grid.length; // rows and col are same
+        int count=0;
+        Map<List<Integer>, Integer> map=new HashMap<>();
+        for(int i=0;i<n;i++){
+            List<Integer> list=new ArrayList<>(); // Create a List for each row
+            for(int j=0;j<n;j++){
+                list.add(grid[i][j]);
+            }
+            map.put(list, map.getOrDefault(list,0)+1);
+        }
+        //Now, Traverse through the col and if map contains that List then add the frequencies 
+        for(int j=0;j<n;j++){
+            List<Integer> list=new ArrayList<>();
+            for(int i=0;i<n;i++){
+                list.add(grid[i][j]);
+            }
+            if(map.containsKey(list)){
+                count+=map.get(list);
+            }
+        }
+        return count;
+    }
+}
