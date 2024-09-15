@@ -1,0 +1,48 @@
+class Solution {
+    public boolean closeStrings(String word1, String word2) {
+        if(word1.length()!=word2.length())
+        return false;
+
+        // calculate the frequency of both array and store it
+        int[] f1=new int[26];
+        int[] f2=new int[26];
+        for(char ch:word1.toCharArray())
+        f1[ch-'a']++;
+
+        for(char ch:word2.toCharArray())
+        f2[ch-'a']++;
+
+        // Step1 : check if all the character in word1 are present in word2 if not present then return false
+        for(int i=0;i<26;i++){
+            if((f1[i]==0 && f2[i]!=0) || (f1[i]!=0 && f2[i]==0))
+            return false;
+        }
+        // We can use this as well Sort it so Frequencies of both will be sorted then compare
+        // Arrays.sort(f1);
+        // Arrays.sort(f2);
+        //  return Arrays.equals(f1,f2);
+ 
+        //Step 2 Now we need to compare the frequencies so we will use HashMap
+        //
+        Map<Integer,Integer> map=new HashMap<>();
+        // in This map key- frequency and value- count of the frquency
+        for(int i:f1){
+            if(i>0){
+                map.put(i,map.getOrDefault(i,0)+1); // stored the frquency of f1 and its count in map
+            }
+        }
+        // now we traverse f2 , if its there in map then we decrement it
+        for(int i:f2){
+            if(i>0){
+                if(!map.containsKey(i)){
+                    return false;
+                }
+                // else we decrement 
+                map.put(i,map.get(i)-1);
+                if(map.get(i)==0)
+                map.remove(i);
+            }
+        }
+        return (map.size()==0); // if the map is empty then it determines the count of frequency are same
+    }
+}
