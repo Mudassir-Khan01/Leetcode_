@@ -1,0 +1,24 @@
+class Solution {
+    public int findMinDifference(List<String> timePoints) {
+        int n=timePoints.size();
+        int minutes[]=new int [n]; // create a minutes array to store minutes 
+        for(int i=0;i<n;i++){
+            String time=timePoints.get(i);  // get each time 
+            int hr=Integer.valueOf(time.substring(0,2)); // convert hr to integer
+            int min=Integer.valueOf(time.substring(3));  // convert min to Integer
+            minutes[i]=hr*60+min;
+        }
+        // Sort the Array then min difference must be the difference in an adjacent pair 
+        // coz Adjacent elements in a sorted array will have smaller differences than nonadjacent elements
+        Arrays.sort(minutes);
+
+        // Now traverse it to find min diff between adjacent elements
+        int min=Integer.MAX_VALUE;
+        for(int i=0;i<minutes.length-1;i++){
+            min=Math.min(min,minutes[i+1]-minutes[i]);
+        }
+
+        // Edge case - we have to consider is if the smallest difference is between the last and first element , in which case the time loops back to "00:00" 
+        return Math.min(min, 24*60-minutes[minutes.length-1]+minutes[0]);
+    }
+}
