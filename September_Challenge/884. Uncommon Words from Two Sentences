@@ -1,0 +1,25 @@
+class Solution {
+    public String[] uncommonFromSentences(String s1, String s2) {
+        Map<String, Integer> map=new HashMap<>();
+        String []word1=s1.split(" "); // Split string by spaces
+        String []word2=s2.split(" ");
+
+        for(String s:word1){
+            map.put(s,map.getOrDefault(s,0)+1);  // store the string and its frequency
+        }
+
+        for(String s:word2){
+            map.put(s,map.getOrDefault(s,0)+1);  // Again store the string and its frequency
+        }
+        List<String> list=new ArrayList<>();
+        for(String s:map.keySet()){ // Traverse the keySet and store the string with frequency 1 in list
+            if(map.get(s)==1)
+            list.add(s);
+        }
+        String[] ans=new String[list.size()];  // Traverse list to store in array
+        for(int i=0;i<list.size();i++){
+            ans[i]=list.get(i);
+        }
+        return ans;
+    }
+}
