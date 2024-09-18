@@ -1,0 +1,29 @@
+class Solution {
+    public int[] asteroidCollision(int[] asteroids) {
+        int n=asteroids.length;
+        Stack<Integer> stack=new Stack<>();
+        for(int i:asteroids){
+            if(i>0){ // if positive then add in stack
+            stack.push(i);
+            }else{
+                //while elements are there and top elelment is +ve but incoming is -ve then pop
+                while(!stack.isEmpty() && stack.peek()>0 && stack.peek()<Math.abs(i)){
+                    stack.pop();
+                }
+                // if stack is not empty and top of the stack is equal to incoming asteroid then pop
+                if(!stack.isEmpty()&& stack.peek()==Math.abs(i)){
+                    stack.pop();
+                }else if(stack.isEmpty() || stack.peek()<0){  // if empty or peek is negative and incomming is already -ve then just push
+                stack.push(i);
+
+                }
+            }
+        }
+        int len=stack.size();
+        int ans[]=new int[len];
+        for(int i=len-1;i>=0;i--){
+            ans[i]=stack.pop();
+        }
+        return ans;
+    }
+}
