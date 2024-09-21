@@ -1,0 +1,50 @@
+class Solution {
+    public List<Integer> lexicalOrder(int n) {
+        List<Integer> ans=new ArrayList<>();
+        for(int i=1;i<10;i++){
+            // run from 1 till 9 and dfs for each number
+            dfs(i,n,ans);
+        }
+        return ans;
+    }
+    private void dfs(int current , int n, List<Integer> ans){
+        if(current > n)
+        return; // if current is greater than given n then return
+
+        ans.add(current);  //add it in the list 
+
+        // now run a for loop from 0 to 9 to get its 10 11 12 13.... so we will again use dfs
+        for(int i=0;i<10;i++){
+            if(current*10+i > n)  // if current again it exceeds n then return
+            return;
+
+            dfs(current*10+i, n, ans);  // dfs to go through its sequence 
+        }
+    }
+
+}
+
+
+Method 2--
+class Solution { // 2 method - dfs and this
+    public List<Integer> lexicalOrder(int n) {
+        List<Integer> ans=new ArrayList<>();
+        int curr=1;
+        for(int i=0;i<n;i++){
+            ans.add(curr); // add the current element
+            // now go through its sequence of 10
+            if(curr*10<=n){
+                curr*=10;
+            }else{
+                // if it exceeds then go through it next elements ie 11,12,13,14....
+                // first check whether it reaches it end value i.e 9 or 19 or 29... or it reaches the ned
+                while(curr%10==9 || curr>=n){
+                    curr/=10;
+                }
+                // increase the value
+                curr++;
+            }
+        }
+        return ans;
+    }
+}
