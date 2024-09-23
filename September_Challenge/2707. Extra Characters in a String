@@ -1,0 +1,31 @@
+class Solution { // Memoization
+    int dp[]=new int[50];
+    public int minExtraChar(String s, String[] dictionary) {
+       Arrays.fill(dp,-1);
+       HashSet<String> dict=new HashSet<>(Arrays.asList(dictionary));  // put dictionary in Set
+       return recur(s,dict,0);    // call recursion passing string , set, index respectively
+    }
+    private int recur(String s, HashSet<String> dict, int index){
+        if(index==s.length()){
+            //  if it reaches the end i.e empty string
+            return 0;
+        }
+        // after base case check dp
+        if(dp[index]!=-1) // if its not -1 return it 
+        return dp[index];
+
+        StringBuilder sb=new StringBuilder();
+        int minExtra=Integer.MAX_VALUE;
+        for(int i=index; i<s.length();i++){
+            sb.append(s.charAt(i)); //'l' append character each by each
+            int extraChar=0; // calculate extra char for each and reset to 0 for new sb
+            if(!dict.contains(sb.toString())){
+                extraChar=sb.length(); // the number of character present in the string is extra
+            }
+            // calculate the extra character of  the other half
+            int curExtra=recur(s,dict,i+1);
+            minExtra=Math.min(minExtra, extraChar+curExtra); // min of all
+        }
+        return dp[index]=minExtra;  //store it in dp
+    }
+}
