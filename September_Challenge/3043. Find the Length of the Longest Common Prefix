@@ -1,0 +1,46 @@
+class Solution {
+    class TrieNode{
+        TrieNode[] children;
+        TrieNode(){
+            children =new TrieNode[10]; // numbers are between 0 to 9
+        }
+    }
+    TrieNode root;
+    // inserting elemnent of arr1 in Trie
+    private void insert(String s){
+        TrieNode node=root;
+        for(char ch:s.toCharArray()){
+            if(node.children[ch-'0']==null){
+                // '1'-'0'=1 and if theres no children then insert it
+                node.children[ch-'0']=new TrieNode();
+            }
+            //move to next node
+            node=node.children[ch-'0'];
+        }
+    }
+// seraching element of arr2 in trie
+    private int search(String s){
+        TrieNode node=root;
+        for(int i=0; i<s.length();i++){
+            char ch=s.charAt(i);
+            if(node.children[ch-'0']==null){
+                return i; // if that number is not there then return the element before ie i
+            }
+            // move to next
+            node=node.children[ch-'0'];
+        }
+        // if we found all then return the length
+        return s.length();
+    }
+    public int longestCommonPrefix(int[] arr1, int[] arr2) {
+        root=new TrieNode();
+        for(int i:arr1){
+            insert(String.valueOf(i));
+        }
+        int max=0;
+        for(int i:arr2){
+           max=Math.max(max, search(String.valueOf(i))); 
+        }
+        return max;
+    }
+}
