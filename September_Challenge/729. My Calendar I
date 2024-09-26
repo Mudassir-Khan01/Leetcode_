@@ -1,0 +1,29 @@
+class MyCalendar {
+    // first we will create a list of integer array
+    List<int[]> calendar;
+    public MyCalendar() {
+        // constructor to create a empty arrayList
+        calendar=new ArrayList();
+    }
+    
+    public boolean book(int start, int end) {
+        // traverse through the calendar
+        for(int [] i: calendar){
+            //check if new event overlaps with previous events then return false
+            //If the new event's start is less than the existing event's end and the new event's end is greater than the existing event's start, there is an overlap.
+            if(i[0]<end && start<i[1]){
+                return false;
+            }
+        }
+        // if all good then 
+        //add the start and end and return true
+        calendar.add(new int[]{start,end});
+        return true;
+    }
+}
+
+/**
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar obj = new MyCalendar();
+ * boolean param_1 = obj.book(start,end);
+ */
