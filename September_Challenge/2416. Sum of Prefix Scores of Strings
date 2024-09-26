@@ -1,0 +1,51 @@
+class Solution {
+    // first we create a TrieNode class with children and count
+    class TrieNode{
+        TrieNode[] children;
+        int count;
+        TrieNode(){
+            children=new TrieNode[26]; // 26 character are there
+            count=0;
+        }
+    }
+    TrieNode root;
+    // create a fn to insert each character in the trie
+    private void insert(String s){
+        TrieNode node=root;
+        for(char ch:s.toCharArray()){
+            // if at some node its empty then create a new node at that children
+            if(node.children[ch-'a']==null){
+                node.children[ch-'a']= new TrieNode();
+            }
+            // if its not null then move to the next node and increase the count
+            node=node.children[ch-'a'];
+            node.count+=1;
+        }
+    }
+
+    // now simple craete  a fn and get the count
+    private int getScoreSum(String s){
+        TrieNode node=root;
+        int count=0;
+        for(char ch:s.toCharArray()){
+            // we dont havr to check for null
+            node=node.children[ch-'a'];
+            count+=node.count;  // get the Score of that string
+        }
+        return count;
+    }
+    public int[] sumPrefixScores(String[] words) {
+        root=new TrieNode(); // initalize the root
+        // first insert 
+        for(String s:words){
+            insert(s);
+        }
+        int [] result=new int[words.length];
+
+        // now get through all to String to get the Score Sum
+        for(int i=0;i<words.length;i++){
+            result[i]=getScoreSum(words[i]);
+        }
+        return result;
+    }
+}
