@@ -1,0 +1,47 @@
+class MyCalendarTwo {
+    //create 2 list 
+    List<int[]> events;
+    List<int[]> overlap;
+    public MyCalendarTwo() {
+        // in this intitalize the event 
+        events=new ArrayList<>();
+    }
+    
+    public boolean book(int start, int end) {
+        // in this fn init overlap
+        overlap=new ArrayList<>();
+        // now traverse in each list
+        for(int [] e:events){
+            // check the overlapping condition
+            if(Math.max(e[0], start)<Math.min(e[1],end)){ // if true means overlapping
+                // but one overlapping is fine check of double overlapping
+                if(!doubleBooking(Math.max(e[0],start), Math.min(e[1],end))){
+                    // if no double booking means triple booking
+                    return false;
+                }
+            }
+        }
+        // if it doesnt return false means add it in event list and return true
+        events.add(new int[]{start,end});
+        return true;
+    }
+
+    // fn for checking double booking
+    private boolean doubleBooking(int start, int end){
+        for(int []o:overlap){
+            if(Math.max(o[0],start)<Math.min(o[1],end)){
+                // means overlapping there and this one is triple booking overlap so return false;
+                return false;
+            }
+        }
+        // if not false then add it in overlap and return true
+        overlap.add(new int[]{start,end});
+        return true;
+    }
+}
+
+/**
+ * Your MyCalendarTwo object will be instantiated and called as such:
+ * MyCalendarTwo obj = new MyCalendarTwo();
+ * boolean param_1 = obj.book(start,end);
+ */
