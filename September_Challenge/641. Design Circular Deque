@@ -1,0 +1,96 @@
+class MyCircularDeque {
+    // declare all the variables
+    int front;
+    int rear;
+    int size;
+    int capacity;
+    int deque[];
+    public MyCircularDeque(int k) {
+        // initalize it
+        front=0;   // front pointing the start
+        rear=k-1; // end pointing the end
+        size=0;
+        capacity=k; 
+        deque=new int[k];
+    }
+    
+    public boolean insertFront(int value) {
+        // first check whether it is full or not
+        if(isFull()){
+            return false;
+        }
+        // move the front pointer back then insert the value , increment size , return true
+        front=(front-1+capacity)%capacity; // - capacity to deal with negative index and % capacity for cirrcular index
+        deque[front]=value;
+        size++;
+        return true;
+    }
+    
+    public boolean insertLast(int value) {
+        // check whether it is full or not
+        if(isFull()){
+            return false;
+        }
+        // move ahead the rear pointer then insert , increment size , then return true
+        rear=(rear+1)%capacity;
+        deque[rear]=value;
+        size++;
+        return true;
+    }
+    
+    public boolean deleteFront() {
+        if(isEmpty()){
+            return false;
+        }
+        front=(front+1)%capacity;
+        size--;
+        return true;
+    }
+    
+    public boolean deleteLast() {
+        // check if it is empty or not
+        if(isEmpty()){
+            return false;
+        }
+        rear=(rear-1+capacity)%capacity;  // +capacity so as to tackle negative index
+        size--; // decrement the size
+        return true;
+    }
+    
+    public int getFront() {
+        // first check for isEmpty then retrieve deque[front]
+        if(isEmpty()){
+            return -1;
+        }
+        return deque[front];
+    }
+    
+    public int getRear() {
+        // first check for isEmpty and then retrieve the deque[rear]
+        if(isEmpty()){
+            return -1;
+        }
+        return deque[rear];
+    }
+    
+    public boolean isEmpty() {
+        return (size==0);
+    }
+    
+    public boolean isFull() {
+        return (size==capacity);
+    }
+}
+
+/**
+ * Your MyCircularDeque object will be instantiated and called as such:
+ * MyCircularDeque obj = new MyCircularDeque(k);
+ * boolean param_1 = obj.insertFront(value);
+ * boolean param_2 = obj.insertLast(value);
+ * boolean param_3 = obj.deleteFront();
+ * boolean param_4 = obj.deleteLast();
+ * int param_5 = obj.getFront();
+ * int param_6 = obj.getRear();
+ * boolean param_7 = obj.isEmpty();
+ * boolean param_8 = obj.isFull();
+ */
