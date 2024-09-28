@@ -1,0 +1,25 @@
+class RecentCounter {
+Queue<Integer> queue; 
+    public RecentCounter() {
+        // constructor to initallize queue
+        queue=new LinkedList<>();
+    }
+    
+    public int ping(int t) {
+        // offer it to the queue
+        queue.offer(t);
+
+        // remove from the queue if its less than t-3000
+        while(queue.peek()<t-3000)
+        queue.poll();
+
+        // return size of the queue The size of the queue represents the number of requests within the desired time window.
+        return queue.size();
+    }
+}
+
+/**
+ * Your RecentCounter object will be instantiated and called as such:
+ * RecentCounter obj = new RecentCounter();
+ * int param_1 = obj.ping(t);
+ */
