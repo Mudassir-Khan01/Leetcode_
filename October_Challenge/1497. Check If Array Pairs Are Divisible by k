@@ -1,0 +1,23 @@
+class Solution {
+    public boolean canArrange(int[] arr, int k) {
+        // to store the frequency of remainder in array
+        int [] map=new int[k];
+        for(int element:arr){
+            int rem=((element%k)+k)%k;  // +k to counter negative number and % k for circular
+            map[rem]++;
+        }
+        // 0th remainder must be even 
+        if(map[0]%2!=0)
+        return false;
+
+        // go through each remainder till k/2;
+        for(int rem=1;rem<=k/2; rem++){
+            // find the complement
+            int comp=k-rem;
+            // if rem and its complement is not equal then return false
+            if(map[rem]!=map[comp])
+            return false;
+        }
+        return true;
+    }
+}
