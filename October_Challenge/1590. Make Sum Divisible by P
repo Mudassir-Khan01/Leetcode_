@@ -1,0 +1,28 @@
+class Solution {
+    public int minSubarray(int[] nums, int p) {
+        int reqRem=0;  // to store the required remainder
+        for(int i:nums){
+            reqRem=(reqRem+i)%p;  // to get the remainder
+        }
+        // if req remainder is 0 then return 0
+        if(reqRem==0)
+        return 0;
+
+        // Now create a map to store Remainder
+        Map<Integer, Integer> map=new HashMap<>();
+        map.put(0,-1); // put 0 with -1 as index
+        int ans=nums.length, rem=0;
+        // Now traverse the array
+        for(int i=0;i<nums.length;i++){
+            // find the remainder (prefix Sum)
+            rem=(rem+nums[i])%p; // to get the remainder 
+            int target=(rem-reqRem+p)%p; // to get the target remainder remainder - required remainder // +p to counter negative value
+            if(map.containsKey(target)){ // if map contains target
+                ans=Math.min(ans, i-map.get(target)); // current index- index of that target
+            }
+            // now store the remainder and its index
+            map.put(rem,i);
+        }
+        return ans==nums.length? -1 : ans; 
+    }
+}
