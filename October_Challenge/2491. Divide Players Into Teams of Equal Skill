@@ -1,0 +1,42 @@
+import java.util.Arrays;
+
+class Solution {
+    public long dividePlayers(int[] skill) {
+        int n = skill.length;
+        int sum = 0;
+
+        // Calculate total sum of all skills
+        for (int s : skill) {
+            sum += s;
+        }
+
+        // Calculate the target sum for each team
+        int targetSum = sum / (n / 2);
+
+        // If the total sum is not divisible by n/2, return -1
+        if (sum % (n / 2) != 0) {
+            return -1;
+        }
+
+        // Sort the skill array to find valid pairs
+        Arrays.sort(skill);
+
+        int start = 0;
+        int end = n - 1;
+        long ans = 0;
+
+        // Use two-pointer technique to form teams
+        while (start < end) {
+            // Check if the current pair forms a valid team
+            if (skill[start] + skill[end] != targetSum) {
+                return -1;
+            }
+            // Calculate chemistry and add to the answer
+            ans += (long) skill[start] * skill[end];
+            start++;
+            end--;
+        }
+
+        return ans;
+    }
+}
