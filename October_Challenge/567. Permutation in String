@@ -1,0 +1,41 @@
+class Solution {
+    public boolean checkInclusion(String s1, String s2) {
+        int[] freq1 = new int[26]; // Frequency of characters in s1
+        int[] freq2 = new int[26]; // Frequency of characters in the current window of s2
+
+        // Store the frequency of characters in s1
+        for (char ch : s1.toCharArray()) {
+            freq1[ch - 'a']++;
+        }
+
+        int windowSize = s1.length()-1; // The window size is the length of s1
+
+        // Sliding window
+        for (int i = 0; i < s2.length(); i++) {
+            // Add the frequency of the current character in s2
+            freq2[s2.charAt(i) - 'a']++;
+
+            // If the window is larger than or equal to the size of s1, compare frequencies
+            if (i >= windowSize) {
+            // If the frequency arrays match, we've found a permutation
+            if (matches(freq1, freq2)) {
+                return true;
+            }
+            // otherwisw move ahead and Remove the frequency of the character that slides out of the window
+            freq2[s2.charAt(i - windowSize) - 'a']--;
+            }
+        }
+
+        return false;
+    }
+
+    // Helper function to check if two frequency arrays are the same
+    private boolean matches(int[] freq1, int[] freq2) {
+        for (int i = 0; i < 26; i++) {
+            if (freq1[i] != freq2[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
