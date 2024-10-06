@@ -1,0 +1,32 @@
+class Solution {
+    public boolean areSentencesSimilar(String sentence1, String sentence2) {
+        // if sentence1 length is greater then just swap it  , that means always sentence1 must be smaller 
+        if(sentence1.length()>sentence2.length()){
+            return areSentencesSimilar(sentence2, sentence1);
+        }
+
+        // Now spilt both into string of arrays
+        String[] smallerWord = sentence1.split(" ");
+        String[] largerWord = sentence2.split(" ");
+
+        // using 2 Pointer 
+        // start remains same for both
+        int start=0;
+        int end1=smallerWord.length-1;
+        int end2=largerWord.length-1;
+        // find prefix word
+        // while start is less than end1 and String are same in both smaller and larger then move start ahead
+        while(start<=end1 && smallerWord[start].equals(largerWord[start])){
+            start++;
+        }
+
+        //find suffix word
+        // while start<=end1 && end1 of smaller and end2 of larger are same then decrement end 1 and 2
+        while(start<=end1 && smallerWord[end1].equals(largerWord[end2])){
+            end1--;
+            end2--;
+        }
+        // if in smallerWord start crosses end1 ie overtake then it is empty the return true
+        return start>end1;
+    }
+}
