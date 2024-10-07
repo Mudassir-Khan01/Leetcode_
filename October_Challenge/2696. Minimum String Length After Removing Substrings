@@ -1,0 +1,17 @@
+class Solution {
+    public int minLength(String s) {
+        Stack<Character> stack=new Stack<>();
+        //traverse the string character by chracter
+        for(char ch:s.toCharArray()){
+            // stack should not be empty
+            // if current character is B and peek element is A then pop OR current is D and peek is C then pop
+            if(!stack.isEmpty() && ( (ch=='B'&& stack.peek()=='A') || (ch=='D'&& stack.peek()=='C'))){
+                stack.pop();
+            }else{
+                // else push the remaining ones
+                stack.push(ch);
+            }
+        }
+        return stack.size();
+    }
+}
