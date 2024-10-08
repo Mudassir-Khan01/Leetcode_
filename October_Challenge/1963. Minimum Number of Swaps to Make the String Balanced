@@ -1,0 +1,20 @@
+class Solution {
+    public int minSwaps(String s) {
+        int open=0; // to make a count of open brackets
+        int unbalanced= 0; // to make a count of unbalanced brackets
+        for(char ch:s.toCharArray()){
+            // if its open brac then open ++
+            if(ch=='['){
+                open++;
+            }else if(open>0){
+                // if its closing and open is greater than 0 that means its balanced so open--;
+                open--;
+            }else{
+                // else it comes under category of unbalanced
+                unbalanced++;
+            }
+        }
+        // to handle even and odd cases
+        return (unbalanced+1)/2;
+    }
+}
