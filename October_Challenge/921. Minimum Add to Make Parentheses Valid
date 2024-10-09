@@ -1,0 +1,28 @@
+class Solution { // 2 Methods
+    public int minAddToMakeValid(String s) {
+        // 'open' counts unmatched '(' parentheses
+        // 'close' counts unmatched ')' parentheses
+        int open = 0, close = 0;
+
+        // Iterate through each character in the string
+        for (char ch : s.toCharArray()) {
+            // If the character is an opening parenthesis '('
+            if (ch == '(') {
+                open++;  // Increment the 'open' counter to mark it as unmatched
+            } else {
+                // If it's a closing parenthesis ')'
+                if (open > 0) {
+                    // If there's an unmatched '(' available, we can match it with ')'
+                    open--;  // Decrement 'open' as we've matched one pair
+                } else {
+                    // If no unmatched '(' is available, this ')' is unmatched
+                    close++;  // Increment 'close' to mark an unmatched ')'
+                }
+            }
+        }
+
+        // The total number of moves required to make the string valid
+        // is the sum of unmatched '(' and unmatched ')' parentheses
+        return open + close;
+    }
+}
