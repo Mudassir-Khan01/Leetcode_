@@ -1,0 +1,57 @@
+class Solution {
+    public int maxWidthRamp(int[] nums) { // 2 methods
+        int n=nums.length;
+        // min to store min from 0 to i
+        // max to store max from n-1 to i
+        int[]min=new int[n];
+        int[]max=new int[n];
+        min[0]=nums[0]; // store the first element from nums
+        for(int i=1;i<n;i++){
+            min[i]=Math.min(nums[i],min[i-1]);  // get min from current nums and prev min
+        }
+        max[n-1]=nums[n-1]; // store the last element from nums
+        for(int i=n-2;i>=0;i--){
+            max[i]=Math.max(max[i+1],nums[i]);  // get max from current nums and prev max
+        }
+
+        // 2 pointer 
+        int i=0,j=0, ans=0;   
+        while(j<n){  // while j reaches end
+            if(min[i]<=max[j]){  // if it satisfies the condn then get the ans and increase j++ for more possible answers
+                ans=Math.max(ans,j-i);
+                j++;
+            }else{  // if by chance we get nums[i] greater then increase i to get more minimum value so i++
+                i++;
+            }
+        }
+        return ans;
+    }
+}
+
+
+
+class Solution {
+    public int maxWidthRamp(int[] nums) {
+        Stack<Integer> stack=new Stack<>();
+        int n=nums.length;
+        // now store the decreasing value (index) in stack
+        for(int i=0;i<n ;i++){
+            if(stack.isEmpty() || nums[stack.peek()]>nums[i]){
+                stack.push(i);  // if in stack, the  index's  value is greater than in nums then push the index
+            }
+        }
+
+        int ans=Integer.MIN_VALUE;
+        // now traverse from last to get the desired ans
+        for(int i= n-1;i>=0;i--){
+            // while the stack is not empty and nums[stack.peek()]<= nums[i] then its a possible answer
+            while(!stack.isEmpty() && nums[stack.peek()] <= nums[i]){
+                ans=Math.max(ans, i-stack.pop());  // max of ans and difference in indexes (j-i)
+            }
+            if(stack.isEmpty()){
+                break;
+            }
+        }
+        return ans;
+    }
+}
