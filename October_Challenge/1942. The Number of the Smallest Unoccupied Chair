@@ -1,0 +1,48 @@
+class Solution {
+    public int smallestChair(int[][] times, int targetFriend) {
+        int targetArrival=times[targetFriend][0];// to get the arrival time of targetFriend
+        // Now sort the array in ascending order based on arrival time
+        Arrays.sort(times, new Comparator<int []>(){
+            public int compare(int [] a , int [] b){
+                return a[0]-b[0];
+            }
+        });
+        //Now create a Priority Queue for (leaving time , chairs) 
+        PriorityQueue<int[]> occupied=new PriorityQueue<>(new Comparator<int []>(){
+            public int compare(int [] a , int [] b){
+                return a[0]-b[0];
+            }
+        });
+        //Now craete a PQ for available chairs
+        PriorityQueue<Integer> available=new PriorityQueue<>();
+        int chairNo=0;// to count no. of chairs
+
+        // now traverse through the 2d array
+        for(int[] time: times){
+            int arrTime=time[0];
+            int leavingTime=time[1];
+            // now move the available chairs in PQ so if occuiped.peek()[0]  <= arrTime means chair is free touse
+            while(!occupied.isEmpty()&& occupied.peek()[0] <= arrTime){ // if last's person leaving time is less than next person's arrival time then move that chair to available
+            available.offer(occupied.poll()[1]);  // at[1] chair no. is there
+            }
+            int currentChairNo;
+            // now keeping track of current chair no. is Pq available is empty then take a new chair
+            if(available.isEmpty()){
+                currentChairNo =chairNo;
+                chairNo++;
+            }else{
+                // if not empty take the topmost one 
+                currentChairNo= available.poll();
+            }
+            // check for target 
+            if(targetArrival == arrTime){
+                return currentChairNo;
+            }
+
+            // Now fill the occupied Pq with leavingTime, chair number
+            occupied.offer(new int[]{leavingTime, currentChairNo});
+        }
+        // return anything
+        return -1;
+    }
+}
