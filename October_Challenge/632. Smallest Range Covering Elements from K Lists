@@ -1,0 +1,48 @@
+class Solution {
+    public int[] smallestRange(List<List<Integer>> nums) {
+        // Min-heap (priority queue) to store the smallest elements from each list.
+        // Each element in the heap is an array of [element value, list index, element index].
+        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() {
+            public int compare(int a[], int b[]) {
+                return a[0] - b[0]; // Sort by element value in increasing order.
+            }
+        });
+        
+        int k = nums.size();  // Number of lists.
+        int max = Integer.MIN_VALUE;  // Track the maximum element in the current range.
+
+        // Initialize the heap by adding the first element of each list.
+        for (int i = 0; i < k; i++) {
+            int minVal = nums.get(i).get(0);  // First element of the current list.
+            pq.offer(new int[]{minVal, i, 0});  // Add [element, list index, element index] to the heap.
+            max = Math.max(max, minVal);  // Update the maximum element in the current range.
+        }
+
+        int[] minRange = {0, Integer.MAX_VALUE};  // Initialize the smallest range with a very large range.
+
+        // Continue processing until one of the lists runs out of elements.
+        while (true) {
+            int[] top = pq.poll();  // Extract the smallest element from the heap.
+            int minElement = top[0];  // Current smallest element.
+            int listIndex = top[1];  // The list from which this element came.
+            int elementIndex = top[2];  // The index of the element in its list.
+
+            // Update the smallest range if the current range is smaller.
+            if (max - minElement < minRange[1] - minRange[0]) {
+                minRange[0] = minElement;
+                minRange[1] = max;
+            }
+
+            // If we have processed all elements from the current list, exit the loop.
+            if (elementIndex == nums.get(listIndex).size() - 1) break;
+
+            // Get the next element from the same list.
+            int next = nums.get(listIndex).get(elementIndex + 1);
+            max = Math.max(max, next);  // Update the maximum element in the range.
+            pq.offer(new int[]{next, listIndex, elementIndex + 1});  // Add the next element to the heap.
+        }
+
+        // Return the smallest range found.
+        return minRange;
+    }
+}
