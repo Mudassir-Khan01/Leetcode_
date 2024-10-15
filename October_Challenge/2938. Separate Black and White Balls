@@ -1,0 +1,16 @@
+class Solution {
+    public long minimumSteps(String s) {
+        int n=s.length();
+        int last=0; // 1st pointer last will be pointing to 1
+        long swapCount=0;
+        // now we create a for which will act as the other pointer 
+        for(int curr=0;curr<n;curr++){
+            // if current char is 0 then we have to swap it butb here we will swap count i.e (curr-last)  and now move last ahead
+            if(s.charAt(curr)=='0'){
+                swapCount+=(curr-last); // this is imaginary swapping
+                last++; // just if curr comes 0 then only we move last ahead after swapcounting
+            }
+        } 
+        return swapCount;
+    }
+}
