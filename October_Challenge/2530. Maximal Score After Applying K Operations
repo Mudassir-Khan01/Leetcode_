@@ -1,0 +1,22 @@
+class Solution {
+    public long maxKelements(int[] nums, int k) {
+        // Priority queue (max heap)
+        PriorityQueue<Integer> pq=new PriorityQueue<>(Collections.reverseOrder());
+        //now store the elememts in max heap ie in decreasing order
+        for(int i:nums){
+            pq.offer(i);
+        }
+        // now we have to perform k operation and get the maxm number from oq
+        long score=0;
+        while(k>0){
+            // get the largest element and add it in score
+            int val=pq.poll();
+            score+=val;
+            // now replace that number with the given value in question
+            pq.offer((int)Math.ceil(val/3.0));
+            // decrease the no. of operations
+            k--;
+        }
+        return score;
+    }
+}
