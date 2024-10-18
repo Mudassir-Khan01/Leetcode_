@@ -1,0 +1,42 @@
+class Solution {
+    public int maximumSwap(int num) {
+        // Convert the number to a string representation for easier manipulation of digits
+        StringBuilder str = new StringBuilder(Integer.toString(num));
+        int n = str.length();
+        
+        // Array to store the index of the maximum digit from the right up to the current position
+        int[] maxInd = new int[n];
+
+        // Initialize the last index as the maximum index for the last digit
+        maxInd[n - 1] = n - 1;
+        
+        // Traverse the digits from right to left and store the index of the maximum digit seen so far
+        for (int i = n - 2; i >= 0; i--) {
+            // If the current digit is larger than the maximum to its right, update the current index as max
+            if (str.charAt(i) > str.charAt(maxInd[i + 1])) {
+                maxInd[i] = i;
+            } else {
+                // Otherwise, carry forward the max index from the right
+                maxInd[i] = maxInd[i + 1];
+            }
+        }
+
+        // Traverse the number from left to right to find the first smaller digit
+        // that can be swapped with the maximum digit found on the right
+        for (int i = 0; i < n-1; i++) {
+            // If the current digit is smaller than the maximum digit to its right
+            if (str.charAt(i) < str.charAt(maxInd[i])) {
+                // Swap the current digit with the maximum digit on its right
+                int temp = str.charAt(i) - '0'; // Convert char to int
+                // Replace the current digit with the max digit
+                str.replace(i, i + 1, String.valueOf(str.charAt(maxInd[i])));
+                // Replace the max digit with the original smaller digit
+                str.replace(maxInd[i], maxInd[i] + 1, String.valueOf(temp));
+                break; // Since only one swap is allowed, exit after the first swap
+            }
+        }
+
+        // Convert the modified string back to an integer and return the result
+        return Integer.parseInt(str.toString());
+    }
+}
