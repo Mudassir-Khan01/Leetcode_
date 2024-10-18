@@ -1,0 +1,29 @@
+class Solution {
+    public int countMaxOrSubsets(int[] nums) {
+        int targetOr=0; // find the target or ...maximum OR of all nums
+        for(int num:nums){
+            targetOr|=num;
+        }
+        //state- index,targetOr
+        // Memoize it 
+        Integer dp[][] =new Integer[nums.length][targetOr+1]; // Integer coz its value will either be null or any value so we need not to use Arrays.fill to fill -1 in it
+        return recur(0,nums,0,targetOr, dp);
+    }
+    public int recur(int index, int[] nums , int curOr, int targetOr, Integer dp[][]){
+        // base condition
+        if(index==nums.length){
+            // curOr matches targetOr then return 1 otherwise 0
+            return (curOr==targetOr)? 1:0;
+        }
+        // check if already solved
+        if(dp[index][curOr]!=null){
+            return dp[index][curOr];
+        }
+        //pick ..move index and do Or between curOr, nums[index]
+        int pick=recur(index+1, nums, curOr|nums[index], targetOr,dp);
+        // not pick.. move index ahead but dont do OR
+        int noPick=recur(index+1, nums, curOr, targetOr,dp);
+        
+        return dp[index][curOr]=pick+noPick;  // just store it in dp
+    }
+}
