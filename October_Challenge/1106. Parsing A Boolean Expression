@@ -1,0 +1,62 @@
+class Solution {
+    public boolean parseBoolExpr(String expression) {
+        //create a Stack 
+        Stack<Character> stack=new Stack<>();
+        int n=expression.length();
+        for(int i=0;i<n;i++){
+            char ch=expression.charAt(i);
+            // if Closing bracket then we need to perform some operation
+            if(ch==')'){
+                // Create a list to store Character the one we will pop out
+                ArrayList<Character> list=new ArrayList<>();
+                // pop untill we get opening bracket
+                while(stack.peek()!='('){
+                    list.add(stack.pop());
+                }
+                stack.pop(); // remove opening brac
+                char op=stack.pop(); // operator will be just below the opening brac
+                // now evalute the operation using the list and operator
+                char ans=evaluate(list, op);
+                // push it back into stack
+                stack.push(ans);
+            }else{
+                // if opening brac or any other character then we can simply push
+                // no need to push ,
+                if(ch!=','){
+                    stack.push(ch);
+                }
+            }
+        }
+        // final line
+        return stack.peek()=='t';
+    }
+
+    private char evaluate(ArrayList<Character> list, char op){
+        // here we operate different opeartion
+        if(op=='&'){
+            if(find(list, 'f')){  // if operator is & and in in list we have f then return false
+                return 'f';
+            }else{
+                return 't';
+            }
+        }else if(op=='|'){
+            if(find(list,'t')){
+                return 't';
+            }else{
+                return 'f';
+            }
+        }else{ // not operator
+            return (list.get(0)=='t'?'f' : 't');
+        }
+    }
+
+    // this fn to find whats there in list
+    private boolean find(ArrayList<Character> list, char val){
+        for(char ch:list){
+            if(ch==val){  // if char in list and char coming from evaluate
+                return true;
+            }
+        }
+        return false;
+    }
+}
