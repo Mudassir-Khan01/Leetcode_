@@ -1,0 +1,31 @@
+class Solution {
+    int maxCount;  // To store the maximum number of unique substrings
+    
+    public int maxUniqueSplit(String s) {
+        maxCount = 0;  // Initialize maxCount to 0
+        HashSet<String> set = new HashSet<>(); // Set to store unique substrings
+        backtrack(s, set, 0); // Start backtracking from index 0
+        return maxCount; // Return the result after exploring all possibilities
+    }
+
+    private void backtrack(String s, HashSet<String> set, int index) {
+        // Base case: If we've reached the end of the string, check the size of the set
+        int n = s.length();
+        if (index == n) {
+            maxCount = Math.max(maxCount, set.size()); // Update maxCount if necessary
+            return;
+        }
+
+        // Loop through possible substrings starting from current index
+        for (int i = index; i < n; i++) {
+            String sub = s.substring(index, i + 1); // Extract substring from index to i
+
+            // Check if the substring is not already in the set (to ensure uniqueness)
+            if (!set.contains(sub)) {
+                set.add(sub); // Add the substring to the set
+                backtrack(s, set, i + 1); // Recursively continue from the next index
+                set.remove(sub); // Backtrack: remove the substring to explore other partitions
+            }
+        }
+    }
+}
