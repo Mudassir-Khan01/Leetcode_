@@ -1,0 +1,47 @@
+class Solution {
+    public int longestSquareStreak(int[] nums) {
+        //Store all elements in Set for 0(1) lookup
+        HashSet<Integer> set= new HashSet<>();
+        int ans=-1;  // initalize to -1 , so as to manage edge cases
+        for(int num:nums){
+            set.add(num);
+        }
+        // now traverse all the elements
+        for(int num:nums){
+            int value=num; 
+            int streak=1; // streak will reset to 1 for each iteration
+            // while set contains the square of that value increment streak
+            while(set.contains(value*value)){
+                 // Check for overflow before updating value
+                if (value > Math.sqrt(Integer.MAX_VALUE)) {
+                    break;
+                }
+                streak++;
+                value=value*value; // square of that value
+            }
+            // length of sunsequence should be atleast 2
+            if(streak>=2){
+                ans=Math.max(ans , streak);
+            }
+        }
+        return ans;
+    }
+}
+
+class Solution {
+    public int longestSquareStreak(int[] nums) {
+        Arrays.sort(nums);
+        HashMap<Integer,Integer> map=new HashMap<>();
+        int max=-1;
+        for(int i:nums){
+             int root=(int)Math.sqrt(i);
+             if(root*root==i && map.containsKey(root)){
+                map.put(i,map.get(root)+1);
+                max=Math.max(max, map.get(i));
+             }else{
+                map.put(i,1);
+             }
+        }
+        return max;
+    }
+}
