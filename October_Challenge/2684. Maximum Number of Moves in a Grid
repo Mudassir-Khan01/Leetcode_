@@ -1,0 +1,43 @@
+class Solution {
+    public int maxMoves(int[][] grid) {
+        int m = grid.length; // row
+        int n = grid[0].length; // col
+        int max = 0;
+        // we memoize it with dp
+        Integer[][] dp = new Integer[m][n];
+        // we have to call recur for each value of first column
+        for (int i = 0; i < m; i++) {
+            max = Math.max(max, recur(i, 0, grid, dp));
+        }
+        return max;
+    }
+
+    private int recur(int i, int j, int[][] grid, Integer[][] dp) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int max = 0;
+        // base cond
+        // reaches the last
+        if (i == m && j == n) {
+            return 0;
+        }
+        // for dp
+        if (dp[i][j] != null) {
+            return dp[i][j];
+        }
+        // other cond
+        // if it goes right upper corner
+        if (i - 1 >= 0 && j + 1 < n && grid[i - 1][j + 1] > grid[i][j]) {
+            // if all condition satisfies then we can add 1 and call recur
+            max = 1 + recur(i - 1, j + 1, grid, dp);
+        }
+        // rest as it is
+        if (j + 1 < n && grid[i][j + 1] > grid[i][j]) {
+            max = Math.max(max, 1 + recur(i, j + 1, grid, dp));
+        }
+        if (i + 1 < m && j + 1 < n && grid[i + 1][j + 1] > grid[i][j]) {
+            max = Math.max(max, 1 + recur(i + 1, j + 1, grid, dp));
+        }
+        return dp[i][j] = max;
+    }
+}
