@@ -1,0 +1,56 @@
+class Solution {
+
+    // Recursive function with memoization to find the minimum distance
+    private long solveMemo(List<Integer> robot, int[][] factory, int idx1, int idx2, Long[][] dp) {
+        
+        // Base case 1: If all robots are assigned to factories, no additional distance is needed
+        if (idx1 >= robot.size()) {
+            return 0L;
+        }
+        
+        // Base case 2: If we run out of factories before all robots are assigned, return a large value to indicate invalid configuration
+        if (idx2 >= factory.length) {
+            return Long.MAX_VALUE;
+        }
+
+        // If the current subproblem has been solved, return its stored result
+        if (dp[idx1][idx2] != null) {
+            return dp[idx1][idx2];
+        }
+
+        // Variable to accumulate distances for the current configuration
+        long temp = 0;
+        
+        // Recursive case 1: Skip the current factory and move to the next factory without assigning robots to it
+        long res = solveMemo(robot, factory, idx1, idx2 + 1, dp);
+        
+        // Recursive case 2: Try assigning up to the factory’s limit of robots to this factory
+        for (int k = idx1; k < robot.size() && k - idx1 + 1 <= factory[idx2][1]; k++) {
+            // Calculate the distance for moving the robot at index k to the current factory
+            temp += Math.abs(robot.get(k) - factory[idx2][0]);
+            
+            // Calculate the result for the next robots with the next factory
+            long nextConfig = solveMemo(robot, factory, k + 1, idx2 + 1, dp);
+            
+            // If the next configuration is valid, update the minimum result
+            if (nextConfig != Long.MAX_VALUE) {
+                res = Math.min(res, temp + nextConfig);
+            }
+        }
+        
+        // Store the computed minimum distance in dp array for future reference and return it
+        return dp[idx1][idx2] = res;
+    }
+
+    public long minimumTotalDistance(List<Integer> robot, int[][] factory) {
+        // Sort the robots and factories by their positions for optimal pairing
+        Collections.sort(robot);
+        Arrays.sort(factory, (a, b) -> a[0] - b[0]);
+
+        // Initialize dp array to store results of subproblems
+        Long[][] dp = new Long[robot.size() + 1][factory.length + 1];
+        
+        // Start recursion from the first robot and the first factory
+        return solveMemo(robot, factory, 0, 0, dp);
+    }
+}
