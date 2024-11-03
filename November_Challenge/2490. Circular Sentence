@@ -1,0 +1,24 @@
+class Solution {
+    public boolean isCircularSentence(String sentence) {
+        // first split the sentence
+        String[] str=sentence.split(" ");
+
+        // check for first and last character 
+        if(sentence.charAt(0)!=sentence.charAt(sentence.length()-1)){
+          return false;
+        }
+
+        // then go through each character
+        for(int i=0;i<str.length-1;i++){
+            // get then last character of current string
+               char last=str[i].charAt(str[i].length()-1);
+               // get the first character of next string
+               char first=str[i+1].charAt(0);
+               // first and last not equal then return false
+               if(first!=last){
+                return false;
+               }
+            }
+        return true;
+    }
+}
