@@ -1,0 +1,19 @@
+class Solution {
+    public boolean rotateString(String s, String goal) {
+        if(s.length()!=goal.length())
+        return false;
+
+//       int n=s.length();
+//       String doublee=s.substring(0,n)+s.substring(0,n);
+//       for(int i=0;i<doublee.length();i++){
+//       for(int j=i;j<doublee.length();j++){
+//         String ss=doublee.substring(i,j);
+//         if(ss.equals(goal) ){
+//             return true;
+//         }
+//     }
+//  }
+//  return false;
+return (s+s).contains(goal);
+    }
+}
