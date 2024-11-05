@@ -1,0 +1,27 @@
+class Solution {
+    public String compressedString(String word) {
+        int count=0; // initalize both with 0 
+        char curr='0';
+        StringBuilder sb=new StringBuilder();
+        for(char ch:word.toCharArray()){
+            // count is less than 9 and ch is equal to that assigned character the increase count
+            if(count<9 && curr==ch){
+                count+=1;
+            }else{
+                // if curr != ch
+                // first check if count is > 0 if yes then append
+                if(count>0){
+                    sb.append(count);
+                    sb.append(curr);
+                }
+                // assign new character and reset count to 1
+                curr=ch;
+                count=1;
+            }
+        }
+        // append last character's count and character
+        sb.append(count);
+        sb.append(curr);
+        return sb.toString();
+    }
+}
