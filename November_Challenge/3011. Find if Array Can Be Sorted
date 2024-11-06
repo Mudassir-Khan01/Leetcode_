@@ -1,0 +1,38 @@
+class Solution {
+    public boolean canSortArray(int[] nums) {
+        // max to keep track of the max number , initally it will be intialized to first number
+        int max=nums[0];
+        // bits to store count of max
+        int bits=countBits(nums[0]);
+        // lastMax = to store last max value
+        int lastMax=0;
+        for(int i=1;i<nums.length;i++){
+            // check if bits have changed or not
+            boolean bitChange=bits!=countBits(nums[i]);
+            // if change update the lastMax
+            if(bitChange){
+                lastMax=max;
+            }
+
+            // if new nums[i] is greater than max update the max
+            if(nums[i]>max){
+                max=nums[i];
+                bits=countBits(nums[i]);
+            }
+            // if incase right< left i.e nums[i]<lastmax return false , can it cant be sorted
+            if(nums[i]<lastMax){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int countBits(int num){
+        int count=0;
+        while(num>0){
+            count+=num&1;  // to get set bits
+            num=num>>1; // right shift
+        }
+        return count;
+    }
+}
