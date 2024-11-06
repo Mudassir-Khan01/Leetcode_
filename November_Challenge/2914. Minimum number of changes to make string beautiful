@@ -1,0 +1,13 @@
+class Solution {
+    public int minChanges(String s) {
+        int count=0;
+        // we will move 2 steps ahead as its even
+        for(int i=0;i<s.length()-1;i+=2){
+            // if adjacent no equal then we can interchange it or increase count
+            if(s.charAt(i)!=s.charAt(i+1)){
+                count++;
+            }
+        }
+        return count;
+    }
+}
