@@ -1,0 +1,18 @@
+class Solution {
+    public int largestCombination(int[] candidates) {
+        // so Basically we have to find maximum number of integers in candidates that have set bits at any position
+        int max=0;
+        // 10^7 can have 24 bits
+        for(int i=0;i<=24;i++){
+            int count=0; // to calculate  count of setbits in each integer at same position
+            for(int j:candidates){
+                // right shift and & it to get whether it is set bit or not 
+                // count maximum number of integers in candidates that have set bits at any position
+                count+=(j>>i) &1;
+            }
+            // find maximum for each bit place from 0 to 24
+            max=Math.max(max,count);
+        }
+        return max;
+    }
+}
