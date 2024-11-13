@@ -1,0 +1,31 @@
+class Solution {
+    public long countFairPairs(int[] nums, int lower, int upper) {
+        // sort it
+        Arrays.sort(nums);
+        // find all the pairs less than upper bound
+        long pairLessThanUpper= lessThanValue(nums,upper);
+        // find all pairs less than lower bound
+        long pairLessThanLower= lessThanValue(nums,lower-1);
+        // result will be in between ie.
+        return pairLessThanUpper-pairLessThanLower;
+    }
+
+    private long lessThanValue(int []nums, int value){
+        // using 2 pointer
+        int left=0, right=nums.length-1;
+        long ans=0;
+        while(left<right){
+            long sum=nums[left]+nums[right];
+            // if sum is greater than value then move right pointer to the left
+            if(sum>value){
+                right--;
+            }else{
+                // if less than or equal to value means it must be included and every other elements bwtween them
+                ans+=right-left;
+                // move left ahead
+                left++;
+            }
+        }
+        return ans;
+    }
+}
