@@ -1,0 +1,39 @@
+class Solution {
+    public int minimizedMaximum(int n, int[] quantities) {
+        // same as KOKO eating banana
+        int low=0;
+        int high=maximum(quantities);
+        // Binary Search
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            // Calculate stores needed if max products per store is mid
+            int storesNeeded= StoresNeeded(mid, quantities);
+            // if the required stores fit within n , try to lower the maximum products per store
+            if(storesNeeded<=n){
+                high=mid-1;// Move to the left half to minimize the maximum
+            }else{
+                low=mid+1;// Move to the right half to increase the maximum
+            }
+            
+        }
+        return low;
+
+    } 
+    // Helper fn to determine the number of stores req if each store can receive upto x products
+    private int StoresNeeded(int x, int [] quantities){
+        int storesNeeded=0;
+        for(int i:quantities){
+             // Divide quantity by x and use ceiling of division to determine stores needed for this type
+            storesNeeded+= Math.ceil((double)i / (double)x); // or storesNeeded += (i + x - 1) / x;
+        }
+        return storesNeeded;
+    }
+    // to get the maximum quantity
+    private int maximum(int[] quantities){
+        int maxi=Integer.MIN_VALUE;
+        for(int i:quantities){
+            maxi=Math.max(maxi, i);
+        }
+        return maxi;
+    }
+}
