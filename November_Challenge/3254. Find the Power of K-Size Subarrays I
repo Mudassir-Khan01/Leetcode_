@@ -1,0 +1,31 @@
+class Solution {
+    public int[] resultsArray(int[] nums, int k) {
+        int n=nums.length;
+        int result[]=new int[n-k+1]; // as mentioned in the problem
+        // now we start sliding window 
+        int i=0 , j=k-1 , a=0;
+        while(j<n){
+            // if the nums from i to j are consecutive and sorted then put j in result else put -1
+            if(solved(nums, i,j)){
+                result[a]=nums[j];
+            }else{
+                result[a]=-1;
+            }
+            // now move i,j,a ahead
+            i++;
+            j++;
+            a++;
+        }
+        return result;
+    }
+    // create a fn to check whether array has consecutive and sorted elements
+    private boolean solved(int [] nums, int start, int end){
+        for(int i=start; i<end; i++){
+            // below statement check both consecutive and sorted elements
+            if(nums[i]+1 != nums[i+1]){
+                return false;
+            }
+        }
+        return true;
+    }
+}
