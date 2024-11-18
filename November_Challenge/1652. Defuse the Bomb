@@ -1,0 +1,37 @@
+class Solution {
+    public int[] decrypt(int[] code, int k) {
+        int n=code.length;
+        int [] result=new int[n];
+        int start=0 , end=0;
+        // case 1
+        if(k==0){
+            // return as it is
+            return result;
+        }
+        // case 2 set start and end
+        if(k>0){
+            // considering we are at 0 
+            start=1;
+            end=k;
+        }else{
+            // considering we are at 0
+            start=n-Math.abs(k);
+            end=n-1;
+        }
+        // get the totalSum from start to end
+        int sum=0;
+        for(int i=start; i<=end;i++){
+            sum+=code[i];
+        }
+        // start filling for each element
+        for(int i=0;i<n;i++){
+            result[i]=sum; // fill it with sum as it contains next or previous elemets sum
+            // move window ahead ie subtract last element from sum and add next
+            sum-=code[start%n]; // removed start as its moving out of window
+            sum+=code[(end+1)%n]; // added end+1 as it getting added in the window
+            start++;
+            end++;
+        }
+        return result;
+    }
+}
