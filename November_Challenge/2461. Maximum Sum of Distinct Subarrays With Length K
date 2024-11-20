@@ -1,0 +1,35 @@
+class Solution {
+    public long maximumSubarraySum(int[] nums, int k) {
+        int left=0;
+        long maxSum=0;
+        long currentSum=0;
+        // Set to check whether the given window has distinct numbers
+        HashSet<Integer> set=new HashSet<>();
+        // sliding window
+        for(int right=0;right<nums.length;right++ ){
+            // add the current element to the window
+            currentSum+=nums[right];
+
+            // Ensure that the window has distict value
+            while(set.contains(nums[right])){
+                // set contains that number , remove left from set as we move window ahead, subtract it from sum and move left ahead
+                set.remove(nums[left]);
+                currentSum-=nums[left];
+                left++;
+            }
+            // in case its not in set ...then put it in set
+            set.add(nums[right]);
+
+            // if window size reaches k then we remove the left from set, subtract left from current 
+            if(right-left+1 == k){
+                //get the maxSum of the window 
+                maxSum=Math.max(maxSum, currentSum);
+                // Shrink the window
+                set.remove(nums[left]);
+                currentSum-=nums[left];
+                left++;
+            }
+        }
+        return maxSum;
+    }
+}
