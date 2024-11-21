@@ -1,0 +1,38 @@
+class Solution {
+    public int takeCharacters(String s, int k) {
+        int countA=0 ,countB=0, countC=0;
+        // count freq for each character
+        for(char ch:s.toCharArray()){
+            if(ch=='a') countA++;
+            else if(ch=='b') countB++;
+            else countC++;
+        }
+        // edge case
+        if(countA<k || countB<k || countC<k)
+        return -1;
+
+        // Sliding window
+        int left=0, right=0 , maxWindow=0;
+        while(right<s.length()){
+            // now as we increase window, if we encounter any character we decrement it
+            char toRemove=s.charAt(right);
+            if(toRemove=='a') countA--;
+            else if(toRemove=='b') countB--;
+            else countC--;
+
+            // if in case any count goes below k i.e <k we stop the right and move left ahead while incrementing the character count
+            while(countA<k || countB<k || countC<k){// voilating the condition
+                char toAdd= s.charAt(left);
+                if(toAdd=='a') countA++;
+            else if(toAdd=='b') countB++;
+            else countC++;
+            left++;
+            }
+            // get the maximum window size
+            maxWindow=Math.max(maxWindow, right-left+1);
+            right++;
+        }
+        // subtract the maxWindow that voilates the condition
+        return s.length()-maxWindow;
+    }
+}
