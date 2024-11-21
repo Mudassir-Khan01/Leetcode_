@@ -1,0 +1,53 @@
+class Solution {
+    // directions to move Up, down, left , right
+        int[][] direction={{-1,0}, {1,0},{0,-1},{0,1}};
+    public int countUnguarded(int m, int n, int[][] guards, int[][] walls) {
+        int [][] matrix=new int[m][n];
+        
+        // fill guard in new matrix as 1
+        for(int [] guard:guards){
+            matrix[guard[0]][guard[1]]=1;
+        }
+        // fill wall in new matrix as 2
+        for(int [] wall:walls){
+            matrix[wall[0]][wall[1]]=2;
+        }
+        // now travese and Mark Guarded cells as 3
+        for(int [] guard: guards){
+            for(int [] dir: direction){
+                // get position of guard
+                int x=guard[0], y=guard[1];
+                // while true show that it traverse in one direction
+                while(true){
+                    // travel through 1 direction
+                    x+=dir[0];
+                    y+=dir[1];
+                    // check cond
+                    if(isNotValid(matrix, x, y)|| matrix[x][y]==1 || matrix[x][y]==2)
+                    break;
+
+                    if(matrix[x][y]==0){
+                        matrix[x][y]=3;
+                    }
+                }
+            }
+        }
+        // ones with 0 are the unguarded
+        int ans=0;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(matrix[i][j]==0)
+                ans++;
+            }
+            
+        }
+        return ans;
+    }
+
+    private boolean isNotValid(int[][] grid, int row, int col){
+        if(row<0 || row>=grid.length || col<0 || col>=grid[0].length){
+            return true;
+        }
+        return false;
+    }
+}
