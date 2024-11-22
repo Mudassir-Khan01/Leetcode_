@@ -1,0 +1,29 @@
+class Solution {
+    public int maxEqualRowsAfterFlips(int[][] matrix) {
+        //create a  map to store each row value as string , its count as well as flipped ones
+        Map<String , Integer> map=new HashMap<>();
+        // traverse each row
+        for(int [] row: matrix){
+            // use stringbuilder to store string and flip
+            StringBuilder value=new StringBuilder();
+            StringBuilder flipped=new StringBuilder();
+            // now go through each value
+            for(int r:row){
+                value.append(r);
+                flipped.append(1-r); // 1-0=1  1-1=0
+            }
+            // convert it to string
+            String v=value.toString();
+            String f=flipped.toString();
+            // put both and their count in map
+            map.put(v, map.getOrDefault(v,0)+1);
+            map.put(f, map.getOrDefault(f,0)+1);
+        }
+        // now traverse the map and get the maxm count
+        int max=0;
+        for(int i: map.values()){
+            max=Math.max(max, i);
+        }
+        return max;
+    }
+}
