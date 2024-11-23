@@ -1,0 +1,34 @@
+class Solution {
+    public char[][] rotateTheBox(char[][] box) {
+        int m=box.length;
+        int n=box[0].length;
+        char[][] ans=new char[n][m];
+        // fill the ans 2d array with .
+        for(char [] row : ans){
+            Arrays.fill(row,'.');
+        }
+        // now start traversing each row 
+        for(int i=0;i<m;i++){
+            // maintain a minIndex that keeps track of the lowest available position for stones in the row
+            int minIndex=n-1;
+            // Traverse the current row from right to left // moving right to left coz of gravity
+            for(int j=n-1;j>=0;j--){
+                // if current cell in box has stone 
+                // place the stone at the lowest position
+                // move the index one cell up
+                if(box[i][j]=='#'){
+                    ans[minIndex][m-i-1]='#'; // m-i-1 as it goes 90 degree
+                    minIndex--;
+                }
+                // if its an obstacle
+                // update the minIndex to just above the obstacle 
+                // and place the obstacle in its final rotation position
+                if(box[i][j]=='*'){
+                    minIndex=j-1;
+                    ans[j][m-i-1]='*';
+                }
+            }
+        }
+        return ans;
+    }
+}
