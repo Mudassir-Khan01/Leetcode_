@@ -1,0 +1,27 @@
+class Solution {
+    public long maxMatrixSum(int[][] matrix) {
+        long totalSum = 0;
+        int minAbsval = Integer.MAX_VALUE;
+        int negativeCount = 0;
+        for (int[] row : matrix) {
+            for (int val : row) {
+                // calculate the total sum considering all positive
+                totalSum += Math.abs(val);
+                // keep count of negative element
+                if (val < 0) {
+                    negativeCount++;
+                }
+                // Keep the track of min abs val as if -ve count is odd then we need to remove
+                // this 2 times
+                // why 2 times- one it got added in the total sum and other coz its odd we cant
+                // flip it so we have to subtract it
+                minAbsval = Math.min(minAbsval, Math.abs(val));
+            }
+        }
+        // -ve count is odd remove 2*minAbsval from totalSum
+        if (negativeCount % 2 != 0) {
+            totalSum -= 2 * minAbsval;
+        }
+        return totalSum;
+    }
+}
