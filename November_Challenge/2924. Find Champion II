@@ -1,0 +1,26 @@
+class Solution {
+    public int findChampion(int n, int[][] edges) {
+        // we will create a boolean array to store false for losing team
+        boolean[] champ=new boolean[n];
+        // true indicates champion , at starting all are champion
+        Arrays.fill(champ,true);
+        // traverse through the edges
+        for(int []edge :edges){
+            int winner=edge[0];
+            int loser=edge[1];
+            // store the loser in boolean , one which has incoming edge
+            champ[loser]=false;
+        }
+        // count to count np. of champions but it must be 1 if not then return -1
+        int count=0, champion=-1;
+        for(int i=0;i<n;i++){
+            // if thats true , can be considered as champion
+            if(champ[i]){
+                count++;
+                champion=i; // store that champion
+            }
+        }
+        // if 1 then return champion else return -1
+        return count==1? champion:-1;
+    }
+}
