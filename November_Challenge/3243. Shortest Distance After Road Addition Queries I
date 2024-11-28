@@ -1,0 +1,59 @@
+class Solution {
+    public int[] shortestDistanceAfterQueries(int n, int[][] queries) {
+        // create an adjacency list to represent graph
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        // Initialize the graph with initial roads(0,1,2,3...n-1)
+        for (int i = 0; i < n - 1; i++) {
+            graph.get(i).add(i + 1);
+        }
+        // result array
+        int result[] = new int[queries.length];
+        // process each query
+        int idx = 0;
+        for (int[] query : queries) {
+            int u = query[0];
+            int v = query[1];
+            // Add new road from u to v
+            graph.get(u).add(v);
+            // find the shortest path from city 0 to n-1 using BFS
+            result[idx] = bfs(graph, n);
+            idx++;
+        }
+        return result;
+    }
+
+    private int bfs(List<List<Integer>> graph, int n) {
+        // Queue for BFS storing [currentCity , currentDistance]
+        Queue<int[]> queue = new LinkedList<>();
+        // start the city 0 with 0 distance
+        queue.offer(new int[] { 0, 0 });
+        // Visited array to track visited cities
+        boolean[] visited = new boolean[n];
+        visited[0] = true;
+        // now go through the queue
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            int city = current[0];
+            int distance = current[1];
+            // if we reach n-1 city return the distance
+            if (city == n - 1) {
+                return distance;
+            }
+            // travel all the neighbours of the current city
+            for (int neighbours : graph.get(city)) {
+                // if not visited
+                if (!visited[neighbours]) {
+                    // make it visited abd offer it in graph
+                    visited[neighbours] = true;
+                    queue.offer(new int[] { neighbours, distance + 1 });
+                }
+            }
+        }
+        // If city n-1 is not reachable, return -1 (though this should not happen as per
+        // constraints)
+        return -1;
+    }
+}
