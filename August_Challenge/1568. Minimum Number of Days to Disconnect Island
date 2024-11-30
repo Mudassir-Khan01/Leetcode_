@@ -4,7 +4,6 @@ class Solution {
     
     public int minDays(int[][] grid) {
         this.grid = grid;
-
         // If already disconnected (multiple islands or no island)
         if (isMultipleIslands()) {
             return 0;
