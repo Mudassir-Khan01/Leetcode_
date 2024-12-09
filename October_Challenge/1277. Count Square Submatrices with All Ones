@@ -10,7 +10,7 @@ class Solution {
             }
         }
         return ans;
-    }
+}
 
     private int solve(int i, int j, int[][]grid, Integer[][]dp){
         // base cases if we take left diagonal and up
