@@ -8,7 +8,7 @@ class Solution {
         for(int i=0;i<COLS;i++){
             prevRow[i]=points[0][i]; // first row
         }
-        
+    
         //now for each row we will go left to right then right to left
         for(int i=1;i<ROWS;i++){
             long left=0;
