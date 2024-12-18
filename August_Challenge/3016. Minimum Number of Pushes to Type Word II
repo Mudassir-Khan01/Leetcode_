@@ -5,7 +5,7 @@ class Solution {
 
         for(char ch:word.toCharArray()){
             freq[ch-'a']++;
-        }
+    }
 Arrays.sort(freq,Collections.reverseOrder());
         int ans=0;
         int digit=0;
