@@ -4,7 +4,7 @@ class Solution {
         Map<String , Integer> map=new HashMap<>();
         // traverse each row
         for(int [] row: matrix){
-            // use stringbuilder to store string and flip
+         // use stringbuilder to store string and flip
             StringBuilder value=new StringBuilder();
             StringBuilder flipped=new StringBuilder();
             // now go through each value
