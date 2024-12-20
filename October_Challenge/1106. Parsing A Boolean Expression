@@ -7,7 +7,7 @@ class Solution {
             char ch=expression.charAt(i);
             // if Closing bracket then we need to perform some operation
             if(ch==')'){
-             // Create a list to store Character the one we will pop out
+         // Create a list to store Character the one we will pop out
                 ArrayList<Character> list=new ArrayList<>();
                 // pop untill we get opening bracket
                 while(stack.peek()!='('){
