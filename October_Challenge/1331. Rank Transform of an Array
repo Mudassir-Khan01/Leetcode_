@@ -6,7 +6,7 @@ class Solution {
         int rank=1;
         for(int ar:arr){
             if(!map.containsKey(ar))  //if not in map then put in and increase rank
-            map.put(ar,rank++);
+           map.put(ar,rank++);
         }
         int []result=new int[arr.length];
         for(int i=0;i<temp.length;i++){
