@@ -1,0 +1,27 @@
+class Solution {
+    public int maxCount(int[] banned, int n, int maxSum) {
+         int total=0;
+         int count=0;
+         HashSet<Integer> set=new HashSet<>();
+         // store banned elements in set for 0(1) lookups
+         for(int num : banned){
+            set.add(num);
+         }
+         // travserse from 1 to n 
+         for(int i=1;i<=n;i++){
+            // if that i is not in set 
+            if(!set.contains(i)){
+                // calculate sum
+                total+=i;
+                // sum should be less than or equal to maxSum , then count it
+                if(total<=maxSum){
+                    count++;
+                }else{
+                    // if total is grater than maxSum then break
+                    break;
+                }
+            }
+         }
+         return count;
+    }
+}
