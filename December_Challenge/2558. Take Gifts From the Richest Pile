@@ -1,0 +1,21 @@
+class Solution {
+    public long pickGifts(int[] gifts, int k) {
+        // create a Priority queue but in reverse order
+        PriorityQueue<Integer> pq=new PriorityQueue<>(Collections.reverseOrder());
+        // put every gift in pq
+        for(int gift:gifts)
+        pq.add(gift);
+
+        for(int i=0;i<k;i++){
+            int operation=(int)Math.floor(Math.sqrt(pq.remove()));
+            // insert it back into pq
+            pq.add(operation);
+        }
+        // now go through pq and calculate sum
+        long sum=0;
+        while(!pq.isEmpty()){
+            sum+=pq.remove();
+        }
+        return sum;
+    }
+}
