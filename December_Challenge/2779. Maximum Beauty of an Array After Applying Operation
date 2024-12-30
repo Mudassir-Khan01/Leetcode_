@@ -1,0 +1,29 @@
+class Solution {
+    public int maximumBeauty(int[] nums, int k) {
+        if(nums.length==1)
+        return 1;
+
+        // find maxm element
+        int max=0;
+        for(int num:nums)
+        max=Math.max(max,num);
+
+        // now create a count array
+        int [] count=new int[max+1];
+        // insert range in count array
+        // increment start but restrict it on 0
+        // decrement end but restrict it on max
+        for(int num:nums){
+            count[Math.max(num-k , 0)]++;
+            count[Math.min(num+k+1 , max)]--;
+        }
+        // find max of prefix sum
+        int curSum=0;
+        int maxSum=0;
+        for(int num:count){
+            curSum+=num;
+            maxSum=Math.max(maxSum, curSum);
+        }
+        return maxSum;
+    }
+}
