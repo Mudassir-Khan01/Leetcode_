@@ -1,0 +1,38 @@
+class Solution {
+    //set to store days
+    HashSet<Integer> set=new HashSet<>();
+    public int mincostTickets(int[] days, int[] costs) {
+       // We will be using DP to counter overlapping subproblem issue
+       int lastDay=days[days.length-1]+30; // +30 coz we will consider 3 cases for last day as well so +30 to consider possible length
+       int [] dp=new int[lastDay+1];
+       Arrays.fill(dp,-1);
+       // put the days in set for O(1) lookups
+
+       for(int day:days){
+        set.add(day);
+       }
+       // call recursion and pass the first day
+       return recur(dp, days, costs, days[0]);
+    }
+    
+    private int recur(int []dp, int [] days, int[] costs, int curDay){
+        // base case- if the currDay is greater then the last day day in days array then we return 0
+        if(curDay> days[days.length-1]){
+            dp[curDay]=0; 
+            return 0;
+        }
+        // base case for dp
+        if(dp[curDay]!=-1)
+        return dp[curDay];
+        // if set doesnt contain currDay then we move curDay ahead by 1
+        if(!set.contains(curDay)){
+            return dp[curDay]=(0+recur(dp, days, costs, curDay+1));
+        }
+        // if set contains curDay then we consider 3 possible outcomes
+        int oneDay=costs[0] + recur(dp,days, costs, curDay+1); // just move one day ahead
+        int sevenDay=costs[1]+recur(dp,days, costs , curDay+7); // move 7 days ahead
+        int thirtyDay=costs[2]+recur(dp, days, costs, curDay+30);
+        // get the min of these costs
+        return dp[curDay]=Math.min(oneDay, Math.min(sevenDay, thirtyDay));
+    }
+}
