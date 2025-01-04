@@ -1,0 +1,37 @@
+class Solution {
+    public int countPalindromicSubsequence(String s) {
+        // find unique chars
+        // hashmap for first and last char and its index
+        HashMap<Character, Integer> firstOcc=new HashMap<>();
+        HashMap<Character, Integer> lastOcc=new HashMap<>();
+        int n=s.length();
+        //traverse and store the char and its index
+        for(int i=0;i<n;i++){
+            char ch=s.charAt(i);
+            if(!firstOcc.containsKey(ch)){
+                // if no first occurence then consider it as first occ
+                firstOcc.put(ch,i);
+            }
+            // in last occ but normally 
+            lastOcc.put(ch,i);
+        }
+        // get the first and last and calculate uniques element btw them by using set
+        int count=0;
+        for(char ch: firstOcc.keySet()){
+            int first= firstOcc.get(ch);
+            int last=lastOcc.get(ch);
+            // cond id first and last are at same index means no char btw them so continue
+            if(first==last)
+            continue;
+
+            // else set unique char btw them 
+            HashSet<Character> set=new HashSet<>();
+            for(int i=first+1;i<last;i++){
+                set.add(s.charAt(i));
+            }
+            // count of set will be the no. of element that are unique
+            count+=set.size();
+        }
+        return count;
+    }
+}
