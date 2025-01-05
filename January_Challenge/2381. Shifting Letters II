@@ -1,0 +1,36 @@
+class Solution {
+    public String shiftingLetters(String s, int[][] shifts) {
+        int n=s.length();
+        // Line Sweep algorithm
+        int []arr= new int[n];
+        // travserse the shifts
+        for(int[] shift:shifts){
+            // forward move
+            if(shift[2]==1){
+                // then increment start position and decrement end+1 position
+                arr[shift[0]]++;
+                if(shift[1]+1< n){
+                    arr[shift[1]+1]--;
+                }
+            }else{
+                // now backward move
+                // decrement start pos , and incre end+1 pos
+                arr[shift[0]]--;
+                if(shift[1]+1<n){
+                    arr[shift[1]+1]++;
+                }
+            }
+        }
+        StringBuilder result=new StringBuilder(s);
+        int sum=0; // to get the sum of elements in arr
+        for(int i=0;i<n;i++){
+            sum=(sum+arr[i])%26;  // calculating current sum so far, means how many shifts to be performed on current char
+            if(sum<0) sum+=26; // to counter -ve number
+            // now at end start shifting
+            char shiftedChar= (char) ('a'+((s.charAt(i)-'a' + sum)%26)); // add a to get char and inside get the char and -a means get the ascii number , % 26 for circular bound
+            // just put it in result
+            result.setCharAt(i, shiftedChar);
+        }
+        return result.toString();
+    }
+}
