@@ -1,0 +1,31 @@
+class Solution {
+    public int[] minOperations(String boxes) {
+        int n = boxes.length();
+        int[] ans = new int[n];
+        // now traverse from left to right
+        // initally move and balls will be 0
+        // no. of balls at prev index will define the move
+        int move = 0, balls = 0;
+        for (int i = 0; i < n; i++) {
+            ans[i] = move + balls;
+            move += balls;
+            // now if theres a ball then increment balls
+            if (boxes.charAt(i) == '1')
+                balls++;
+        }
+
+        // now move from right to left and do the same
+        // again move and balls to 0
+        move = 0;
+        balls = 0;
+        for (int i = n - 1; i >=0; i--) {
+            // this time we add to the prev elements filled from above loop
+            ans[i] += move + balls;
+            move += balls;
+            if (boxes.charAt(i) == '1')
+                balls++;
+        }
+        return ans;
+
+    }
+}
