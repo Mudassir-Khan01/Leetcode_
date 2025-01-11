@@ -1,0 +1,25 @@
+class Solution {
+    public boolean canConstruct(String s, int k) {
+        //edge cases
+        if(s.length()<k)
+        return false;
+        // if len equals k then its true
+        if(s.length()==k)
+        return true;
+        // now get the freq of all character
+        // ones with even freq aint the problem coz they can be used in constructing a pallindrome
+        // but ones with odd freq are the problem coz a pallin can have only one odd freq char at center
+        // so no . of odd freq should less than equal to k
+        int [] freq=new int[26];
+        for(char ch:s.toCharArray()){
+            freq[ch-'a']++;
+        }
+        // now count no . of odd freq
+        int oddCount=0;
+        for(int i=0;i<26;i++){
+            if(freq[i]%2!=0)
+            oddCount++;
+        }
+        return oddCount<=k;
+    }
+}
