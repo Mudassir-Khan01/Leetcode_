@@ -1,0 +1,22 @@
+class Solution {
+    public int minimumLength(String s) {
+        int n=s.length();
+        // the soln is character with odd freq can be reduced to 1
+        // and even to 2
+        int [] freq=new int[26];
+        for(char ch:s.toCharArray()){
+            freq[ch-'a']++;
+        }
+        int count=0;
+        for(int i=0;i<freq.length;i++){
+            if(freq[i]>0){
+                if(freq[i]%2==0){
+                    count+=2;
+                }else{
+                    count+=1;
+                }
+            }
+        }
+        return count;
+    }
+}
