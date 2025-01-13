@@ -1,0 +1,44 @@
+class Solution {
+    public boolean canBeValid(String s, String locked) {
+        int n=s.length();
+        //if odd length string it can never be balanced
+        if(n%2==1)
+        return false;
+        // create 2 stack 
+        //to store indices of open brack
+        // to store indices of unlocked pos
+        Stack<Integer> openBrac= new Stack<>();
+        Stack<Integer> unlocked=new Stack<>();
+        // Iterate to handle ( and )
+        for(int i=0;i<n;i++){
+            if(locked.charAt(i)=='0'){
+                unlocked.push(i);
+            }else if(s.charAt(i)=='('){
+                openBrac.push(i); // just push open brac indices
+            }else if(s.charAt(i)==')'){
+                // if thats a close brac check for open brac and pop it out
+                if(!openBrac.isEmpty()){
+                    openBrac.pop();
+                }else if(!unlocked.isEmpty()){
+                    // incase openBrac is empty then we need to check for unlocked , if its not empty we may consider that
+                    unlocked.pop();
+                }else{
+                    // if both empty 
+                    return false;
+                }
+            }
+        }
+        // Now match remaining open brackets with unlocked characters
+        while(!openBrac.isEmpty() && !unlocked.isEmpty() && openBrac.peek()<unlocked.peek()){ // open brac index is less than unlocked brac index 
+            // just pop it out
+            openBrac.pop();
+            unlocked.pop();
+        }
+        // still openBrac is not empty then return false;
+        if(!openBrac.isEmpty())
+        return false;
+
+        // else
+        return true;
+    }
+}
