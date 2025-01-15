@@ -1,0 +1,25 @@
+class Solution {
+    public int[] findThePrefixCommonArray(int[] A, int[] B) {
+        int n = A.length;
+        int[] prefixCommon = new int[n];
+        int[] freq = new int[n + 1];
+        int count = 0;
+        // iterate throgh the element
+        for (int i = 0; i < n; i++) {
+            // store the freq of both A and B
+            // incase there freq becomes 2 then it is due to common element
+            freq[A[i]]++;
+            if (freq[A[i]] == 2)
+                count++;
+
+            freq[B[i]]++;
+            if (freq[B[i]] == 2)
+                count++;
+
+            // Store the count of common elements for the current prefix
+
+            prefixCommon[i] = count;
+        }
+        return prefixCommon;
+    }
+}
