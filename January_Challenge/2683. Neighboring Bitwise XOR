@@ -1,0 +1,14 @@
+class Solution {
+    public boolean doesValidArrayExist(int[] derived) {
+        // multiple solution if no. of ones are even then its true
+        // if xor of all the num in derived is 0 then true
+        // if sum of all the num is even then true
+    int countone=0;
+    for(int num:derived){
+        if(num==1){
+            countone++;
+        }
+    }
+    return countone%2==0;
+    }
+}
