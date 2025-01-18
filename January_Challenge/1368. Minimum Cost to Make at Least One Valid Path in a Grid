@@ -1,0 +1,54 @@
+class Solution {
+    public int minCost(int[][] grid) {
+        int m = grid.length; // Number of rows in the grid
+        int n = grid[0].length; // Number of columns in the grid
+
+        // Create a 2D array to store the minimum cost to reach each cell
+        int[][] minCost = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            Arrays.fill(minCost[i], Integer.MAX_VALUE); // Initialize all cells with maximum value
+        }
+
+        // Deque to perform a 0-1 BFS
+        Deque<int[]> dque = new ArrayDeque<>();
+        dque.offerFirst(new int[]{0, 0}); // Start from the top-left cell (0,0)
+        minCost[0][0] = 0; // Cost to reach the starting cell is 0
+        
+        // Direction vectors for right, left, down, up
+        int[][] direction = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+        // Process cells in the deque
+        while (!dque.isEmpty()) {
+            // Get the current cell from the front of the deque
+            int[] arr = dque.pollFirst();
+            int r = arr[0]; // Current row
+            int c = arr[1]; // Current column
+
+            // Visit adjacent cells
+            for (int i = 0; i < 4; i++) {
+                int nr = r + direction[i][0]; // Row of the adjacent cell
+                int nc = c + direction[i][1]; // Column of the adjacent cell
+                // Calculate the cost to move to the adjacent cell
+                // If the current direction matches grid[r][c], cost is 0; otherwise, cost is 1
+                int cost = (grid[r][c] != (i + 1)) ? 1 : 0;
+
+                // Check if the adjacent cell is within bounds and the cost is lower than previously recorded
+                if (nr >= 0 && nr < m && nc >= 0 && nc < n && minCost[r][c] + cost < minCost[nr][nc]) {
+                    minCost[nr][nc] = minCost[r][c] + cost; // Update the minimum cost
+
+                    // Add the cell to the deque
+                    // If the cost is 1, add it to the end of the deque (lower priority)
+                    // If the cost is 0, add it to the front of the deque (higher priority)
+                    if (cost == 1) {
+                        dque.offerLast(new int[]{nr, nc});
+                    } else {
+                        dque.offerFirst(new int[]{nr, nc});
+                    }
+                }
+            }
+        }
+
+        // Return the minimum cost to reach the bottom-right cell
+        return minCost[m - 1][n - 1];
+    }
+}
