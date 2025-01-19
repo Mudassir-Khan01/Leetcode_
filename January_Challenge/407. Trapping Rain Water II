@@ -1,0 +1,63 @@
+import java.util.PriorityQueue;
+
+class Solution {
+    public int trapRainWater(int[][] height) {
+        int n = height.length; // Number of rows in the height map
+        int m = height[0].length; // Number of columns in the height map
+
+        // Priority Queue to process cells in increasing order of their height
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        
+        // Visited array to keep track of cells already processed
+        boolean[][] vis = new boolean[n][m];
+
+        // Add boundary cells (first and last columns)
+        for (int i = 0; i < n; i++) {
+            vis[i][0] = true; // Mark the first column as visited
+            vis[i][m - 1] = true; // Mark the last column as visited
+            pq.offer(new int[]{height[i][0], i, 0}); // Add first column cell to the queue
+            pq.offer(new int[]{height[i][m - 1], i, m - 1}); // Add last column cell to the queue
+        }
+
+        // Add boundary cells (first and last rows)
+        for (int i = 0; i < m; i++) {
+            vis[0][i] = true; // Mark the first row as visited
+            vis[n - 1][i] = true; // Mark the last row as visited
+            pq.offer(new int[]{height[0][i], 0, i}); // Add first row cell to the queue
+            pq.offer(new int[]{height[n - 1][i], n - 1, i}); // Add last row cell to the queue
+        }
+
+        int ans = 0; // Initialize the total water trapped to 0
+        // Direction vectors for traversing adjacent cells (up, left, down, right)
+        int[] dr = {-1, 0, 1, 0};
+        int[] dc = {0, -1, 0, 1};
+
+        // Process the priority queue
+        while (!pq.isEmpty()) {
+            int[] curr = pq.poll(); // Get the cell with the lowest height
+            int h = curr[0]; // Current cell height
+            int r = curr[1]; // Current row
+            int c = curr[2]; // Current column
+
+            // Check all 4 adjacent cells
+            for (int i = 0; i < 4; i++) {
+                int nr = r + dr[i]; // Neighboring row
+                int nc = c + dc[i]; // Neighboring column
+
+                // If the neighboring cell is within bounds and not yet visited
+                if (nr >= 0 && nr < n && nc >= 0 && nc < m && !vis[nr][nc]) {
+                    // Calculate trapped water as the difference between the current height and neighbor's height
+                    ans += Math.max(0, h - height[nr][nc]);
+
+                    // Add the neighboring cell to the queue with the max height between the current and neighbor
+                    pq.offer(new int[]{Math.max(h, height[nr][nc]), nr, nc});
+                    
+                    // Mark the neighboring cell as visited
+                    vis[nr][nc] = true;
+                }
+            }
+        }
+
+        return ans; // Return the total water trapped
+    }
+}
