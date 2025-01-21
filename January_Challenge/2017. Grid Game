@@ -1,0 +1,20 @@
+class Solution {
+    public long gridGame(int[][] grid) {
+        int n=grid[0].length;
+        long topSum=0;
+        // get the total sum of the first row
+        for(int i=0;i<n;i++){
+            topSum+=grid[0][i];
+        }
+        // init secondRow with 0 and take value of it one by one and keep on subtracting that valiue from the topSum
+        long bottomSum=0;
+        long ans=Long.MAX_VALUE;
+        for(int i=0;i<n;i++){
+            topSum-=grid[0][i];
+            // get the min among the maximum of top and bottom sum
+            ans=Math.min(ans, Math.max(topSum, bottomSum));
+            bottomSum+=grid[1][i];
+        }
+        return ans;
+    }
+}
