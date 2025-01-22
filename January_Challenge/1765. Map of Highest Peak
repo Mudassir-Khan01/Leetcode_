@@ -1,0 +1,46 @@
+class Solution {
+    public int[][] highestPeak(int[][] isWater) {
+        int n=isWater.length;
+        int m=isWater[0].length;
+        //CREATE A queue to store the [row,col]
+        Queue<int[]> queue=new LinkedList<>();
+        // result matrix to store final height
+        int res[][]=new int[n][m];
+        // now traverse the matrix to make water cell as 0 and remaining as -1 to represent it is not visited
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(isWater[i][j]==1){
+                    res[i][j]=0; // water height
+                    // put it in queue
+                    queue.offer(new int[]{i,j});
+                }else{
+                    // mark remaining as unvisited 
+                    res[i][j]=-1;
+                }
+            }
+        }
+        // 4 directions uo,right,down,left
+        int dir[][]={{-1,0},{0,1},{1,0},{0,-1}};
+        // now perform bfs
+        while(!queue.isEmpty()){
+            //pop the current level cell
+            int cell[]=queue.poll();
+            //get its row, col and height
+            int row=cell[0];
+            int col=cell[1];
+            int h=res[row][col];
+            // now traverse 4 direction and increment its neighbour by height one if not visited
+            for(int i=0;i<4;i++){
+                int newRow=row+dir[i][0];
+                int newCol=col+dir[i][1];
+                // check some out of bound conditions and not visited condition
+                if(newRow>=0 && newRow<n && newCol>=0 && newCol<m && res[newRow][newCol]==-1){
+                    res[newRow][newCol]=h+1; // increment by one
+                    // put it in queue
+                    queue.offer(new int[]{newRow, newCol});
+                }
+            }
+        }
+        return res;
+    }
+}
