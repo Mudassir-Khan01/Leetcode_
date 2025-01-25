@@ -1,0 +1,37 @@
+class Solution {
+    public List<Integer> eventualSafeNodes(int[][] graph) {
+        // 2 methods
+        // create a hashmap to store node and boolean whether it is safe or not
+        HashMap<Integer, Boolean> map=new HashMap<>();
+        int n=graph.length;
+        List<Integer> ans=new ArrayList<>();
+        // traverse each node 
+        for(int i=0;i<n;i++){
+            // dfs return true add that node in list
+            if(dfs(i,graph,map)){
+                ans.add(i);
+            }
+        }
+        return ans;
+    }
+
+    // dfs call
+    private boolean dfs(int node,int[][] graph,HashMap<Integer, Boolean> map){
+    // already there then return whether it is safe or not
+    if(map.containsKey(node)){
+        return map.get(node);
+    }
+    // initally make that node as unsafe
+    map.put(node, false);
+    // travel its neighbour
+    for(int neigh:graph[node]){
+        // if dfs fails
+        if(!dfs(neigh,graph,map)){
+            return false;
+        }
+    }
+    // if all good the make that node as safe
+    map.put(node,true);
+    return true;
+    }
+}
