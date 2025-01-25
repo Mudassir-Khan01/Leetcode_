@@ -1,0 +1,40 @@
+class Solution {
+    public int[] lexicographicallySmallestArray(int[] nums, int limit) {
+        int n=nums.length;
+        // create a temp array and sort it
+        int [] temp=new int[n];
+        for(int i=0;i<n;i++){
+            temp[i]=nums[i];
+        }
+        Arrays.sort(temp);
+        // create a list of deque to make groupings
+        ArrayList<Deque<Integer>> list=new ArrayList<>();
+        // and a hashmap to store element and to which group it belongs to
+        HashMap<Integer, Integer> group=new HashMap<>();
+        // insert the first element in map and list
+        int groupIndex=0;
+        list.add(new LinkedList<>());
+        list.get(groupIndex).offer(temp[0]);
+        group.put(temp[0],groupIndex);
+        // now traverse array and do this for remaining
+        for(int i=1;i<n;i++){
+            //compare the current and last element in list if its >limit then create a new group
+            if(temp[i]-list.get(groupIndex).peekLast() > limit){
+                groupIndex++;
+                list.add(new LinkedList<>());
+            }
+            
+            list.get(groupIndex).offer(temp[i]);
+            group.put(temp[i], groupIndex);
+            
+        }
+        // now traverse the original array and get the smallest of a particular grp
+        // and replace it at that position
+        for(int i=0;i<n;i++){
+            // get the group index from map
+            int gi=group.get(nums[i]);
+            nums[i]=list.get(gi).poll();
+        }
+        return nums;
+    }
+}
