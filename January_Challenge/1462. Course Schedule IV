@@ -1,0 +1,31 @@
+class Solution {
+    public List<Boolean> checkIfPrerequisite(int numCourses, int[][] prerequisites, int[][] queries) {
+        // create a 2d matrix to note which is reachable
+        boolean isReachable[][]=new boolean[numCourses][numCourses];
+        // for direct connection
+        for(int pre[]:prerequisites){
+            isReachable[pre[0]][pre[1]]=true;
+        }
+        //for indirect connections
+        for(int k=0;k<numCourses;k++){// intermediate
+            for(int i=0;i<numCourses;i++){// source
+                for(int j=0;j<numCourses;j++){// destination
+                    if(isReachable[i][k] && isReachable[k][j]){ // if indirect relation 
+                        isReachable[i][j]=true;
+                    }
+                }
+            }
+        }
+        // go through each and check whether it is reachable or not
+        List<Boolean> ans=new ArrayList<>();
+        for(int query[]:  queries){
+            if(isReachable[query[0]][query[1]]){
+                ans.add(true);
+            }else{
+
+                ans.add(false);
+            }
+        }
+        return ans;
+    }
+}
