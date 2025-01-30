@@ -1,0 +1,76 @@
+import java.util.*;
+
+class Solution {
+    private int[] color; // Tracks bipartition colors (0/1)
+    private List<List<Integer>> adj; // Adjacency list representation of the graph
+    private int n; // Number of nodes in the graph
+
+    // DFS to check if the graph is bipartite and collect component nodes
+    private boolean isBipartite(int node, int c, List<Integer> component) {
+        color[node] = c; // Assign color to the node
+        component.add(node); // Add node to the component list
+        for (int nbr : adj.get(node)) {
+            if (color[nbr] == c) return false; // Odd cycle detected, not bipartite
+            if (color[nbr] == -1 && !isBipartite(nbr, 1 - c, component)) 
+                return false; // Recursively check neighbors
+        }
+        return true;
+    }
+
+    // BFS to compute max depth (groups) for a given component
+    private int maxGroupsInComponent(List<Integer> component) {
+        int maxDepth = 0; // Tracks the maximum depth found
+        for (int start : component) { // Try BFS from each node in the component
+            int[] depth = new int[n]; // Array to store depth values
+            Arrays.fill(depth, -1); // Initialize with -1 (unvisited)
+            Queue<Integer> q = new LinkedList<>();
+            q.add(start);
+            depth[start] = 0;
+            while (!q.isEmpty()) {
+                int node = q.poll();
+                for (int nbr : adj.get(node)) {
+                    if (depth[nbr] == -1) { // If not visited
+                        depth[nbr] = depth[node] + 1;
+                        maxDepth = Math.max(maxDepth, depth[nbr]); // Track max depth
+                        q.add(nbr);
+                    }
+                }
+            }
+        }
+        return maxDepth + 1; // Convert depth to groups count
+    }
+
+    public int magnificentSets(int n, int[][] edges) {
+        this.n = n;
+        color = new int[n]; // Initialize color array for bipartiteness check
+        Arrays.fill(color, -1); // Fill with -1 indicating unvisited nodes
+        adj = new ArrayList<>(); // Initialize adjacency list
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        // Build adjacency list from given edges
+        for (int[] edge : edges) {
+            int u = edge[0] - 1, v = edge[1] - 1; // Convert 1-based to 0-based indexing
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+
+        List<List<Integer>> components = new ArrayList<>(); // List to store connected components
+        for (int i = 0; i < n; i++) {
+            if (color[i] == -1) { // If node is unvisited
+                List<Integer> component = new ArrayList<>(); // Store nodes in this component
+                if (!isBipartite(i, 0, component)) 
+                    return -1; // Return -1 if the graph contains an odd cycle (not bipartite)
+                components.add(component); // Add component to the list
+            }
+        }
+
+        int total = 0; // Total number of groups possible
+        for (List<Integer> comp : components) {
+            total += maxGroupsInComponent(comp); // Compute groups for each component
+        }
+
+        return total; // Return total number of groups
+    }
+}
