@@ -1,0 +1,48 @@
+public class Solution {
+    // Function to find the ultimate parent (with path compression)
+    public int findUPar(int node, int[] parent) {
+        if (node == parent[node])
+            return node; // If the node is its own parent, return it
+        int ulp = findUPar(parent[node], parent);
+        parent[node] = ulp; // Path compression
+        return ulp;
+    }
+
+    // Function to perform union by size
+    public void unionBySize(int u, int v, int[] parent, int[] size) {
+        int ulp_u = findUPar(u, parent); // Find ultimate parent of u
+        int ulp_v = findUPar(v, parent); // Find ultimate parent of v
+        if (ulp_u == ulp_v)
+            return; // If both have the same parent, they are already connected
+
+        // Merge smaller set into the larger set
+        if (size[ulp_u] < size[ulp_v]) {
+            parent[ulp_u] = ulp_v; // Make ulp_v the parent of ulp_u
+            size[ulp_v] += size[ulp_u]; // Update size of the new parent
+        } else {
+            parent[ulp_v] = ulp_u; // Make ulp_u the parent of ulp_v
+            size[ulp_u] += size[ulp_v]; // Update size of the new parent
+        }
+    }
+
+    public int[] findRedundantConnection(int[][] edges) {
+        int n = edges.length;
+        int[] parent = new int[n + 1]; // Parent array for DSU
+        int[] size = new int[n + 1]; // Size array for union by size
+        Arrays.fill(size, 1); // Initially, each component has size 1
+        for (int i = 1; i <= n; i++)
+            parent[i] = i; // Each node is its own parent initially
+
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+
+            // If both nodes already share the same ultimate parent, it forms a cycle
+            if (findUPar(u, parent) == findUPar(v, parent)) {
+                return edge; // Return the edge causing the cycle
+            }
+            unionBySize(u, v, parent, size); // Otherwise, unite the two components
+        }
+        return new int[0]; // Should not be reached (problem guarantees a cycle exists)
+    }
+}
