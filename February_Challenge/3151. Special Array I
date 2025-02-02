@@ -1,0 +1,19 @@
+class Solution {
+    public boolean isArraySpecial(int[] nums) {
+        int n=nums.length;
+        if(n==1)
+        return true;
+        // 2 Pointer 
+        int i=0, j=1;
+        while(i<n-1 && j<n){
+            // check for false cases if same parity return false
+            if(((nums[i]%2==0)&&(nums[j]%2==0)) || ((nums[i]%2!=0)&&nums[j]%2!=0)){
+                return false;
+            }
+            // move ahead
+            i++;
+            j++;
+        }
+        return true;
+    }
+}
