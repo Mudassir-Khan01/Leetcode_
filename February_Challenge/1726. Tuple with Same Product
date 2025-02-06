@@ -1,0 +1,18 @@
+class Solution {
+    public int tupleSameProduct(int[] nums) {
+        // Create a map to store all possible multiplied value ans its count
+        Map<Integer, Integer> map = new HashMap<>();
+        int ans = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                // first we will try to get the ans if that multiplied value is there in map
+                // then 8 possible outcomes there else 0
+                ans += 8 * map.getOrDefault(nums[i] * nums[j], 0);
+                // put it in map or increase count if already there
+                map.put(nums[i] * nums[j], map.getOrDefault(nums[i] * nums[j], 0) + 1);
+            }
+
+        }
+        return ans;
+    }
+}
