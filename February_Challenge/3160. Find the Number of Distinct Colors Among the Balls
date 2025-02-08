@@ -1,0 +1,31 @@
+class Solution {
+    public int[] queryResults(int limit, int[][] queries) {
+        // ball Map to store ball and its color
+        HashMap<Integer,Integer> ballMap=new HashMap<>();
+        // colorMap tostore color and its freqency
+        HashMap<Integer,Integer> colorMap=new HashMap<>();
+        int n=queries.length;
+        int res[]=new int[n];
+        int i=0;
+        for(int [] query:queries){
+            int ball=query[0];
+            int color=query[1];
+            //if ball already present in ballMap then get that old color , decrement in colorMap and if its gets 0 remove it from map
+            if(ballMap.containsKey(ball)){
+                int oldColor=ballMap.get(ball);
+                colorMap.put(oldColor,colorMap.get(oldColor)-1);
+                if(colorMap.get(oldColor)==0){
+                    colorMap.remove(oldColor);
+                }
+            }
+            // in not present then put it in ball map and in colorMap 
+            ballMap.put(ball, color);
+            colorMap.put(color, colorMap.getOrDefault(color,0)+1);
+
+            // result will be the size of colorMap
+            res[i]=colorMap.size();
+            i++;
+        }
+        return res;
+    }
+}
