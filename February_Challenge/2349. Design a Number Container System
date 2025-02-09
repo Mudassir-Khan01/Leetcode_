@@ -1,0 +1,43 @@
+class NumberContainers {
+    // map to store number and different indexes it is at
+    public Map<Integer,TreeSet<Integer>> numToInd;
+    // map to store index and its number
+    public Map<Integer,Integer> indToNum;
+    public NumberContainers() {
+        numToInd=new HashMap<>();
+        indToNum=new HashMap<>();
+    }
+    
+    public void change(int index, int number) {
+        // if already that index is there , remove it from the old number's index set coz now index has a different number
+        // if that num to index set gets empty remove it 
+        if(indToNum.containsKey(index)){
+            int oldNum=indToNum.get(index);
+            numToInd.get(oldNum).remove(index);
+            if(numToInd.get(oldNum).isEmpty()){
+                numToInd.remove(oldNum);
+            }
+        }
+        // else just put it in maps
+        indToNum.put(index,number);
+        // if number not there in num Map the create a new tree set
+        numToInd.putIfAbsent(number, new TreeSet<>());
+        // and add the number and its associated index
+        numToInd.get(number).add(index);
+    }
+    
+    public int find(int number) {
+        // if num Map contains the number get it first element coz it will be the smallest
+        if(numToInd.containsKey(number)){
+            return numToInd.get(number).first();
+        }
+        return -1;
+    }
+}
+
+/**
+ * Your NumberContainers object will be instantiated and called as such:
+ * NumberContainers obj = new NumberContainers();
+ * obj.change(index,number);
+ * int param_2 = obj.find(number);
+ */
