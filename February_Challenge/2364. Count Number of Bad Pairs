@@ -1,0 +1,20 @@
+class Solution {
+    public long countBadPairs(int[] nums) {
+        long n=nums.length;
+        long goodPairs=0;
+        long totalPairs=n*(n-1)/2;
+        // create a hashmap to store value and its count
+        HashMap<Integer,Integer> map=new HashMap<>();
+        for(int i=0;i<n;i++){
+            // value=position-element
+            int value=i-nums[i];
+            // see if there's any prev count in map of that value if there add it in good pairs
+            int prevCount=map.getOrDefault(value,0);
+            goodPairs+=prevCount;
+            // now just put it in map and increase the freq
+            map.put(value, map.getOrDefault(value,0)+1);
+        }
+        // bad pairs
+        return totalPairs-goodPairs;
+    }
+}
