@@ -1,0 +1,26 @@
+class Solution {
+    public String clearDigits(String s) {
+        // create a stack to store character
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            // get the character
+            char ch = s.charAt(i);
+            // if thats letter put it in stack
+            if (Character.isLetter(ch)) {
+                stack.push(ch);
+            } else {
+                // if not character then check if top element of stack is character and pop it
+                if (!stack.isEmpty() && Character.isLetter(stack.peek())) {
+                    stack.pop();
+                }
+            }
+        }
+        // string builder to store the chacracter left in the stack
+        StringBuilder result = new StringBuilder();
+        while (!stack.isEmpty()) {
+            result.append(stack.pop());
+        }
+        // reverse it to get the correct answer
+        return result.reverse().toString();
+    }
+}
