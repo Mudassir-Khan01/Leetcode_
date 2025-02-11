@@ -1,0 +1,52 @@
+class Solution {
+    public String removeOccurrences(String s, String part) {
+        // 2nd approach
+        StringBuilder sb=new StringBuilder();
+        int partLen=part.length();
+        // now traverse each character
+        for(char ch:s.toCharArray()){
+            sb.append(ch);
+            // sb length is greater than part length 
+            // then fetch the last string of length partLen from from if that equals part then remove it from sb
+            if(sb.length()>=partLen && sb.substring(sb.length()-partLen).equals(part)){
+                // removed that part
+                sb.setLength(sb.length()-partLen);
+            }
+        }
+        return sb.toString();
+    }
+}
+
+```
+class Solution {
+    public String removeOccurrences(String s, String part) {
+        // create a stack to store character 
+        Stack<Character> stack=new Stack<>();
+        int partLen=part.length();
+        for(char ch:s.toCharArray()){
+            // push char
+            stack.push(ch);
+            // if size of stack more than part size then we try to fetch character upto length of part
+            if(stack.size()>=partLen){
+                StringBuilder temp=new StringBuilder();
+                for(int i=0;i<partLen;i++){
+                    // this will one by one get the character from top and append it in temp so we need to reverse it
+                    temp.append(stack.get(stack.size()-1-i));
+                }
+                // if that reversed temp equals part then remove those char from stack
+                if(temp.reverse().toString().equals(part)){
+                    for(int i=0;i<partLen;i++){
+                        stack.pop();
+                    }
+                }
+            }
+        }
+        
+        StringBuilder sb=new StringBuilder();
+        for(char ch:stack){
+            sb.append(ch);
+        }
+        return sb.toString();
+    }
+}
+```
