@@ -1,0 +1,31 @@
+class Solution {
+    public int maximumSum(int[] nums) {
+        // create Map to store digitSUm and that number
+        HashMap<Integer,Integer> map=new HashMap<>();
+        int max=-1;
+        for(int i=0;i<nums.length;i++){
+            // get the current digit sum
+            int digitSum=getDigitSum(nums[i]);
+            // check if that digitSum is in map if yes then then get the prevNumber and get the max of current and prevNumber and put it in map
+            if(map.containsKey(digitSum)){
+                // get the prevNum
+                int prevNum=map.get(digitSum);
+                max=Math.max(max, prevNum+nums[i]);
+                map.put(digitSum, Math.max(prevNum, nums[i]));
+            }else{
+                map.put(digitSum,nums[i]);
+            }
+        }
+        return max;
+    }
+    // fn to get the sum of digits of a number
+    private int getDigitSum(int n){
+        int sum=0, rem=0;
+        while(n>0){
+            rem=n%10;
+            sum+=rem;
+            n=n/10;
+        }
+        return sum;
+    }
+}
