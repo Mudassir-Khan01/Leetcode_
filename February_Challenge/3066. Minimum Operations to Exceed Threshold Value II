@@ -1,0 +1,23 @@
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        PriorityQueue<Long> pq=new PriorityQueue<>();
+        int count=0;
+        // offer the elements in Priority queue to get it sorted 
+        for(int i:nums){
+            pq.offer((long)i);
+        }
+        // while the first element in pq is smaller than k , perform the operation
+        while(pq.peek()<k && pq.size()>=2){
+            // x has the smallest value
+            long x=pq.poll();
+            // y second smallest value
+            long y=pq.poll();
+            // operation
+            long z=x* 2+y;
+            // offer it in pq
+            pq.offer(z);
+            count++;
+        }
+        return count;
+    }
+} 
