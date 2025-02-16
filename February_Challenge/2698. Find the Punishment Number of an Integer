@@ -1,0 +1,30 @@
+class Solution {
+    public int punishmentNumber(int n) {
+        int ans=0;
+        // go through all possible value
+        for(int i=1;i<=n;i++){
+            int square=i*i;
+            if(canPartition(square , i)){
+                ans+=square;
+            }
+        }
+        return ans;
+    }
+
+    private boolean canPartition(int num , int target){
+        // base cases
+        if(target<0 || num<target){
+            return false;
+        }
+        // if equal then only return true
+        if(num==target){
+            return true;
+        }
+        // (shorten the num , subtract remmainder from num in target) 
+        // coz as we fetch the first number , we dont need the other number so we remove it from target
+         return (canPartition(num/10, target-(num%10)) || 
+                 canPartition(num/100, target-(num%100))||
+                 canPartition(num/1000, target-(num%1000))
+         );
+    }
+}
