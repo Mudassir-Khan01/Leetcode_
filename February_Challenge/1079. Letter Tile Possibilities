@@ -1,0 +1,35 @@
+class Solution {
+    public int numTilePossibilities(String tiles) {
+        // Backtracking
+        // boolean to mark whether it is used to or not
+        int n=tiles.length();
+        boolean [] isUsed=new boolean[n+1];
+        // Set to store the possible string formed
+        HashSet<String> set=new HashSet<>();
+        solve("", tiles, isUsed, set);
+
+        return set.size()-1; // -1 as we dont need to take "" string
+    }
+
+    private void solve(String s, String tiles, boolean []isUsed, HashSet<String>set){
+        // base condition if string already present then return
+        if(set.contains(s)){
+            return;
+        }
+
+        // if not then add it
+        set.add(s);
+        // now go through possible cases
+        for(int i=0;i<tiles.length();i++){
+            // if string already used then continue
+            if(isUsed[i]){
+                continue;
+            }
+            // else mark it true and move to next
+            isUsed[i]=true;
+            solve(s+tiles.charAt(i), tiles, isUsed, set);
+            // now backtrack
+            isUsed[i]=false;
+        }
+    }
+}
