@@ -1,0 +1,23 @@
+class Solution {
+    public String smallestNumber(String pattern) {
+        // Solve it using stack 
+        Stack<Integer> stack=new Stack<>();
+        // String builder to store final answer
+        StringBuilder result=new StringBuilder();
+        int num=1;// 1 to 9
+        // traverse from 0 to <= length coz we need an extra num
+        for(int i =0; i<=pattern.length();i++){
+            // push in stack
+            stack.push(num);
+            num++;
+
+            // pop every element in stack if it reaches end or if we enconter I and store it in result
+            if(i==pattern.length() || pattern.charAt(i)=='I'){
+                while(!stack.isEmpty()){
+                    result.append(stack.pop());
+                }
+            }
+        }
+        return result.toString();
+    }
+}
