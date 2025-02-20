@@ -1,0 +1,39 @@
+class Solution {
+    public String findDifferentBinaryString(String[] nums) {
+        // get the length of the string
+        int n = nums.length;
+        // possible numbers that can be represented of length n such as for n=2, upto 4
+        // numbers
+        double possible = Math.pow(2, n);
+        // set to store each possibilty
+        HashSet<String> set = new HashSet<>();
+        String ans = "";
+        // store given binary string in set
+        for (String i : nums) {
+            set.add(i);
+        }
+        // run till possible numbers
+        for (int i = 0; i < possible; i++) {
+            // String binary = String.format("%" + n + "s",
+            // Integer.toBinaryString(i)).replace(' ', '0'); // Pad with leading zeros
+            // get binary of each number
+            String binary = getBinary(n, i);
+            // if it doesnt contain that binary return it
+            if (!set.contains(binary)) {
+                return binary;
+            }
+        }
+        // otherwise returnempty string
+        return "";
+    }
+
+    // to get binary
+    private String getBinary(int n, int num) {
+        StringBuilder sb = new StringBuilder();
+        // this will shift each number right and will fetch the correct binary digit
+        for (int i = n - 1; i >= 0; i--) {
+            sb.append((num >> i) & 1);
+        }
+        return sb.toString();
+    }
+}
