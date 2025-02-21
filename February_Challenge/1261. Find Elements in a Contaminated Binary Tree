@@ -1,0 +1,51 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class FindElements {
+// Uisng Dfs  (Notes-bfs)
+// create a set to store the node value
+HashSet<Integer> set;
+    public FindElements(TreeNode root) {
+        set=new HashSet<>();
+        // call dfs thats starts the root with value 0
+        dfs(root, 0);
+    }
+    
+    public boolean find(int target) {
+        // return true if target is in set
+        return set.contains(target);
+    }
+
+    //DFS
+    private void dfs(TreeNode node, int value){
+        // base 
+        if(node==null){
+            return;
+        }
+        // no need of this but we are recovering the tree
+        node.val=value;
+        // put value in set
+        set.add(value);
+        // traverse left and right child with given cond
+        dfs(node.left, value*2+1);
+        dfs(node.right, value*2+2);
+    }
+}
+
+/**
+ * Your FindElements object will be instantiated and called as such:
+ * FindElements obj = new FindElements(root);
+ * boolean param_1 = obj.find(target);
+ */
