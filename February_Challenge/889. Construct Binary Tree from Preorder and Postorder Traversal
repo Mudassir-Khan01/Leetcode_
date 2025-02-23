@@ -1,0 +1,48 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        int n=preorder.length;
+        // (preStart, preEnd, postStart)
+        // we start from 0 to n-1 
+        return recur(0, n-1, 0, preorder, postorder);
+    }
+    private TreeNode recur(int preStart, int preEnd, int postStart, int[]preorder, int [] postorder){
+        // base condition if preStart exceeds preEnd
+        if(preStart>preEnd){
+            return null;
+        }
+        // in case of just one element just return that node
+        if(preStart==preEnd){
+            return new TreeNode(preorder[preStart]);
+        }
+        // get the left subtree root which is at preorder[1];
+        int leftRoot=preorder[preStart+1];
+        // now we calculate, no.of nodes in left subtree we can get that from postorder array
+        int numOfNodesLeft=1;
+        while(postorder[postStart+numOfNodesLeft-1]!=leftRoot){
+           numOfNodesLeft++; 
+        }
+        // now create a TreeNode to store the value of Pre[preStart]
+        TreeNode node=new TreeNode(preorder[preStart]);
+        // now recurcively go through left 
+        // here, preStart will move one step ahead - preEnd will be preStart+nodesinLeft
+        node.left=recur(preStart+1, preStart+numOfNodesLeft, postStart, preorder, postorder);
+        // in right : we start from preStart+numOfNodesLeft+1 till preEnd
+        node.right=recur(preStart+numOfNodesLeft+1, preEnd, postStart+numOfNodesLeft, preorder, postorder);
+        return node;
+    }
+}
