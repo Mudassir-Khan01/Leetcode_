@@ -1,0 +1,27 @@
+class Solution {
+    public int numOfSubarrays(int[] arr) {
+        // init
+        int oddCount=0;
+        int evenCount=1; // as initally 0 is even
+        int result=0;
+        int prefixSum=0;
+        int mod=1000000007;
+        // start traversing 
+        for(int ar:arr){
+            // get the prefix sum
+            prefixSum+=ar;
+            // if preSum is odd , then it needs to be pared with  each even number
+            if(prefixSum%2 != 0){
+                result+=evenCount;
+                // also increasr count of odd as prefixsum is odd
+                oddCount++;
+            }else{
+                // viceversa
+                result+=oddCount;
+                evenCount++;
+            }
+            result=result%mod;
+        }
+        return result;
+    }
+}
