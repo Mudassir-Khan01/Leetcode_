@@ -1,0 +1,20 @@
+class Solution {
+    public int maxAbsoluteSum(int[] nums) {
+        // using kadane's algorithm
+        int max=0, min=0;
+        int maxx=Integer.MIN_VALUE;
+        int minn=Integer.MAX_VALUE;
+        // now get the max subarray
+        for(int num:nums){
+            max=Math.max(num, max+num);
+            maxx=Math.max(maxx, max);
+        }
+        //now get the min subarray
+        for(int num:nums){
+            min=Math.min(num, min+num);
+            minn=Math.min(minn, min);
+        }
+        // now  the ans will be maximum of either maxx subarray or abs(min subarray)
+        return Math.max(maxx, Math.abs(minn));
+    }
+}
