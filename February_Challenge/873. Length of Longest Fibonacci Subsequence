@@ -1,0 +1,31 @@
+class Solution {
+    public int lenLongestFibSubseq(int[] arr) {
+        // put all the elements of arr in set for 0(1) lookup
+        Set<Integer> set = new HashSet<>();
+        for (int ar : arr) {
+            set.add(ar);
+        }
+        int n = arr.length;
+        // now try all possible first 2 numbers of sequence
+        int maxLen = 0;
+        for (int start = 0; start < n; start++) {
+            for (int next = start + 1; next < n; next++) {
+                // get the current ie sum of last 2 elements
+                int curr = arr[start] + arr[next];
+                // store the prev element
+                int prev = arr[next];
+                // len current is 2
+                int len = 2;
+                // now possible next fibonnaci series we can get
+                while (set.contains(curr)) {
+                    int temp = curr; // store the curr value to be used as prev
+                    curr = curr + prev; // get the next possible sum
+                    prev = temp;
+                    len++; // increase count
+                    maxLen = Math.max(maxLen, len); // get max of all possibility
+                }
+            }
+        }
+        return maxLen;
+    }
+}
