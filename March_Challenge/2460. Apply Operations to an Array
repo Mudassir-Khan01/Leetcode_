@@ -1,0 +1,26 @@
+class Solution {
+    public int[] applyOperations(int[] nums) {
+        // operation perfomed
+        for(int i=1;i<nums.length;i++){
+            if(nums[i-1]==nums[i]){
+                nums[i-1]=2*nums[i-1];
+                nums[i]=0;
+            }
+        }
+        // now we need to move zeroes to the right
+        int index=0; // index for nonzero pos
+        int zeroIndex=0;// index for zero pos
+        for(int i=0;i<nums.length;i++){
+            // if we get non zero pos , swap it with 0th pos
+            if(nums[i]!=0){
+                int temp=nums[index];
+                nums[index]=nums[zeroIndex];
+                nums[zeroIndex]=temp;
+                zeroIndex++;
+            }
+            // otherwise just move forward to reach at non zero index
+            index++;
+        }
+        return nums;
+    }
+}
