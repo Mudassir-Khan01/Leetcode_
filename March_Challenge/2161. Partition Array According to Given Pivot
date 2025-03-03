@@ -1,0 +1,37 @@
+class Solution {
+    public int[] pivotArray(int[] nums, int pivot) {
+        // use 3 different list to store number less than pivot in left
+        // no. equal to pivot in same
+        // no. greater than pivot in right
+        List<Integer> left=new ArrayList<>();
+        List<Integer> right=new ArrayList<>();
+        List<Integer> same=new ArrayList<>();
+        for(int num:nums){
+            if(num<pivot){
+                left.add(num);
+            }else if(num>pivot){
+                right.add(num);
+            }else{
+                same.add(num);
+            }
+        }
+        // then we merge all three ans stor it in result
+        int [] result=new int[nums.length];
+        int i=0;
+        while(i<left.size()){
+            result[i]=left.get(i);
+            i++;
+        }
+        int j=0;
+        while(j<same.size()){
+            result[j+i]=same.get(j);
+            j++;
+        }
+        int k=0;
+        while(k<right.size()){
+            result[k+j+i]=right.get(k);
+            k++;
+        }
+        return result;
+    }
+}
