@@ -1,0 +1,21 @@
+class Solution {
+    public boolean checkPowersOfThree(int n) {
+        HashSet<Integer> set = new HashSet<>();
+        int sum=0;
+        int temp=n;
+        while (n > 0) {
+            // get log of n to get highest power of 3
+            int logValue = (int)(Math.log(n) / Math.log(3) + 1e-9); 
+            // get the power of 3
+            int poww = (int)Math.pow(3, logValue);
+            
+            if (set.contains(logValue)) {
+                return false; // Duplicate power used
+            }
+            set.add(logValue);
+            sum+=poww;
+            n -= poww;
+        }
+        return sum==temp;
+    }
+}
