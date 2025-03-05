@@ -1,0 +1,19 @@
+class Solution {
+    public long coloredCells(int n) {
+        // create a dp to store the value, for optimiation
+        long dp[]=new long[n+1];
+        return helper(n, dp);
+    }
+    // this is the recursive fn
+    private long helper(int n , long [] dp ){
+        // base conds
+        if(n==1)
+        return 1;
+
+        if(dp[n]!=0)
+        return dp[n];
+
+        // prev(n-1) + 4*(n-1); // diiference of current increase by multiple of 4
+        return dp[n]=helper(n-1, dp) + 4*(n-1);
+    }
+}
