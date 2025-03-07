@@ -1,0 +1,24 @@
+class Solution {
+    public int[] findMissingAndRepeatedValues(int[][] grid) {
+        // HashMap to store the number and its frequency
+        HashMap<Integer, Integer> map=new HashMap<>();
+        int n=grid.length;
+        // store element of 2d array in map with freq
+        for(int row[]: grid){
+            for(int num:row){
+                map.put(num,map.getOrDefault(num,0)+1);
+            }
+        }
+        // now traverse from 1 to n^2 given in ques
+        // and find the repeated ans missing number
+        int missing=-1, repeat=-1;
+        for(int i=1;i<=n*n;i++){
+            if(map.containsKey(i) && map.get(i)==2){
+                repeat=i;
+            }else if(!map.containsKey(i)){
+                missing=i;
+            }
+        }
+        return new int[]{repeat,missing};
+    }
+}
