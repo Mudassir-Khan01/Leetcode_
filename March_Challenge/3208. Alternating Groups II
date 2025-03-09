@@ -1,0 +1,20 @@
+class Solution {
+    public int numberOfAlternatingGroups(int[] colors, int k) {
+        int count=0;
+        int left=0;
+        int n=colors.length;
+        // iterate over the circular array using the right pointer
+        for(int right=0;right<n+k-1;right++){
+            // if current color doesnt alternate with the prev one or if consecutive are same color
+            if(right>0 && colors[right%n]==colors[(right-1)%n]){
+                //reset left
+                left=right;
+            }
+            // if window size reaches k , increase count
+            if(right-left+1>=k){
+                count++;
+            }
+        }
+        return count;
+    }
+}
