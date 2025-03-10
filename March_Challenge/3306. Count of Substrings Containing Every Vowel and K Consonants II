@@ -1,0 +1,54 @@
+class Solution {
+    public long countOfSubstrings(String word, int k) {
+        // The result is the count of substrings with at least 'k' consonants
+        // minus the count of substrings with at least 'k+1' consonants.
+        return atleast(k, word) - atleast(k + 1, word);
+    }
+
+    // Helper function to check if a character is a consonant
+    private boolean isConsonant(char ch) {
+        return (ch != 'a' && ch != 'e' && ch != 'i' && ch != 'o' && ch != 'u');
+    }
+
+    // Helper function to check if all vowels (a, e, i, o, u) are present in the frequency array
+    private boolean isAllVowelsPresent(int freq[]) {
+        return (freq['a' - 'a'] > 0 && freq['e' - 'a'] > 0 && freq['i' - 'a'] > 0
+                && freq['o' - 'a'] > 0 && freq['u' - 'a'] > 0);
+    }
+
+    // Function to count substrings with at least 'k' consonants and all vowels present
+    private long atleast(int k, String words) {
+        long count = 0; // Store the number of valid substrings
+        int curConsonant = 0; // Track the number of consonants in the current window
+        int freq[] = new int[26]; // Frequency array to track character occurrences
+        int n = words.length();
+        int left = 0; // Left pointer for the sliding window
+
+        // Iterate over the string using the right pointer
+        for (int right = 0; right < n; right++) {
+            char ch = words.charAt(right);
+            
+            // If the character is a consonant, increase the consonant count
+            if (isConsonant(ch)) {
+                curConsonant++;
+            }
+
+            // Update the frequency of the character
+            freq[ch - 'a']++;
+
+            // Try to shrink the window from the left while the conditions hold
+            while (curConsonant >= k && isAllVowelsPresent(freq)) {
+                count += (n - right); // Add the count of substrings ending at 'right'
+
+                // Move the left pointer forward and update frequency/consonant count
+                char c = words.charAt(left);
+                if (isConsonant(c)) {
+                    curConsonant--;
+                }
+                freq[c - 'a']--;
+                left++;
+            }
+        }
+        return count;
+    }
+}
