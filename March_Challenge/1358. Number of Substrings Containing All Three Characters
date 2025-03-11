@@ -1,0 +1,32 @@
+class Solution {
+    public int numberOfSubstrings(String s) {
+        int left=0, right=0;
+        // freq array to store freq of 3 character abc
+        int freq[]=new int[3];
+        int len=s.length();
+        int total=0;
+        // start traversal 
+        while(right<len){
+            char curr=s.charAt(right);
+            // put it in freq
+            freq[curr-'a']++;
+            // while we have all the required chracters
+            while(hasAll(freq)){
+                //get the length so far and add it in total
+                // all substring from current window to end are valid
+                total+=len-right;
+
+                // remove the leftmost char and move left pointer
+                char leftchar=s.charAt(left);
+                freq[leftchar-'a']--;
+                left++;
+            }
+            right++;
+        }
+        return total;
+    }
+
+    private boolean hasAll(int [] freq){
+        return (freq[0]>0 && freq[1]>0 && freq[2]>0);
+    }
+}
