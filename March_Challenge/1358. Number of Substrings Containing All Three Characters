@@ -1,5 +1,5 @@
 class Solution {
-    public int numberOfSubstrings(String s) {
+public int numberOfSubstrings(String s) {
         int left=0, right=0;
         // freq array to store freq of 3 character abc
         int freq[]=new int[3];
