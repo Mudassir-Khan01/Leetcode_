@@ -1,0 +1,22 @@
+class Solution {
+    public int minOperations(int[] nums) {
+        int n=nums.length;
+        int count=0;
+        // if at current element is 0 then only flip the next 3 elements 
+        // increment count
+        for(int i=0;i<n-2;i++){
+            if(nums[i]==0){
+                nums[i]=1-nums[i];
+                nums[i+1]=1-nums[i+1];
+                nums[i+2]=1-nums[i+2];
+                count++;
+            }
+        }
+        // if after all the flips the last or second last is 0 then it is impossible to me equal to 1
+        if(nums[n-1]==0 || nums[n-2]==0){
+            return -1;
+        }
+        // otherwise return count
+        return count;
+    }
+}
