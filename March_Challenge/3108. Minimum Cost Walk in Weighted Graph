@@ -1,0 +1,73 @@
+class Solution {
+
+    int[] parent;
+    int[] rank;
+
+    public int[] minimumCost(int n, int[][] edges, int[][] queries) {
+        // Initialize the parent array with each node as its own component
+        parent = new int[n];
+        rank = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            rank[i] = 1; // Rank starts as 1 for single nodes
+        }
+
+        int[] componentCost = new int[n];
+        for (int i = 0; i < n; i++) {
+            componentCost[i] = Integer.MAX_VALUE;
+        }
+
+        // Build connected components
+        for (int[] edge : edges) {
+            union(edge[0], edge[1]);
+        }
+
+        // Compute bitwise AND cost for each component
+        for (int[] edge : edges) {
+            int root = find(edge[0]);
+            componentCost[root] &= edge[2];
+        }
+
+        int[] answer = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) {
+            int start = queries[i][0];
+            int end = queries[i][1];
+
+            // If nodes are in different components, answer is -1
+            if (find(start) != find(end)) {
+                answer[i] = -1;
+            } else {
+                int root = find(start);
+                answer[i] = componentCost[root];
+            }
+        }
+        return answer;
+    }
+
+    // Find function with path compression
+    private int find(int node) {
+        if (parent[node] != node) {
+            parent[node] = find(parent[node]);
+        }
+        return parent[node];
+    }
+
+    // Union by rank (size of component)
+    private void union(int node1, int node2) {
+        int root1 = find(node1);
+        int root2 = find(node2);
+
+        if (root1 == root2) return; // Already connected
+
+        // Attach smaller tree under larger tree
+        if (rank[root1] < rank[root2]) {
+            parent[root1] = root2;
+        } else if (rank[root1] > rank[root2]) {
+            parent[root2] = root1;
+        } else { // Same rank, merge and increment rank
+            parent[root2] = root1;
+            rank[root1]++;
+        }
+    }
+}
