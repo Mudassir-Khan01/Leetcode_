@@ -1,5 +1,4 @@
 class Solution {
-
     public int minCapability(int[] nums, int k) {
         // Store the maximum nums value in maxReward.
         int minReward = 1;
