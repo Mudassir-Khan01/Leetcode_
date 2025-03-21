@@ -1,0 +1,37 @@
+class Solution {
+    public List<String> findAllRecipes(String[] recipes, List<List<String>> ingredients, String[] supplies) {
+        // store supplies in HashSet
+        HashSet<String> supply=new HashSet<>();
+        for(String s:supplies){
+            supply.add(s);
+        }
+        // List to store the answer
+        List<String> result=new ArrayList<>();
+        boolean progress=true; // initially make this progressa as true
+        while(progress){
+            progress=false;
+            // now check whethere the recipe in is final result or not
+            // and is it possible to make it i.e if all igredients are there in supplies
+            for(int i=0;i<recipes.length;i++){
+                if(!result.contains(recipes[i]) && canMake(ingredients.get(i), supply)){
+                    // put it in result 
+                    result.add(recipes[i]);
+                    // also put it in supply
+                    supply.add(recipes[i]);
+                    // make progress true to try other recipes
+                    progress=true;
+                }
+            }
+        }
+         return result;
+    }
+    // this fn checks whether the ingredients are there in supply or not
+    private boolean canMake(List<String> ingredients, Set<String> supply){
+        for(String s:ingredients){
+            // if supply doesnt contain that 
+            if(!supply.contains(s))
+            return false;
+        }
+        return true;
+    }
+}
