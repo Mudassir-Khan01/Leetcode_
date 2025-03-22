@@ -1,0 +1,82 @@
+import java.util.*;
+
+class Solution {
+    public int countCompleteComponents(int n, int[][] edges) {
+        DisjointSet ds = new DisjointSet(n);
+
+        // Step 1: Build connected components using Union-Find
+        for (int[] edge : edges) {
+            ds.unionBySize(edge[0], edge[1]);
+        }
+
+        // Step 2: Count the size of each component (number of nodes)
+        Map<Integer, Integer> componentSize = new HashMap<>();
+        Map<Integer, Integer> componentEdges = new HashMap<>();
+
+        // Count how many nodes belong to each component (root node)
+        for (int i = 0; i < n; i++) {
+            int parent = ds.findUPar(i);
+            componentSize.put(parent, componentSize.getOrDefault(parent, 0) + 1);
+        }
+
+        // Count how many edges belong to each component (root node)
+        for (int[] edge : edges) {
+            int parent = ds.findUPar(edge[0]);
+            componentEdges.put(parent, componentEdges.getOrDefault(parent, 0) + 1);
+        }
+
+        // Step 3: Check if each component is a complete graph
+        int completeComponents = 0;
+        for (int parent : componentSize.keySet()) {
+            int size = componentSize.get(parent);
+            int edgesCount = componentEdges.getOrDefault(parent, 0);
+
+            // A complete graph with `size` nodes has `size * (size - 1) / 2` edges
+            if (edgesCount == size * (size - 1) / 2) {
+                completeComponents++;  // Count this component as complete
+            }
+        }
+
+        return completeComponents;  // Return total number of complete components
+    }
+}
+
+// Disjoint Set (Union-Find) implementation with path compression and union by size
+class DisjointSet {
+    List<Integer> parent, size;
+
+    // Constructor initializes parent and size arrays
+    public DisjointSet(int n) {
+        parent = new ArrayList<>();
+        size = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            parent.add(i);  // Each node is its own parent initially
+            size.add(1);     // Each component starts with size 1
+        }
+    }
+
+    // Find the ultimate parent of a node with path compression
+    public int findUPar(int node) {
+        if (node == parent.get(node)) return node;  // Base case: node is its own parent
+        int root = findUPar(parent.get(node));  // Recursively find the root
+        parent.set(node, root);  // Path compression: attach node directly to root
+        return root;
+    }
+
+    // Union by size: attach smaller tree under larger tree
+    public void unionBySize(int u, int v) {
+        int pu = findUPar(u);
+        int pv = findUPar(v);
+        
+        if (pu == pv) return;  // Already connected
+
+        // Attach smaller component under the larger one
+        if (size.get(pu) < size.get(pv)) {
+            parent.set(pu, pv);
+            size.set(pv, size.get(pv) + size.get(pu));  // Update size of new root
+        } else {
+            parent.set(pv, pu);
+            size.set(pu, size.get(pu) + size.get(pv));  // Update size of new root
+        }
+    }
+}
