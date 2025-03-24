@@ -1,0 +1,35 @@
+class Solution {
+    public int countDays(int days, int[][] meetings) {
+        // if no meetings so all days are free days
+        if(meetings.length==0){
+            return days;
+        }
+        int meetingDays=0; // we weill calculate how many days the person is busy
+        // first Sort it based on start date
+        Arrays.sort(meetings, (a,b)-> a[0]-b[0]);
+        // get the first start and end days
+        int start=meetings[0][0];
+        int end=meetings[0][1];
+        // now traverse
+        for(int i=1;i<meetings.length;i++){
+            // get the currStart and end days
+            int currStart=meetings[i][0];
+            int currEnd=meetings[i][1];
+            // now check for overlap days
+            if(currStart<=end){
+                //overlapping so we will update the end
+                end=Math.max(end,currEnd);
+            }else{
+                // if no overlapping calculate the meetingDays
+                meetingDays+=(end-start+1);
+                // update the new start and end
+                start=currStart;
+                end=currEnd;
+            }
+        }
+        // count the last mergerd interval
+        meetingDays+=(end-start+1);
+        // now return free days so total-meetingDays
+        return days-meetingDays;
+    }
+}
