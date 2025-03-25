@@ -1,0 +1,35 @@
+class Solution {
+    public boolean checkValidCuts(int n, int[][] rectangles) {
+        // try vertical cut(sort by x coordinates)
+        // try horizontal cuts(sort by y coordinates)
+        // isValidCut(rect, axis, start, end);
+        // for x coordinate axis,start,end is 0,0,2
+        // for y coordinate axis,start,end is 1,1,3
+        return isValidCut(rectangles,0,0,2) || isValidCut(rectangles,1,1,3);
+    }
+
+    private boolean isValidCut(int[][] rectangles, int axis, int start, int end){
+        // first sort it based on axis
+        Arrays.sort(rectangles, (a,b)->a[axis]-b[axis]);
+        // store the start and end points of current merged interval
+        int currStart=rectangles[0][start];
+        int currEnd=rectangles[0][end];
+        int intervals=0;
+        // now traverse next point
+        for (int[] rect : rectangles) {
+            // if next start point is less than prevEnd means overlapping update End
+            if (rect[start] < currEnd) {
+                currEnd = Math.max(rect[end], currEnd);
+            } else {
+                // else we can draw an interval, and update both start and end
+                intervals++;
+                currStart = rect[start];
+                currEnd = rect[end];
+            }
+        }
+        // this is for the last section
+        intervals++;
+        // we need at least 3 section or line for 2 cuts
+        return intervals>2;
+    }
+}
