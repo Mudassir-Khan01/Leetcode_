@@ -1,0 +1,27 @@
+class Solution {
+    public int minOperations(int[][] grid, int x) {
+        // first store the elements of grid in list
+        ArrayList<Integer> values=new ArrayList<>();
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid[0].length;j++){
+                values.add(grid[i][j]);
+            }
+        }
+        // Now check if diff of every number is divisible by x , if not return -1 as it cant be converted to uni value
+        int first=values.get(0);
+        for(int val:values){
+            if(Math.abs(first-val)%x!=0)
+            return -1;
+        }
+        // Now sort it to get the median 
+        // as our target uni value will be median 
+        Collections.sort(values);
+        int operations=0;
+        int median=values.get(values.size()/2);
+        // now to get min operation we need to subtract each value with median and divide it by x to get the no. of operations
+        for(int val:values){
+            operations+=(Math.abs(val-median)/x);
+        }
+        return operations;
+    }
+}
