@@ -1,0 +1,35 @@
+class Solution {
+    public int minimumIndex(List<Integer> nums) {
+        // put value and its freq in map
+        HashMap<Integer, Integer> map=new HashMap<>();
+        for(int num:nums){
+            map.put(num, map.getOrDefault(num,0)+1);
+        }
+        // now we need to get the dominant elements with its count
+        int dominant=-1, maxCount=0;
+        for(Map.Entry<Integer,Integer> entry:map.entrySet()){
+            if(entry.getValue()>maxCount){
+                maxCount=entry.getValue();
+                dominant=entry.getKey();
+            }
+        }
+        // now we need to split the array so as to get min index for valid split
+        int count=0;
+        int n=nums.size();
+        for(int index=0;index<n;index++){
+            // if we got that dominant element we increase count
+            if(nums.get(index)==dominant){
+                count++;
+            }
+            //now remaining count will be
+            int remCount=maxCount-count;
+            // now check the condition , in left array and right array
+            if(count*2>index+1 && remCount*2 > n-index-1){
+                // cond satisfied return the index
+                return index;
+            }
+        }
+        // otherwise return -1
+        return -1;
+    }
+}
