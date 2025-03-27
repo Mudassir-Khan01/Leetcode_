@@ -4,7 +4,7 @@ class Solution {
         HashMap<Integer, Integer> map=new HashMap<>();
         for(int num:nums){
             map.put(num, map.getOrDefault(num,0)+1);
-        }
+     }
         // now we need to get the dominant elements with its count
         int dominant=-1, maxCount=0;
         for(Map.Entry<Integer,Integer> entry:map.entrySet()){
