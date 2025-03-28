@@ -1,0 +1,62 @@
+import java.util.*;
+
+class Solution {
+    public int[] maxPoints(int[][] grid, int[] queries) {
+        int m = grid.length, n = grid[0].length;
+        int k = queries.length;
+        int[] answer = new int[k];
+
+        // Store queries along with their original indices to maintain order after sorting
+        int[][] sortedQueries = new int[k][2];
+        for (int i = 0; i < k; i++) {
+            sortedQueries[i] = new int[]{queries[i], i}; // {query value, original index}
+        }
+        
+        // Sort queries in ascending order based on query value
+        Arrays.sort(sortedQueries, (a, b) -> a[0] - b[0]);
+
+        // Min-Heap (Priority Queue) to process grid cells in increasing order of value
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+        
+        // Start from the top-left cell (0,0) of the grid
+        minHeap.offer(new int[]{grid[0][0], 0, 0}); // {cell value, row, col}
+
+        // Visited matrix to track processed cells and avoid re-processing
+        boolean[][] visited = new boolean[m][n];
+        visited[0][0] = true;
+
+        // Directions for moving in 4 possible ways (Up, Down, Left, Right)
+        int[][] directions = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+
+        int visitedCells = 0; // Count of cells that can be visited for a given query
+
+        // Process each query in sorted order
+        for (int[] query : sortedQueries) {
+            int queryValue = query[0]; // Query value to compare with cell values
+            int index = query[1]; // Original index of the query
+
+            // Expand reachable cells while their value is less than queryValue
+            while (!minHeap.isEmpty() && minHeap.peek()[0] < queryValue) {
+                int[] cell = minHeap.poll();
+                int r = cell[1], c = cell[2];
+                visitedCells++; // Increase count of reachable cells
+
+                // Explore 4 directions (Up, Down, Left, Right)
+                for (int[] d : directions) {
+                    int nr = r + d[0], nc = c + d[1];
+
+                    // Check if the new position is within grid bounds and not visited
+                    if (nr >= 0 && nr < m && nc >= 0 && nc < n && !visited[nr][nc]) {
+                        visited[nr][nc] = true; // Mark cell as visited
+                        minHeap.offer(new int[]{grid[nr][nc], nr, nc}); // Add to heap
+                    }
+                }
+            }
+
+            // Store the result for this query in the answer array
+            answer[index] = visitedCells;
+        }
+
+        return answer;
+    }
+}
