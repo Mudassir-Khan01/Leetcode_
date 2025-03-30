@@ -1,0 +1,25 @@
+class Solution {
+    public List<Integer> partitionLabels(String s) {
+        // we need to store the last index of each character
+        int[] lastIndex=new int[26];
+        for(int index=0;index<s.length();index++){
+            lastIndex[s.charAt(index)-'a']=index;
+        }
+        // now we use 2 pointer start and end which basically shows the start and end of one partition
+        //and create a list to store the final reuslt
+        ArrayList<Integer> list=new ArrayList<>();
+        int start=0, end=0;
+        // now traverse again
+        // keep expanding the end, if i matches end then we got the partition add the length in list and update the start
+        for(int i=0;i<s.length();i++){
+            // expand with max of end, lastIndex of char
+            end=Math.max(end, lastIndex[s.charAt(i)-'a']);
+
+            if(i==end){
+                list.add(end-start+1);
+                start=i+1;
+            }
+        }
+        return list;
+    }
+}
