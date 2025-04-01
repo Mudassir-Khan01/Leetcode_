@@ -1,0 +1,24 @@
+import java.util.*;
+
+class Solution {
+    public long mostPoints(int[][] questions) {
+        int n = questions.length;
+        Long[] dp = new Long[n]; // Memoization array
+        return solve(0, questions, dp);
+    }
+
+    private long solve(int i, int[][] questions, Long[] dp) {
+        if (i >= questions.length) return 0; // Base case: No more questions left
+        if (dp[i] != null) return dp[i]; // Return memoized result
+
+        // Option 1: Solve the question
+        int points = questions[i][0];
+        int nextIndex = i + questions[i][1] + 1;
+        long solve = points + solve(nextIndex, questions, dp);
+
+        // Option 2: Skip the question
+        long skip = solve(i + 1, questions, dp);
+
+        return dp[i] = Math.max(solve, skip); // Store and return max points
+    }
+}
