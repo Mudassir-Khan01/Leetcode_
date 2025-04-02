@@ -1,0 +1,15 @@
+class Solution {
+    public long maximumTripletValue(int[] nums) {
+        int n=nums.length;
+        long max=0, diff=0, res=0;
+        for(int k=0;k<n ;k++){
+            // calculate the result so far ie maxm of maxDiff and multiplication
+            res=Math.max(res, diff*nums[k]);
+            // calculate the maxm number so far
+            max=Math.max(max,nums[k]);
+            // calculate the max diff so far
+            diff=Math.max(diff, (max-nums[k]));
+        }
+        return res;
+    }
+}
