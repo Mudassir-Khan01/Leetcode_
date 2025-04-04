@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode lcaDeepestLeaves(TreeNode root) {
+        // first of all we will get the maxDepth of the tree
+        int maxDepth=dfs(root);
+        // now pass that max depth in dfss fn to calc lca
+        return dfss(root, maxDepth, 0);// this 0 is depth of current so we start at depth 0
+    }
+
+    // fn to calc lca
+    private TreeNode dfss(TreeNode root, int maxDepth, int len){
+        // base  condns
+        if(root==null){
+            return null;
+        }
+        // maxDepth-1 will be the correct node
+        if(maxDepth-1==len){
+            return root;
+        }
+        // now move left and right, and increment len
+        TreeNode left=dfss(root.left, maxDepth, len+1 );
+        TreeNode right=dfss(root.right, maxDepth, len+1);
+        // if both side return non null , this is the lca
+        if(left!=null && right!=null){
+            return root;
+        }
+        // else return whichever side has the deepest leaf
+        return left!=null? left : right ;
+    }
+
+    // fn to calc max depth
+    private int dfs(TreeNode root){
+        // base condn
+        if(root==null){
+            return 0;
+        }
+        // move left and right
+        int left=dfs(root.left);
+        int right=dfs(root.right);
+        int depth=Math.max(left, right)+1;
+        return depth;
+    }
+}
