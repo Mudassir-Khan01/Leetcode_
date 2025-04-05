@@ -4,7 +4,6 @@ class Solution {
         // we want one and we dont want one
         return xor(nums, 0, 0); // start, currXor
     }
-
     private int xor(int[]nums, int start, int currXor){
         //base condition
         if(start==nums.length){
