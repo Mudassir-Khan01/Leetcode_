@@ -1,0 +1,21 @@
+class Solution {
+    public int subsetXORSum(int[] nums) {
+        // BACKTRACK
+        // we want one and we dont want one
+        return xor(nums, 0, 0); // start, currXor
+    }
+
+    private int xor(int[]nums, int start, int currXor){
+        //base condition
+        if(start==nums.length){
+            return currXor;
+        }
+        // option 1- we take it
+        int take=xor(nums, start+1, currXor ^ nums[start]);
+
+        // option 2- we dont take it
+        int nottake=xor(nums, start+1, currXor);
+        // return sum of take and nottake
+        return take+nottake;
+    }
+}
