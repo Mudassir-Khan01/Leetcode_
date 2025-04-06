@@ -1,0 +1,42 @@
+class Solution {
+    public List<Integer> largestDivisibleSubset(int[] nums) {
+        // Same Approach as LIS
+        int n=nums.length;
+        int [] dp=new int[n]; // this is to store the length of largest divisibke subset end at index i
+        int []hash=new int[n]; // this store prev index for reconst.
+        Arrays.fill(dp,1); // each element alone is has a len of 1
+
+        // Sort the nums , to ensure div cond holds
+        Arrays.sort(nums);
+        // now implement just like LIS
+        for(int i=0;i<n;i++){
+            hash[i]=i;  // initially each element points to itself
+            for(int prev=0;prev<i;prev++){
+                // condn
+                if(nums[i]%nums[prev]==0 && dp[i]<1+dp[prev]){
+                    dp[i]=1+dp[prev];
+                    hash[i]=prev; // upddate prev index in the subset
+                }
+            }
+        }
+        // now find the max subset length and its index
+        int maxLen=-1, lastIndex=-1;
+        for(int i=0;i<n;i++){
+            if(dp[i]>maxLen){
+                maxLen=dp[i];
+                lastIndex=i;
+            }
+        }
+        // Now Recinstruct the subset using the hash array
+        List<Integer> res=new ArrayList<>();
+        res.add(nums[lastIndex]);
+        while(hash[lastIndex]!= lastIndex){
+            lastIndex=hash[lastIndex];
+            res.add(nums[lastIndex]);
+        }
+
+        // reverse to get in correct order
+        Collections.reverse(res);
+        return res;
+    }
+}
