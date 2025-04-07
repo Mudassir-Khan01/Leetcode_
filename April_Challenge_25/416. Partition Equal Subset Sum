@@ -1,0 +1,43 @@
+class Solution {
+    public boolean canPartition(int[] nums) {
+        int n=nums.length;
+        // dp- Memo
+        // first calculate the total sum
+        int totalSum=0;
+        for(int i:nums){
+            totalSum+=i;
+        }
+        // if sum is odd cant be partitioned
+        if(totalSum%2!=0){
+            return false;
+        }else{
+            int target=totalSum/2;
+            Boolean[][] dp=new Boolean[n][target+1];
+            return helper(n-1, target, nums, dp); // now call the recur
+        }
+    }
+
+    //recur 
+    private boolean helper(int ind, int target, int[]nums, Boolean [][] dp){
+        // base condn
+        if(target==0){
+            return true;
+        }
+        // if reached last ind
+        if(ind==0){
+            return nums[ind]==target;
+        }
+        // base condn for dp
+        if(dp[ind][target]!=null){
+            return  dp[ind][target];
+        }
+        // now 2 option either to not take it or take it
+        boolean notTaken=helper(ind-1, target, nums, dp); // move backwards without change in target
+        boolean taken=false; 
+        // first ensure current element is smaller or equal to target
+        if(nums[ind]<=target){
+            taken=helper(ind-1, target-nums[ind], nums, dp); // move back with chnage in target
+        }
+        return dp[ind][target]= notTaken | taken;  // store the result in dp = either of take or not take
+    }
+}
