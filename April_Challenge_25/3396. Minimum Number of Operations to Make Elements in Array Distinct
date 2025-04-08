@@ -1,0 +1,16 @@
+class Solution {
+    public int minimumOperations(int[] nums) {
+        // WE STORE THE  element in hashset
+        HashSet<Integer> set=new HashSet<>();
+        // we traverse from last as we need to remove from start
+        for(int i=nums.length-1;i>=0;i--){
+            // if we found the same operation we return the answer
+            if(set.contains(nums[i])){
+                return i/3 + 1; // the no. times we need to perforrm operation
+            }
+            set.add(nums[i]);
+        }
+        // otherwise return 0
+        return 0;
+    }
+}
