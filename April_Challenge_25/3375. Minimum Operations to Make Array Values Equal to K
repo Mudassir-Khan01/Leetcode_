@@ -1,0 +1,15 @@
+class Solution {
+    public int minOperations(int[] nums, int k) {
+        // the problem simplifies to if any element is smaller than k then we return -1;
+        // otherwise if greater we store it in set and return size
+        HashSet<Integer> set=new HashSet<>();
+        for(int num: nums){
+            if(num<k){
+                return -1;
+            }else if(num > k){
+                set.add(num);
+            }
+        }
+        return set.size();
+    }
+}
