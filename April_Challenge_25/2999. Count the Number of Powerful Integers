@@ -1,0 +1,79 @@
+class Solution {
+    // Memoization table: dp[idx][tight]
+    private Long[][] dp;
+
+    // Suffix that the number must end with
+    private String suffix;
+
+    // Upper limit for allowed digits
+    private int limit;
+
+    public long numberOfPowerfulInt(long start, long finish, int limit, String suffix) {
+        this.limit = limit;
+        this.suffix = suffix;
+
+        // Count valid numbers from 0 to finish
+        long countToFinish = countValid(finish);
+
+        // Count valid numbers from 0 to start - 1
+        long countToStart = countValid(start - 1);
+
+        // Result is the difference: numbers in [start, finish]
+        return countToFinish - countToStart;
+    }
+
+    // Counts number of valid numbers from 0 to 'num'
+    private long countValid(long num) {
+        // If num is less than suffix, no number can have suffix
+        if (num < Long.parseLong(suffix)) return 0;
+
+        String numStr = Long.toString(num);
+
+        // Initialize DP table: [length of num][2 states for tight constraint]
+        dp = new Long[numStr.length()][2];
+
+        // Start digit DP traversal
+        return dfs(0, true, numStr);
+    }
+
+    // Digit DP function
+    private long dfs(int idx, boolean tight, String num) {
+        // Base Case: if all digits processed, count 1 valid number
+        if (idx == num.length()) return 1L;
+
+        // Return cached result if available
+        if (dp[idx][tight ? 1 : 0] != null) return dp[idx][tight ? 1 : 0];
+
+        long res = 0;
+
+        // Determine the maximum digit we can use at this position
+        int maxDigit = tight ? num.charAt(idx) - '0' : 9;
+
+        // Determine from which position suffix starts in the current number
+        int suffixStart = num.length() - suffix.length();
+
+        // If current digit is part of suffix
+        if (idx >= suffixStart) {
+            // Calculate index within suffix
+            int suffixIdx = idx - suffixStart;
+
+            // Extract digit from suffix
+            int digit = suffix.charAt(suffixIdx) - '0';
+
+            // If digit is within limits
+            if (digit <= maxDigit && digit <= limit) {
+                // Proceed with next digit; update tight if needed
+                res += dfs(idx + 1, tight && digit == maxDigit, num);
+            }
+        } else {
+            // For prefix part: try all digits from 0 to min(maxDigit, limit)
+            for (int d = 0; d <= Math.min(maxDigit, limit); d++) {
+                // Proceed with next digit; update tight if needed
+                res += dfs(idx + 1, tight && d == maxDigit, num);
+            }
+        }
+
+        // Store and return the result
+        return dp[idx][tight ? 1 : 0] = res;
+    }
+}
