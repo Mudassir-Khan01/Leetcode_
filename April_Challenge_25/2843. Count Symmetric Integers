@@ -1,0 +1,25 @@
+class Solution {
+    public int countSymmetricIntegers(int low, int high) {
+        int count=0;
+        // we traverse from low to high
+        for(int i=low;i<=high;i++){
+            // convert the element in string
+            String num=Integer.toString(i);
+            // get its length
+            int n=num.length();
+            // if length odd then symmetry not possible
+            if(n%2!=0){
+                continue;
+            }
+            // otherwise we will get sum of digit of n/2 element and simmilarily last
+            int first=0, last=0;
+            for(int j=0;j<n/2;j++){
+                first+= num.charAt(j)-'0';
+                last+=num.charAt(n/2 + j)-'0'; // this index starts from n/2
+            }
+            if(first==last)
+            count++;
+        }
+        return count;
+    }
+}
