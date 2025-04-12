@@ -1,0 +1,58 @@
+class Solution {
+    public long countGoodIntegers(int n, int k) {
+        // Set to store unique sorted digit combinations of k-palindromic numbers
+        HashSet<String> set = new HashSet<>();
+
+        // Calculate base range to generate the first half of the palindrome
+        int power = (int) Math.pow(10, (n - 1) / 2);
+        int skip = n & 1; // Used to skip middle digit in odd-length palindromes
+
+        // Generate all n-digit palindromic numbers
+        for (int i = power; i < power * 10; i++) {
+            String s = Integer.toString(i);
+
+            // Mirror the first half to form the full palindrome
+            s += new StringBuilder(s).reverse().substring(skip);
+
+            long palindrome = Long.parseLong(s);
+
+            // Check if it's divisible by k (i.e., k-palindromic)
+            if (palindrome % k == 0) {
+                // Sort digits and store unique patterns
+                char[] ch = s.toCharArray();
+                Arrays.sort(ch);
+                set.add(new String(ch));
+            }
+        }
+
+        // Precompute factorials up to n for permutations
+        long[] fact = new long[n + 1];
+        fact[0] = 1;
+        for (int i = 1; i <= n; i++) {
+            fact[i] = fact[i - 1] * i;
+        }
+
+        long res = 0;
+
+        // For each valid sorted digit combination
+        for (String s : set) {
+            int[] cnt = new int[10];
+
+            // Count digit frequencies
+            for (char c : s.toCharArray()) {
+                cnt[c - '0']++;
+            }
+
+            // Count valid permutations that don't start with 0
+            long total = (n - cnt[0]) * fact[n - 1];
+            for (int x : cnt) {
+                total /= fact[x]; // Adjust for repeated digits
+            }
+
+            // Add to the final result
+            res += total;
+        }
+
+        return res;
+    }
+}
