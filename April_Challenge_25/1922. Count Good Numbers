@@ -1,0 +1,49 @@
+class Solution {
+    // Define the modulo constant as per the problem statement
+    public long MOD = 1_000_000_007;
+
+    public int countGoodNumbers(long n) {
+        // Count of digits at even indices (0, 2, 4, ...) 
+        // For example, if n = 5 → even positions = 3 → indices 0, 2, 4
+        long even = (n + 1) / 2;
+
+        // Count of digits at odd indices (1, 3, 5, ...)
+        // For example, if n = 5 → odd positions = 2 → indices 1, 3
+        long odd = n / 2;
+
+        // Calculate the number of possible combinations for even indices
+        // Each even index can have one of {0, 2, 4, 6, 8} → 5 choices
+        // So, total combinations for even = 5^even (modulo MOD)
+        long first = pow(5, even) % MOD;
+
+        // Calculate the number of possible combinations for odd indices
+        // Each odd index can have one of {2, 3, 5, 7} → 4 choices
+        // So, total combinations for odd = 4^odd (modulo MOD)
+        long second = pow(4, odd) % MOD;
+
+        // Final answer is the product of both (modulo MOD)
+        return (int) ((first * second) % MOD);
+    }
+
+    // Fast exponentiation (modular power function)
+    // Computes x^n % MOD using divide-and-conquer
+    private long pow(long x, long n) {
+        // Base case: anything raised to the power of 0 is 1
+        if (n == 0) return 1;
+
+        // Recursively compute x^(n/2)
+        long temp = pow(x, n / 2);
+
+        // Square the result (modulo MOD to keep numbers small)
+        temp = (temp * temp) % MOD;
+
+        // If exponent is even, just return the squared result
+        if (n % 2 == 0) {
+            return temp;
+        } 
+        // If exponent is odd, multiply one more time with x (modulo MOD)
+        else {
+            return (x * temp) % MOD;
+        }
+    }
+}
