@@ -1,0 +1,74 @@
+// Fenwick Tree (Binary Indexed Tree) for prefix sum queries and point updates
+class FenwickTree {
+
+    private int[] tree;
+
+    // Constructor to initialize the tree with given size
+    public FenwickTree(int size) {
+        tree = new int[size + 1]; // Using 1-based indexing for BIT
+    }
+
+    // Increment the count at the given index by delta
+    public void update(int index, int delta) {
+        index++; // Convert to 1-based index
+        while (index < tree.length) {
+            tree[index] += delta; // Update current index
+            index += index & -index; // Move to next responsible index
+        }
+    }
+
+    // Return prefix sum up to the given index
+    public int query(int index) {
+        index++; // Convert to 1-based index
+        int res = 0;
+        while (index > 0) {
+            res += tree[index]; // Add value at current index
+            index -= index & -index; // Move to parent index
+        }
+        return res;
+    }
+}
+
+class Solution {
+
+    public long goodTriplets(int[] nums1, int[] nums2) {
+        int n = nums1.length;
+
+        // Step 1: Build mapping of values to their positions in nums2
+        int[] pos2 = new int[n];
+        for (int i = 0; i < n; i++) {
+            pos2[nums2[i]] = i;
+        }
+
+        // Step 2: For each value in nums1, map it to its position in nums2
+        // reversedIndexMapping[i] = position of nums1[i] in nums2
+        int[] reversedIndexMapping = new int[n];
+        for (int i = 0; i < n; i++) {
+            reversedIndexMapping[pos2[nums1[i]]] = i;
+        }
+
+        // Step 3: Initialize Fenwick Tree for counting how many indices are before current
+        FenwickTree tree = new FenwickTree(n);
+        long res = 0;
+
+        // Step 4: Process each value by increasing position in nums2
+        for (int value = 0; value < n; value++) {
+            int pos = reversedIndexMapping[value]; // position in nums1
+
+            // Count of elements before pos that are less than current (i.e., left side)
+            int left = tree.query(pos);
+
+            // Update tree to include current position
+            tree.update(pos, 1);
+
+            // Count of elements after pos that are greater than current (i.e., right side)
+            // value - left gives number of elements already processed that are > pos
+            int right = (n - 1 - pos) - (value - left);
+
+            // Total good triplets = left choices for i * right choices for k
+            res += (long) left * right;
+        }
+
+        return res;
+    }
+}
