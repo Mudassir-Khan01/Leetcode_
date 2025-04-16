@@ -1,0 +1,48 @@
+class Solution {
+
+    public long countGood(int[] nums, int k) {
+        int n = nums.length;
+
+        // `same` tracks the number of equal pairs in current window
+        int same = 0;
+
+        // Right pointer of the sliding window starts before the array
+        int right = -1;
+
+        // Frequency map to count how many times a number appears in current window
+        HashMap<Integer, Integer> cnt = new HashMap<>();
+
+        // Final answer
+        long ans = 0;
+
+        // Iterate left pointer from 0 to n-1
+        for (int left = 0; left < n; left++) {
+
+            // Expand right pointer until we reach at least `k` equal pairs
+            while (same < k && right + 1 < n) {
+                right++;
+
+                // Every time we add a number that already exists, we add `freq` pairs
+                same += cnt.getOrDefault(nums[right], 0);
+
+                // Increase frequency of nums[right] in map
+                cnt.put(nums[right], cnt.getOrDefault(nums[right], 0) + 1);
+            }
+
+            // If current window has at least k pairs
+            if (same >= k) {
+                // All subarrays starting at `left` and ending at `right, right+1, ..., n-1` are good
+                ans += n - right;
+            }
+
+            // Now move left pointer forward — remove nums[left] from the window
+            // Before removing, decrease `same` count by how many pairs nums[left] was forming
+            cnt.put(nums[left], cnt.get(nums[left]) - 1);
+
+            // After removing, we lost (freq - 1) pairs (since we're reducing freq by 1)
+            same -= cnt.get(nums[left]);
+        }
+
+        return ans;
+    }
+}
