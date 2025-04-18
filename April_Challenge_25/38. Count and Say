@@ -1,0 +1,41 @@
+class Solution {
+    public String countAndSay(int n) {
+        // first the base condition 
+        if(n==1)
+        return "1";
+
+        // we start with String 1
+        String result="1";
+        // now we traverse from 1 and 
+        for(int i=1;i<n;i++){
+            StringBuilder sb=new StringBuilder();
+            // get the prev char in result string so as to compare with current char
+            char prev=result.charAt(0);
+            // count of that number, initially 1
+            int count=1;
+            // now traverse over prev result to build the term
+            for(int j=1;j<result.length();j++){
+                // get the curr char
+                char curr=result.charAt(j);
+                // now compare 
+                // if same increment count
+                if(curr==prev){
+                    count++;
+                }else{
+                    // otherwise we append the count and the prev number
+                    sb.append(count).append(prev);
+                    // reset count
+                    count=1;
+                    // prev becomes curr 
+                    prev=curr;
+                }
+            }
+            // now append the last count and number
+            sb.append(count).append(prev);
+
+            // prepare for next iteration
+            result=sb.toString();
+        }
+        return result;
+    }
+}
