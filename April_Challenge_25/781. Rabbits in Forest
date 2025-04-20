@@ -1,0 +1,22 @@
+class Solution {
+    public int numRabbits(int[] answers) {
+        // HashMap to store answer and its frequency
+        HashMap<Integer, Integer> map=new HashMap<>();
+        for(int ans:answers){
+            map.put(ans, map.getOrDefault(ans,0)+1); // {rabbit with same color, count}
+        }
+        int total=0;
+        for(int x:map.keySet()){
+            // get the value ie freq
+            int count=map.get(x);
+            // groupSize will be itself+ x
+            int grpSize=1+x;
+            // get the the groups (count+x)/ size
+            int groups=(count+ x)/ grpSize;
+
+            // now get the total
+            total+= groups * grpSize;
+        }
+        return total;
+    }
+}
