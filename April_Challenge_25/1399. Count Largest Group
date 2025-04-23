@@ -1,0 +1,38 @@
+class Solution {
+    public int countLargestGroup(int n) {
+        HashMap<Integer,Integer> map=new HashMap<>();
+        // Store the digitSum and its frequecy in map 
+        for(int i=1;i<=n;i++){
+            int digitSum=digitSum(i);
+            map.put(digitSum, map.getOrDefault(digitSum,0)+1);
+        }
+        // now we need to get the maxm frequency
+        int max=0;
+        for(int i:map.values()){
+            if(i>=max){
+                max=i;
+            }
+        }
+        // now we need to count how many times max freq has occured
+        int count=0;
+        for(int i:map.values()){
+            if(i==max){
+                count++;
+            }
+        }
+        // return it
+        return count;
+
+    }
+
+    // this fn simply calculates the digit sum
+    private int digitSum(int n){
+        int sum=0;
+        while(n>0){
+            int rem=n%10;
+            sum+=rem;
+            n=n/10;
+        }
+        return sum;
+    }
+}
