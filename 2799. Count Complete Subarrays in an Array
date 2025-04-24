@@ -1,0 +1,25 @@
+class Solution {
+    public int countCompleteSubarrays(int[] nums) {
+        // make use of Set to store distinct elements
+        HashSet<Integer> set=new HashSet<>();
+        for(int i:nums){
+            set.add(i);
+        }
+        int distinctwhole=set.size();
+        int count=0;
+        int n=nums.length;
+        // now use 2 loops to get the substring
+        for(int i=0;i<n;i++){
+            // create a set for current window
+            Set<Integer> currSet=new HashSet<>();
+            for(int j=i;j<n;j++){
+                currSet.add(nums[j]);
+                // if same size of both set then increment count
+                if(currSet.size() == distinctwhole){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+}
