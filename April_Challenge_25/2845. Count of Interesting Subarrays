@@ -1,0 +1,27 @@
+class Solution {
+    public long countInterestingSubarrays(List<Integer> nums, int modulo, int k) {
+        // map will contain prefixCount % modulo and its frequency
+        Map<Integer,Long> map=new HashMap<>();
+        // base case: one way to have prefixSum=0
+        map.put(0,1L);
+        long result=0;
+        // we will calc the prefix count based on the condition
+        int prefixCount=0;
+        for(int num:nums){
+            if(num % modulo == k){
+                // increment prefixCount
+                prefixCount++;
+            }
+            // now we get the current mod
+            int currentMod= prefixCount % modulo;
+            // now remaing will be currentMod-k+modulo // to avoid negatives
+            int targetMod=(currentMod - k + modulo) % modulo;
+            // now result will be the freq of targetMod in map
+            result+=map.getOrDefault(targetMod, 0L);
+
+            // otherwise put currentMod(prefix%modulo) in frequency
+            map.put(currentMod, map.getOrDefault(currentMod,0L)+1);
+        }
+        return result;
+    }
+}
