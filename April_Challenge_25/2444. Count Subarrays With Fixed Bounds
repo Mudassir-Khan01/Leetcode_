@@ -1,0 +1,27 @@
+class Solution { 
+    public long countSubarrays(int[] nums, int minK, int maxK) {
+        long count = 0;  // To store the total number of valid subarrays
+        int start = -1;  // The last index where an invalid number (<minK or >maxK) was found
+        int mini = -1;   // The latest index where nums[i] == minK
+        int maxi = -1;   // The latest index where nums[i] == maxK
+
+        for (int i = 0; i < nums.length; i++) {
+            // If current element is out of [minK, maxK] range, update start
+            if (nums[i] < minK || nums[i] > maxK) start = i;
+
+            // Update mini if nums[i] == minK
+            if (nums[i] == minK) mini = i;
+
+            // Update maxi if nums[i] == maxK
+            if (nums[i] == maxK) maxi = i;
+
+            // Find the number of valid subarrays ending at index i
+            int valid = Math.max(0, Math.min(mini, maxi) - start);
+
+            // Add the count of valid subarrays ending at i
+            count += valid;
+        }
+
+        return count;
+    }
+}
