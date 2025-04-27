@@ -1,0 +1,25 @@
+class Solution {
+    public int countSubarrays(int[] nums) {
+        // we will be using 2 pointer approach to get the substring
+        // and difference be will 3
+        int i=0 , j=2, n=nums.length;
+        int count=0;
+        while(j < n){
+            // get first element
+            int first=nums[i];
+            // get second element
+            int second=nums[j];
+            // get middle index and it element
+            int middleIndex=(i+j)/2;
+            int middle=nums[middleIndex];
+            // apply the condition
+            if((first+second)*2 == (middle)){
+                count++;
+            }
+            // move ahead
+            i++;
+            j++;
+        }
+        return count;
+    }
+}
