@@ -1,0 +1,24 @@
+class Solution {
+    public long countSubarrays(int[] nums, long k) {
+        int n = nums.length;
+        long ans = 0;     // to store the total count of valid subarrays
+        long sum = 0;     // current window sum
+        int start = 0;    // window start index
+        
+        // iterate over each element as the end of the window
+        for (int end = 0; end < n; end++) {
+            sum += nums[end]; // add current element to the window sum
+            
+            // shrink the window from the start if score >= k
+            while (start <= end && sum * (end - start + 1) >= k) {
+                sum -= nums[start]; // remove nums[start] from sum
+                start++;            // move start pointer to right
+            }
+            
+            // all subarrays ending at 'end' and starting between [start, end] are valid
+            ans += (end - start + 1);
+        }
+        
+        return ans;
+    }
+}
