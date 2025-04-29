@@ -1,0 +1,33 @@
+class Solution {
+    public long countSubarrays(int[] nums, int k) {
+        // get the max element in the array
+        int max = 0;
+        for (int i : nums) {
+            if (i > max) {
+                max = i;
+            }
+        }
+        // we use sliding window
+        long ans = 0, start = 0;
+        int maxElementWindow = 0;
+        // now traverse the end pointer
+        for (int end = 0; end < nums.length; end++) {
+            // if curr element has maxElement the increment the maxElementWindow
+            if (nums[end] == max) {
+                maxElementWindow++;
+            }
+            // now we need to shrink if required no. of max reached
+            while (maxElementWindow == k) {
+                // remove if at start , we have max element
+                if (nums[(int) start] == max) {
+                    maxElementWindow--;
+                }
+                // move forward
+                start++;
+            }
+            // now we will count subarrays
+            ans += start;
+        }
+        return ans;
+    }
+}
