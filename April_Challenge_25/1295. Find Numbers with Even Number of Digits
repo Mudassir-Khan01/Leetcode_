@@ -1,0 +1,21 @@
+class Solution {
+    public int findNumbers(int[] nums) {
+        int count=0;
+        for(int i=0;i<nums.length;i++){
+            // pass every value in fn
+            if(isEven(nums[i])){
+                count++;
+            }
+        }
+        return count;
+    }
+    // fn to find whether the digit has even no. of digits
+    private boolean isEven(int num){
+        int count=0;
+        while(num>0){
+            num/=10;
+            count++;
+        }
+        return count%2==0;
+    }
+}
