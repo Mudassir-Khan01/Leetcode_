@@ -1,0 +1,67 @@
+class Solution {
+    public int minTimeToReach(int[][] moveTime) {
+        int n = moveTime.length, m = moveTime[0].length;
+
+        // dist[r][c][p]: minimum time to reach cell (r, c) when the next move has parity p (0 or 1)
+        int[][][] dist = new int[n][m][2];
+        for (int[][] grid : dist) {
+            for (int[] row : grid) {
+                Arrays.fill(row, Integer.MAX_VALUE);
+            }
+        }
+
+        // PriorityQueue holds entries as [time, row, col, parity]
+        // parity = 0 → next move is 1 second
+        // parity = 1 → next move is 2 seconds
+        PriorityQueue<int[]> pq = new PriorityQueue<>(Comparator.comparingInt(a -> a[0]));
+        pq.add(new int[]{0, 0, 0, 0}); // start at time 0, position (0, 0), with move cost of 1
+        dist[0][0][0] = 0;
+
+        // Possible movement directions (up, down, left, right)
+        int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+        while (!pq.isEmpty()) {
+            int[] curr = pq.poll();
+            int time = curr[0];
+            int r = curr[1];
+            int c = curr[2];
+            int parity = curr[3]; // parity: 0 or 1
+
+            // If we reached the destination, return the time
+            if (r == n - 1 && c == m - 1) return time;
+
+            // If a better time was already recorded for this state, skip it
+            if (time > dist[r][c][parity]) continue;
+
+            // Try all 4 directions
+            for (int[] dir : directions) {
+                int nr = r + dir[0];
+                int nc = c + dir[1];
+
+                // Check bounds
+                if (nr >= 0 && nr < n && nc >= 0 && nc < m) {
+                    // Move cost depends on current parity: 1 if parity == 0, else 2
+                    int moveCost = parity == 0 ? 1 : 2;
+
+                    // You can only move to room (nr, nc) if the current time is ≥ moveTime[nr][nc]
+                    int startTime = Math.max(moveTime[nr][nc], time);
+
+                    // Total time after moving
+                    int newTime = startTime + moveCost;
+
+                    // Next move will flip the parity (1 → 2 and vice versa)
+                    int newParity = 1 - parity;
+
+                    // Update dist and add to queue if we found a faster path
+                    if (newTime < dist[nr][nc][newParity]) {
+                        dist[nr][nc][newParity] = newTime;
+                        pq.add(new int[]{newTime, nr, nc, newParity});
+                    }
+                }
+            }
+        }
+
+        // If we never reach the destination
+        return -1;
+    }
+}
