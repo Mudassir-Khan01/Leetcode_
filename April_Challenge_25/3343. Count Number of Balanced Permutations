@@ -1,0 +1,82 @@
+class Solution {
+    // Define modulo constant
+    private static final int mod = 1_000_000_007;
+
+    // Arrays for factorials, modular inverses, and inverse factorials
+    private long[] fact, inv, invFact;
+
+    // Precompute factorials and inverse factorials up to n
+    private void precompute(int n) {
+        fact = new long[n + 1];
+        inv = new long[n + 1];
+        invFact = new long[n + 1];
+        fact[0] = inv[0] = invFact[0] = 1;
+
+        // Compute factorials modulo mod
+        for (int i = 1; i <= n; i++) {
+            fact[i] = fact[i - 1] * i % mod;
+        }
+
+        // Compute modular inverses using Fermat's little theorem
+        inv[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            inv[i] = mod - (mod / i) * inv[mod % i] % mod;
+        }
+
+        // Compute inverse factorials using inverse values
+        for (int i = 1; i <= n; i++) {
+            invFact[i] = invFact[i - 1] * inv[i] % mod;
+        }
+    }
+
+    public int countBalancedPermutations(String num) {
+        int n = num.length();
+        int sum = 0;
+
+        // Calculate total digit sum
+        for (char c : num.toCharArray()) {
+            sum += c - '0';
+        }
+
+        // If total sum is odd, it cannot be divided evenly between two halves
+        if ((sum & 1) == 1) return 0;
+
+        // Precompute factorials and inverses
+        precompute(n);
+
+        int halfSum = sum / 2;      // Required sum for each half
+        int halfLen = n / 2;        // Required length for each half
+
+        // dp[i][j] = number of ways to form sum i using j digits
+        int[][] dp = new int[halfSum + 1][halfLen + 1];
+        dp[0][0] = 1;
+
+        int[] digits = new int[10]; // Count occurrences of each digit
+
+        // Process each digit
+        for (char c : num.toCharArray()) {
+            int d = c - '0';
+            digits[d]++;
+
+            // Update DP table from back to avoid overwriting
+            for (int i = halfSum; i >= d; i--) {
+                for (int j = halfLen; j > 0; j--) {
+                    dp[i][j] = (dp[i][j] + dp[i - d][j - 1]) % mod;
+                }
+            }
+        }
+
+        // Final result is dp[halfSum][halfLen] (ways to choose left half)
+        long res = dp[halfSum][halfLen];
+
+        // Multiply by number of ways to arrange left and right halves
+        res = res * fact[halfLen] % mod * fact[n - halfLen] % mod;
+
+        // Divide by factorial of identical digits to avoid overcounting
+        for (int cnt : digits) {
+            res = res * invFact[cnt] % mod;
+        }
+
+        return (int) res;
+    }
+}
