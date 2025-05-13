@@ -1,0 +1,36 @@
+class Solution {
+    public int lengthAfterTransformations(String s, int t) {
+        final int MOD = 1_000_000_007;
+
+        // Step 1: Initialize a frequency array for 'a' to 'z'
+        long[] count = new long[26];
+        for (char ch : s.toCharArray()) {
+            count[ch - 'a']++;
+        }
+
+        // Step 2: Perform 't' transformations
+        for (int step = 0; step < t; step++) {
+            long[] next = new long[26]; // Frequency array for the next transformation
+
+            for (int i = 0; i < 25; i++) {
+                // Characters 'a' to 'y' become the next character
+                next[i + 1] = (next[i + 1] + count[i]) % MOD;
+            }
+
+            // Character 'z' becomes "ab", so split its count into 'a' and 'b'
+            next[0] = (next[0] + count[25]) % MOD; // 'a'
+            next[1] = (next[1] + count[25]) % MOD; // 'b'
+
+            // Move to the next state
+            count = next;
+        }
+
+        // Step 3: Sum up total characters after all transformations
+        long total = 0;
+        for (long val : count) {
+            total = (total + val) % MOD;
+        }
+
+        return (int) total;
+    }
+}
