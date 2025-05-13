@@ -1,0 +1,42 @@
+class Solution {
+    public int[] findEvenNumbers(int[] digits) {
+        List<Integer> ans = new ArrayList<>();
+        // map to store the digit and its frequency so as to keep of no. of times we can use the digit
+        HashMap<Integer, Integer> map=new HashMap<>();
+        for(int i:digits){
+            map.put( i , map.getOrDefault(i,0)+1);
+        }
+        // now we need even and 3 digit number
+        for(int i=100; i<=999; i+=2){
+            // call fn to check whether this 3digit no. can be formed or not
+            if(isValid(i , map)){
+                ans.add(i);
+            }
+        }
+        // convert it into res
+        int[] res = new int[ans.size()];
+        for (int i = 0; i < ans.size(); i++) {
+            res[i] = ans.get(i);
+        }
+        return res;
+    }
+
+    private boolean isValid(int num, HashMap<Integer, Integer> map){
+        Map<Integer, Integer> temp = new HashMap<>(map);
+        // get the 3 digits
+        int a =num/100;
+        int b= (num/10) %10;
+        int c=num%10;
+        // now traverse each and check for false case
+        for(int digit: new int[]{a,b,c}){
+            // if digit now in temp map or its freq is 0 then return false;
+            // otherwise put it in map
+            if(!temp.containsKey(digit) || temp.get(digit)==0)
+            return false;
+
+            // otherwise put it in map
+            temp.put(digit, temp.get(digit)-1);
+        }
+        return true;
+    }
+}
