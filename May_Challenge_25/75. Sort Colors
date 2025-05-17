@@ -1,0 +1,42 @@
+class Solution {
+    public void sortColors(int[] nums) {
+        // Initialize pointers:
+        // start = boundary for 0s
+        // mid = current element under consideration
+        // end = boundary for 2s
+        int start = 0;
+        int mid = 0;
+        int end = nums.length - 1;
+
+        // Traverse the array until mid pointer crosses end
+        while (mid <= end) {
+            switch (nums[mid]) {
+                case 0:
+                    // If current is 0, swap with start, move both start and mid forward
+                    swap(nums, start, mid);
+                    start++;
+                    mid++;
+                    break;
+
+                case 1:
+                    // If current is 1, it's in correct place, just move mid
+                    mid++;
+                    break;
+
+                case 2:
+                    // If current is 2, swap with end, and move end backward
+                    // Do not move mid because swapped element needs to be checked
+                    swap(nums, mid, end);
+                    end--;
+                    break;
+            }
+        }
+    }
+
+    // Helper function to swap two elements in the array
+    private void swap(int[] arr, int a, int b) {
+        int temp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = temp;
+    }
+}
