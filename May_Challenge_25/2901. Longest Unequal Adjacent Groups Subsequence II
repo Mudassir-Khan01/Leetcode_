@@ -1,0 +1,61 @@
+class Solution {
+    public List<String> getWordsInLongestSubsequence(String[] words, int[] groups) {
+        int n = words.length;
+
+        // dp[i] stores the length of the longest valid subsequence ending at index i
+        int[] dp = new int[n];
+
+        // prev[i] stores the previous index in the longest subsequence ending at i (for reconstruction)
+        int[] prev = new int[n];
+
+        Arrays.fill(dp, 1); // Each word is a subsequence of length 1 by itself
+        Arrays.fill(prev, -1); // No predecessor initially
+
+        int maxLen = 1, endIndex = 0; // To track max length and the end index of longest subsequence
+
+        // Build the dp and prev arrays
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                // Check valid conditions: same length, different groups, and hamming distance of 1
+                if (words[i].length() == words[j].length()
+                        && groups[i] != groups[j]
+                        && hammingDistance(words[i], words[j]) == 1) {
+
+                    // If extending j to i gives a longer subsequence, update dp and prev
+                    if (dp[j] + 1 > dp[i]) {
+                        dp[i] = dp[j] + 1;
+                        prev[i] = j;
+                    }
+                }
+            }
+
+            // Update maxLen and endIndex if a longer subsequence is found
+            if (dp[i] > maxLen) {
+                maxLen = dp[i];
+                endIndex = i;
+            }
+        }
+
+        // Reconstruct the subsequence using the prev array
+        List<String> result = new ArrayList<>();
+        int index = endIndex;
+        while (index != -1) {
+            result.add(words[index]);
+            index = prev[index];
+        }
+
+        // Since we reconstructed backwards, reverse the list to get correct order
+        Collections.reverse(result);
+        return result;
+    }
+
+    // Helper method to calculate the Hamming distance between two strings
+    private int hammingDistance(String a, String b) {
+        int diff = 0;
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i) != b.charAt(i))
+                diff++;
+        }
+        return diff;
+    }
+}
