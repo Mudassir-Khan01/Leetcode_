@@ -1,0 +1,84 @@
+class Solution {
+    public int colorTheGrid(int m, int n) {
+        final int mod = 1_000_000_007;
+
+        // Total number of possible color combinations for a single column (3^m)
+        int total = 1;
+        for (int i = 0; i < m; i++) total *= 3;
+
+        // dp[col][pattern] = number of ways to paint columns up to 'col' with last column as 'pattern'
+        int[][] dp = new int[n + 1][total];
+
+        // rowValid[i][j] = 1 if pattern i and j are valid adjacent columns
+        int[][] rowValid = new int[total][total];
+
+        // 'good' stores all valid column patterns (no two adjacent cells in the column have same color)
+        List<Integer> good = new ArrayList<>();
+
+        // 'pattern[i]' is a list representing the color configuration of pattern 'i'
+        List<Integer>[] pattern = new ArrayList[total];
+        for (int i = 0; i < total; i++) pattern[i] = new ArrayList<>();
+
+        // Generate all valid column patterns
+        for (int i = 0; i < total; i++) {
+            int val = i, valid = 1;
+
+            // Convert number to base-3 representation to represent colors (0, 1, 2)
+            for (int j = 0; j < m; j++) {
+                pattern[i].add(val % 3);
+                val /= 3;
+            }
+
+            // Check if the column has two adjacent cells with the same color — if so, mark as invalid
+            for (int j = 1; j < m; j++) {
+                if (pattern[i].get(j).equals(pattern[i].get(j - 1))) {
+                    valid = 0;
+                    break;
+                }
+            }
+
+            // Add to valid patterns list
+            if (valid == 1) good.add(i);
+        }
+
+        // Initialize base case: 1st column can be any valid pattern
+        for (int i : good) dp[1][i] = 1;
+
+        // Precompute which pairs of column patterns are valid (i.e., no same color in same row)
+        for (int i : good) {
+            for (int j : good) {
+                rowValid[i][j] = 1; // assume valid initially
+                for (int k = 0; k < m; k++) {
+                    if (pattern[i].get(k).equals(pattern[j].get(k))) {
+                        rowValid[i][j] = 0;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Fill DP table for columns 2 to n
+        for (int col = 2; col <= n; col++) {
+            for (int i : good) {
+                long sum = 0;
+
+                // Sum all previous column patterns that are valid with current pattern
+                for (int j : good) {
+                    if (rowValid[i][j] == 1) {
+                        sum += dp[col - 1][j];
+                    }
+                }
+
+                dp[col][i] = (int)(sum % mod); // Take mod to prevent overflow
+            }
+        }
+
+        // Sum all ways to color the grid ending with any valid pattern in the last column
+        long ans = 0;
+        for (int i = 0; i < total; i++) {
+            ans += dp[n][i];
+        }
+
+        return (int)(ans % mod);
+    }
+}
