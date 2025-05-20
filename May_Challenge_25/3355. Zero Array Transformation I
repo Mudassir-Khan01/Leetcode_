@@ -1,0 +1,32 @@
+class Solution {
+    public boolean isZeroArray(int[] nums, int[][] queries) {
+        int n = nums.length;
+
+        // Step 1: Create a difference array for efficient range updates
+        int[] diff = new int[n + 1];
+
+        // Step 2: Process each query and update the difference array
+        for (int[] query : queries) {
+            int li = query[0]; // start index of range
+            int ri = query[1]; // end index of range
+
+            // Decrease all elements from index li to ri (inclusive) by 1
+            diff[li]--;      // start of range: subtract 1
+            diff[ri + 1]++;  // end+1: cancel the subtraction beyond the range
+        }
+
+        // Step 3: Use prefix sums to calculate how many times each index is decremented
+        int currentDecrement = 0;
+        for (int i = 0; i < n; i++) {
+            currentDecrement += diff[i];  // Apply prefix sum to track cumulative decrements
+
+            // Step 4: Check if the current element can be reduced to 0 or less
+            if (nums[i] + currentDecrement > 0) {
+                return false;  // If not, transformation is not possible
+            }
+        }
+
+        // Step 5: If all elements can be reduced to zero, return true
+        return true;
+    }
+}
