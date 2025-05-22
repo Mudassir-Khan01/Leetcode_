@@ -1,0 +1,42 @@
+class Solution {
+
+    public int maxRemoval(int[] nums, int[][] queries) {
+        // Step 1: Sort queries by their start time (query[0]) to process them in order
+        Arrays.sort(queries, (a, b) -> a[0] - b[0]);
+
+        // Step 2: Use a max heap to always apply the furthest available query (based on end time)
+        PriorityQueue<Integer> heap = new PriorityQueue<>(Collections.reverseOrder());
+
+        // Step 3: Delta array for prefix sum trick to track ongoing effects of applied operations
+        int[] deltaArray = new int[nums.length + 1];
+
+        int operations = 0; // Tracks how many operations are currently affecting the index
+
+        // Step 4: Iterate over each index in nums
+        for (int i = 0, j = 0; i < nums.length; i++) {
+            // Apply accumulated operations at index i
+            operations += deltaArray[i];
+
+            // Push all queries starting at index i into the heap
+            while (j < queries.length && queries[j][0] == i) {
+                heap.offer(queries[j][1]); // push end index of the query
+                j++;
+            }
+
+            // Step 5: While more operations are needed at index i
+            //        and we still have applicable queries in the heap
+            while (operations < nums[i] && !heap.isEmpty() && heap.peek() >= i) {
+                operations++;                       // Apply one operation
+                deltaArray[heap.poll() + 1] -= 1;   // End effect of this operation past its range
+            }
+
+            // If we still can't match nums[i] requirements, return -1
+            if (operations < nums[i]) {
+                return -1;
+            }
+        }
+
+        // Step 6: Remaining unused operations in heap are the ones we can remove
+        return heap.size();
+    }
+}
