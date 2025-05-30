@@ -1,0 +1,51 @@
+class Solution {
+
+    // Depth-First Search to calculate distance from the source node
+    public void dfs(int node, int[] edges, int[] dist, Boolean[] visit) {
+        visit[node] = true; // mark current node as visited
+        int neighbor = edges[node]; // get neighbor from edges
+
+        // Continue DFS if neighbor exists and has not been visited
+        if (neighbor != -1 && !visit[neighbor]) {
+            dist[neighbor] = 1 + dist[node]; // update distance
+            dfs(neighbor, edges, dist, visit); // recursive DFS call
+        }
+    }
+
+    public int closestMeetingNode(int[] edges, int node1, int node2) {
+        int n = edges.length;
+
+        // Arrays to store distances from node1 and node2 to all other nodes
+        int[] dist1 = new int[n], dist2 = new int[n];
+        Arrays.fill(dist1, Integer.MAX_VALUE);
+        Arrays.fill(dist2, Integer.MAX_VALUE);
+        dist1[node1] = 0;
+        dist2[node2] = 0;
+
+        // Boolean arrays to mark visited nodes during DFS
+        Boolean[] visit1 = new Boolean[n], visit2 = new Boolean[n];
+        Arrays.fill(visit1, Boolean.FALSE);
+        Arrays.fill(visit2, Boolean.FALSE);
+
+        // Perform DFS from node1 and node2
+        dfs(node1, edges, dist1, visit1);
+        dfs(node2, edges, dist2, visit2);
+
+        int minDistNode = -1; // to store the result node
+        int minDistTillNow = Integer.MAX_VALUE; // to keep track of the minimum max-distance
+
+        for (int currNode = 0; currNode < n; currNode++) {
+            // A node is valid only if it is reachable from both node1 and node2
+            if (dist1[currNode] != Integer.MAX_VALUE && dist2[currNode] != Integer.MAX_VALUE) {
+                int maxDist = Math.max(dist1[currNode], dist2[currNode]);
+                // Update result if a smaller max-distance is found
+                if (maxDist < minDistTillNow) {
+                    minDistTillNow = maxDist;
+                    minDistNode = currNode;
+                }
+            }
+        }
+
+        return minDistNode;
+    }
+}
