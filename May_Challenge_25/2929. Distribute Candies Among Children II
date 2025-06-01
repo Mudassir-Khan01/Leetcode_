@@ -1,0 +1,17 @@
+class Solution {
+    public long distributeCandies(int n, int limit) {
+        long ans=0;
+        // run a for loop till min of limit and n
+        // give i to first child then for other 2 we will have 2 conditons
+        for(int i=0;i<= Math.min(n, limit); i++){
+            // cond 1 , if remaining n-i > 2*limit then immpossible to distribite them within limit
+            if(n-i > 2*limit){
+                continue;
+            }
+            // else if n-i <= 2*limit then maxValid will be min(n-i, limit) and minValid will be max(0,n-i-limit)
+            // so ans+=maxValid - minValid +1;
+            ans+= Math.min(n-i, limit) - Math.max(0, n-i-limit) + 1;
+        }
+        return ans;
+    }
+}
