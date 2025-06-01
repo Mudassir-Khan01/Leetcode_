@@ -1,0 +1,59 @@
+class Solution {
+
+    public int snakesAndLadders(int[][] board) {
+        int n = board.length;
+
+        // Queue for BFS: stores pairs of (position on board, number of moves)
+        Queue<int[]> q = new LinkedList<>();
+
+        // Set to keep track of visited cells (to avoid revisiting)
+        Set<Integer> visited = new HashSet<>();
+
+        // Start at square 1 with 0 moves
+        q.offer(new int[]{1, 0});
+        visited.add(1);
+
+        while (!q.isEmpty()) {
+            int[] curr = q.poll();
+            int pos = curr[0];    // Current board position
+            int moves = curr[1];  // Moves taken so far
+
+            // Try all possible dice rolls (1 to 6)
+            for (int i = 1; i <= 6 && pos + i <= n * n; ++i) {
+                int next = pos + i;
+
+                // Get 2D board coordinates from 1D position
+                int[] coords = getCoordinates(next, n);
+                int r = coords[0], c = coords[1];
+
+                // If there's a snake or ladder, move to that square
+                if (board[r][c] != -1) {
+                    next = board[r][c];
+                }
+
+                // If reached the last square, return total moves
+                if (next == n * n) return moves + 1;
+
+                // If the cell hasn't been visited, add to queue
+                if (!visited.contains(next)) {
+                    visited.add(next);
+                    q.offer(new int[]{next, moves + 1});
+                }
+            }
+        }
+
+        // If end can't be reached
+        return -1;
+    }
+
+    // Convert a 1D board position to 2D board coordinates
+    private int[] getCoordinates(int pos, int n) {
+        int r = (pos - 1) / n;      // Row index from bottom
+        int c = (pos - 1) % n;      // Column index
+
+        int row = n - 1 - r;        // Convert to top-down index
+        int col = (r % 2 == 0) ? c : (n - 1 - c); // Handle zigzag order
+
+        return new int[]{row, col};
+    }
+}
