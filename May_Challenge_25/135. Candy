@@ -1,0 +1,32 @@
+class Solution {
+    public int candy(int[] ratings) {
+        int n = ratings.length;
+        // to store total candies
+        int cnt = 0;
+        // stores how many candies each child will get
+        int candies[] = new int[n];
+        // each child must have atleast one candy
+        for (int i = 0; i < n; i++) {
+            candies[i] = 1;
+        }
+        // now we traverse from left to right
+        // if current rating is greater then prev then we give one more candy to current than prev
+        for (int i = 1; i < n; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                candies[i] = candies[i - 1] + 1;
+            }
+        }
+        // now right to left pass
+        // still check the same while preserving the left to right value using MAX
+        for (int i = n - 1; i > 0; i--) {
+            // if left child has more rating than right then more candies to left one
+            if (ratings[i - 1] > ratings[i]) {
+                candies[i - 1] = Math.max(candies[i - 1], candies[i] + 1);
+            }
+            // while traversing we add candies[i-1] to cnt
+            cnt += candies[i - 1];
+        }
+        // just the last child candies left so we simply add it
+        return cnt + candies[n - 1];
+    }
+}
