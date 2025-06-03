@@ -1,0 +1,77 @@
+import java.util.*;
+
+class Solution {
+    public int maxCandies(
+        int[] status,              // status[i] = 1 means box i is open initially, 0 means locked
+        int[] candies,             // candies[i] is the number of candies in box i
+        int[][] keys,              // keys[i] contains keys found in box i
+        int[][] containedBoxes,    // containedBoxes[i] contains boxes inside box i
+        int[] initialBoxes         // initial set of boxes we start with
+    ) {
+        int n = status.length;
+
+        // Track which boxes we currently have
+        boolean[] hasBox = new boolean[n];
+
+        // Track which boxes are open or can be opened (via status or keys)
+        boolean[] canOpen = new boolean[n];
+
+        // Track which boxes we have already used/opened to avoid processing again
+        boolean[] used = new boolean[n];
+
+        // Initialize the canOpen array based on initial status
+        for (int i = 0; i < n; ++i) {
+            canOpen[i] = status[i] == 1;
+        }
+
+        // Queue for BFS traversal (boxes ready to be opened)
+        Queue<Integer> q = new LinkedList<>();
+
+        // Total candies collected
+        int totalCandies = 0;
+
+        // Process all initial boxes
+        for (int box : initialBoxes) {
+            hasBox[box] = true; // We have this box
+
+            // If it can be opened immediately, process it
+            if (canOpen[box]) {
+                q.offer(box);
+                used[box] = true;
+                totalCandies += candies[box];
+            }
+        }
+
+        // BFS loop to explore all reachable and openable boxes
+        while (!q.isEmpty()) {
+            int currBox = q.poll();
+
+            // Collect all keys from the current box
+            for (int key : keys[currBox]) {
+                canOpen[key] = true; // Mark the box that can now be opened with this key
+
+                // If we already have this box and haven't opened it, do it now
+                if (hasBox[key] && !used[key]) {
+                    q.offer(key);
+                    used[key] = true;
+                    totalCandies += candies[key];
+                }
+            }
+
+            // Collect all boxes inside the current box
+            for (int box : containedBoxes[currBox]) {
+                hasBox[box] = true; // Now we possess this box
+
+                // If it's already openable and unused, open it now
+                if (canOpen[box] && !used[box]) {
+                    q.offer(box);
+                    used[box] = true;
+                    totalCandies += candies[box];
+                }
+            }
+        }
+
+        // Return the total number of candies collected
+        return totalCandies;
+    }
+}
