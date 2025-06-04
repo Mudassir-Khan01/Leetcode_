@@ -1,0 +1,33 @@
+class Solution {
+    public String answerString(String word, int numFriends) {
+        int n = word.length();
+        
+        // If there's only one friend, the entire word can be returned.
+        if (numFriends == 1) {
+            return word;
+        }
+
+        // The longest possible length of a substring that any one friend can get.
+        // We must divide the string into `numFriends` parts,
+        // so one friend can get at most (n - (numFriends - 1)) characters.
+        int longestPossible = n - (numFriends - 1);
+
+        String result = ""; // To keep track of the lexicographically largest substring
+
+        // Try all possible substrings of length up to `longestPossible`
+        for (int i = 0; i < n; i++) {
+            // The actual length of substring we can take from index i
+            int canTakeLength = Math.min(longestPossible, n - i);
+
+            // Get the substring starting from i of allowed length
+            String sub = word.substring(i, i + canTakeLength);
+
+            // Update result if this substring is lexicographically larger
+            if (sub.compareTo(result) > 0) {
+                result = sub;
+            }
+        }
+
+        return result; // Return the best possible substring
+    }
+}
