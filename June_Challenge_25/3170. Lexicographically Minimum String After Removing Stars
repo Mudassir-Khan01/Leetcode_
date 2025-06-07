@@ -1,0 +1,40 @@
+class Solution {
+    public String clearStars(String s) {
+        // Step 1: Create a list of 26 lists (for 'a' to 'z'), where each sublist stores positions of characters in 's'
+        List<List<Integer>> charPos = new ArrayList<>();
+        for (int i = 0; i < 26; i++) {
+            charPos.add(new ArrayList<>());
+        }
+
+        // Convert string to character array for in-place modifications
+        char[] arr = s.toCharArray();
+
+        // Step 2: Traverse the character array
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == '*') {
+                // For '*' character: remove the latest occurrence of the lexicographically smallest character
+                for (int j = 0; j < 26; j++) {
+                    if (!charPos.get(j).isEmpty()) {
+                        // Get the last occurrence (most recent) and mark it as '*'
+                        int pos = charPos.get(j).remove(charPos.get(j).size() - 1);
+                        arr[pos] = '*';
+                        break;  // Remove only one character for each '*'
+                    }
+                }
+            } else {
+                // For regular characters, store their position in the corresponding list
+                charPos.get(arr[i] - 'a').add(i);
+            }
+        }
+
+        // Step 3: Build result string by skipping all '*' characters
+        StringBuilder res = new StringBuilder();
+        for (char c : arr) {
+            if (c != '*') {
+                res.append(c);
+            }
+        }
+
+        return res.toString();  // Final string after removing characters using '*'
+    }
+}
