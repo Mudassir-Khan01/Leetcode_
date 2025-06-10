@@ -1,0 +1,26 @@
+class Solution {
+    public int maxDifference(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+
+        // Count frequency of each character
+        for (char ch : s.toCharArray()) {
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
+        }
+
+        int maxOdd = Integer.MIN_VALUE; // To track highest odd frequency
+        int minEven = Integer.MAX_VALUE; // To track lowest even frequency
+
+        // Iterate over character frequencies
+        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+            int value = entry.getValue();
+            if (value % 2 != 0) {
+                maxOdd = Math.max(maxOdd, value); // Update max odd
+            } else {
+                minEven = Math.min(minEven, value); // Update min even
+            }
+        }
+
+        // Return the maximum difference
+        return maxOdd - minEven;
+    }
+}
