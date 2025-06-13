@@ -1,0 +1,46 @@
+class Solution {
+    int n;
+    public int minimizeMax(int[] nums, int p) {
+        n = nums.length;
+        Arrays.sort(nums); // Sort the array to minimize adjacent differences
+
+        int left = 0;
+        int right = nums[n - 1] - nums[0]; // Maximum possible difference
+        int result = Integer.MAX_VALUE;
+
+        // Binary search on the possible max difference
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            // if it is possible to have diff of adjacent less than mid and atleast p no. of times 
+            if (isValid(nums, mid, p)) {
+                // If it's possible to form at least `p` pairs with max diff <= mid,
+                // try to minimize it further
+                result = mid; // we consider that answer  but we need to minimize it so we shrink
+                right = mid - 1;
+            } else {
+                // Otherwise, increase the allowed difference
+                left = mid + 1;
+            }
+        }
+
+        return result;
+    }
+    // Helper function to check if we can form at least `p` pairs with max difference <= mid
+    private boolean isValid(int[] nums, int mid, int p) {
+        int i = 0;
+        int pairs = 0;
+
+        while (i < n - 1) {
+            // If the adjacent elements form a valid pair (difference <= mid)
+            if (nums[i + 1] - nums[i] <= mid) {
+                pairs++;
+                i += 2; // Skip the next element as it's used in the current pair
+            } else {
+                i++; // Move to next element
+            }
+        }
+
+        // Return true if we can form at least `p` valid pairs
+        return pairs >= p;
+    }
+}
