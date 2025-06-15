@@ -1,0 +1,45 @@
+class Solution {
+    public int maxDiff(int num) {
+        // Convert the number to a string to manipulate individual digits
+        String str1 = Integer.toString(num); // For creating max number
+        String str2 = str1;                  // For creating min number
+
+        // ======== Step 1: Create the maximum number ========
+        // We find the first digit that is not '9' and replace all its occurrences with '9'
+        int idx = -1;
+        for (int i = 0; i < str1.length(); i++) {
+            if (str1.charAt(i) != '9') {
+                idx = i;
+                break;
+            }
+        }
+
+        // If such a digit exists, replace all its occurrences with '9'
+        if (idx != -1) {
+            char ch = str1.charAt(idx);
+            str1 = str1.replace(ch, '9'); // Maximize the number
+        }
+
+        // ======== Step 2: Create the minimum number ========
+        // We want to replace a digit with '1' (for leading digit) or '0' (for others)
+        for (int i = 0; i < str2.length(); i++) {
+            char ch = str2.charAt(i);
+
+            // For the first digit, replace with '1' if it's not already '1'
+            if (i == 0) {
+                if (ch != '1') {
+                    str2 = str2.replace(ch, '1'); // Avoid leading 0
+                    break;
+                }
+            } 
+            // For other digits, replace with '0' if they are not '0' or the same as first digit
+            else if (ch != '0' && ch != str2.charAt(0)) {
+                str2 = str2.replace(ch, '0');
+                break;
+            }
+        }
+
+        // ======== Step 3: Return the difference ========
+        return Integer.parseInt(str1) - Integer.parseInt(str2);
+    }
+}
