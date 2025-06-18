@@ -1,0 +1,24 @@
+class Solution {
+    public int[][] divideArray(int[] nums, int k) {
+        Arrays.sort(nums);  // Sort to group close numbers together
+        int n = nums.length;
+
+        // If array can't be divided into groups of 3
+        if (n % 3 != 0) return new int[][]{};
+
+        List<int[]> list = new ArrayList<>();
+
+        // Iterate through nums in groups of 3
+        for (int i = 2; i < n; i += 3) {
+            // Check if the max - min in the group is within k
+            if (nums[i] - nums[i - 2] > k) {
+                return new int[][]{};
+            }
+            // Valid group, add to list
+            list.add(new int[]{nums[i - 2], nums[i - 1], nums[i]});
+        }
+
+        // Convert list of arrays to 2D array
+        return list.toArray(new int[list.size()][]);
+    }
+}
