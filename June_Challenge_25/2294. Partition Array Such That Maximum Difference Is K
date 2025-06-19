@@ -1,0 +1,21 @@
+class Solution {
+    public int partitionArray(int[] nums, int k) {
+        int n=nums.length;
+        // sort the Array to group close numbers together
+        Arrays.sort(nums);
+        // Consider we make a group so min of that group will be nums[0], and count of group is 1
+        int min_Value=nums[0];
+        int groups=1;
+        // now traverse the array from i=0
+        for(int i=1;i<n;i++){
+            // if in case we found the diff btw next number and minValue to be > k 
+            // then we need to make a new group and update the min of that new group
+            if(nums[i] - min_Value > k){
+                groups++;
+                min_Value=nums[i];
+            }
+            // in case the diff is < k then we simply move forward
+        }
+        return groups;
+    }
+}
