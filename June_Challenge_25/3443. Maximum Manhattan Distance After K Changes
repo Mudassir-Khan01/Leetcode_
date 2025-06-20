@@ -1,0 +1,32 @@
+class Solution {
+    public int maxDistance(String s, int k) {
+        int n=s.length();
+        // we need to keep track of the count of NSEW
+        int north=0, south=0, east=0,west=0;
+        int maxMD=0;// to store the final answer
+        // now traverse the string and fetch its char
+        for(int i=0; i<n ;i++){
+            char ch=s.charAt(i);
+            // calculting count of NSEW
+            if(ch=='N') north++;
+            if(ch=='S') south++;
+            if(ch=='E') east++;
+            if(ch=='W') west++;
+            
+            // now calculate Manhattan Distance
+            int MD= Math.abs(north-south) + Math.abs(east-west);
+            // calculate total steps we have travelled so far (at i=0 we are at first step)
+            int steps=i+1;
+            // now calculate wasted steps 
+            int wasted=steps-MD;
+            // now find how many extra steps we have min of total possible(2*k) , wasted
+            int extra= Math.min(2*k , wasted);
+            // now we calc the final Manhattan Dist ie MD + extra we need to move
+            int finalMD= MD + extra;
+            // now we store maxm of all the direction
+            maxMD=Math.max(maxMD, finalMD);
+
+        }
+        return maxMD;
+    }
+}
