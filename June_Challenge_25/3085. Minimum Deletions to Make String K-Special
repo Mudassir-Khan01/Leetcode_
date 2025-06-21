@@ -1,0 +1,34 @@
+class Solution {
+
+    public int minimumDeletions(String word, int k) {
+        // Step 1: Count frequency of each character in the word
+        Map<Character, Integer> cnt = new HashMap<>();
+        for (char ch : word.toCharArray()) {
+            cnt.put(ch, cnt.getOrDefault(ch, 0) + 1);
+        }
+
+        int res = word.length(); // Initialize result with max possible deletions
+
+        // Step 2: Try every frequency 'a' as base to compare against others
+        for (int a : cnt.values()) {
+            int deleted = 0;
+
+            // Step 3: For each frequency 'b', calculate how many deletions are needed
+            for (int b : cnt.values()) {
+                if (a > b) {
+                    // b is too small, must delete all of it
+                    deleted += b;
+                } else if (b > a + k) {
+                    // b is too large, delete extra so that b <= a + k
+                    deleted += b - (a + k);
+                }
+                // if a <= b <= a + k: No deletions needed
+            }
+
+            // Update minimum deletions required
+            res = Math.min(res, deleted);
+        }
+
+        return res;
+    }
+}
