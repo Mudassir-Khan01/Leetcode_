@@ -1,0 +1,80 @@
+class Solution {
+
+    public long kthSmallestProduct(int[] nums1, int[] nums2, long k) {
+        int n1 = nums1.length, n2 = nums2.length;
+
+        // Find split point between negative and non-negative values in nums1 and nums2
+        int pos1 = 0, pos2 = 0;
+        while (pos1 < n1 && nums1[pos1] < 0) {
+            pos1++;
+        }
+        while (pos2 < n2 && nums2[pos2] < 0) {
+            pos2++;
+        }
+
+        // Binary search range for possible product values
+        long left = (long) -1e10, right = (long) 1e10;
+
+        while (left <= right) {
+            long mid = (left + right) / 2;
+            long count = 0;
+
+            // Case 1: nums1[i] < 0 and nums2[j] < 0 → product is positive
+            int i1 = 0, i2 = pos2 - 1;
+            while (i1 < pos1 && i2 >= 0) {
+                if ((long) nums1[i1] * nums2[i2] > mid) {
+                    i1++;
+                } else {
+                    count += pos1 - i1;
+                    i2--;
+                }
+            }
+
+            // Case 2: nums1[i] >= 0 and nums2[j] >= 0 → product is positive
+            i1 = pos1;
+            i2 = n2 - 1;
+            while (i1 < n1 && i2 >= pos2) {
+                if ((long) nums1[i1] * nums2[i2] > mid) {
+                    i2--;
+                } else {
+                    count += i2 - pos2 + 1;
+                    i1++;
+                }
+            }
+
+            // Case 3: nums1[i] < 0 and nums2[j] >= 0 → product is negative
+            i1 = 0;
+            i2 = pos2;
+            while (i1 < pos1 && i2 < n2) {
+                if ((long) nums1[i1] * nums2[i2] > mid) {
+                    i2++;
+                } else {
+                    count += n2 - i2;
+                    i1++;
+                }
+            }
+
+            // Case 4: nums1[i] >= 0 and nums2[j] < 0 → product is negative
+            i1 = pos1;
+            i2 = 0;
+            while (i1 < n1 && i2 < pos2) {
+                if ((long) nums1[i1] * nums2[i2] > mid) {
+                    i1++;
+                } else {
+                    count += n1 - i1;
+                    i2++;
+                }
+            }
+
+            // Binary search decision: if we have fewer than k products ≤ mid, go right
+            if (count < k) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        // left now points to the smallest number such that at least k products ≤ it
+        return left;
+    }
+}
