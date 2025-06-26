@@ -1,0 +1,28 @@
+class Solution {
+    public int longestSubsequence(String s, int k) {
+        int length = 0;        // Stores the length of the valid subsequence
+        long powerValue = 1;   // Represents the binary place value, starts from least significant bit (LSB)
+
+        // Traverse the binary string from right to left (LSB to MSB)
+        for (int i = s.length() - 1; i >= 0; --i) {
+            char current = s.charAt(i);
+
+            // If the current bit is '0', always include it (since it doesn't increase the value)
+            if (current == '0') {
+                length++;
+            } 
+            // If current bit is '1' and its positional value doesn't exceed k, include it
+            else if (powerValue <= k) {
+                length++;
+                k -= powerValue;  // Reduce k by the value of this '1'
+            }
+
+            // Move to the next higher bit only if the next power won't already exceed k
+            if (powerValue <= k) {
+                powerValue <<= 1;  // Multiply powerValue by 2 (i.e., shift left by 1 bit)
+            }
+        }
+
+        return length;
+    }
+}
