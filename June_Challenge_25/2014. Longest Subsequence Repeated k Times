@@ -1,0 +1,48 @@
+class Solution {
+
+    public String longestSubsequenceRepeatedK(String s, int k) {
+        String result = "";
+        Queue<String> q = new LinkedList<>();
+
+        // Start with an empty string as the base case
+        q.add("");
+
+        // BFS to generate all possible subsequences using characters 'a' to 'z'
+        while (!q.isEmpty()) {
+            String current = q.poll();
+
+            // Try appending every character from 'a' to 'z' to the current string
+            for (char ch = 'a'; ch <= 'z'; ch++) {
+                String next = current + ch;
+
+                // Check if `next` is a subsequence that appears at least `k` times in `s`
+                if (isK(next, s, k)) {
+                    result = next;   // Update result with the latest valid longer subsequence
+                    q.add(next);     // Continue BFS from this subsequence
+                }
+            }
+        }
+
+        return result;
+    }
+
+    // Helper method to check if `pattern` appears at least `k` times as a subsequence in `text`
+    boolean isK(String pattern, String text, int k) {
+        int count = 0; // Number of times `pattern` has been matched as a subsequence
+        int i = 0;     // Index in `pattern`
+
+        // Go through every character in the main string
+        for (char ch : text.toCharArray()) {
+            if (ch == pattern.charAt(i)) {
+                i++; // Move to next character in `pattern`
+                if (i == pattern.length()) {
+                    i = 0;    // Restart matching the pattern
+                    count++;  // One full match found
+                    if (count == k) return true; // Early exit if k matches found
+                }
+            }
+        }
+
+        return false; // Not enough matches found
+    }
+}
