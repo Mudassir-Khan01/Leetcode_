@@ -1,0 +1,33 @@
+class Solution {
+    public int numSubseq(int[] nums, int target) {
+        int n = nums.length;
+        int mod = 1_000_000_007;
+
+        // Precompute powers of 2 up to n-1, since each valid subsequence can have 2^(right-left) combinations
+        int[] power = new int[n];
+        power[0] = 1;
+        for (int i = 1; i < n; i++) {
+            power[i] = (power[i - 1] * 2) % mod;
+        }
+
+        // Sort the array to use two pointers and compare min + max
+        Arrays.sort(nums);
+        int left = 0, right = n - 1;
+        int res = 0;
+
+        // Use two-pointer approach
+        while (left <= right) {
+            // If the smallest and largest number in the current window satisfy the condition
+            if (nums[left] + nums[right] <= target) {
+                // All subsets formed by choosing elements between left and right are valid
+                res = (res + power[right - left]) % mod;
+                left++; // move left to try next smallest number
+            } else {
+                // If sum is too large, move right to try smaller number
+                right--;
+            }
+        }
+
+        return res;
+    }
+}
