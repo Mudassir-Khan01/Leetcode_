@@ -1,0 +1,54 @@
+public class Solution {
+    // Modulo constant to avoid overflow
+    private static final int MOD = (int)1e9 + 7;
+
+    public int possibleStringCount(String word, int k) {
+        // Edge case: empty word
+        if (word.isEmpty()) return 0;
+
+        // Step 1: Group identical adjacent characters and store their counts
+        List<Integer> groups = new ArrayList<>();
+        int count = 1;
+        for (int i = 1; i < word.length(); i++) {
+            if (word.charAt(i) == word.charAt(i - 1)) count++;
+            else {
+                groups.add(count);  // Add the current group length
+                count = 1;          // Reset count for new group
+            }
+        }
+        groups.add(count);  // Add the final group
+
+        // Step 2: Compute total possible combinations if one character is picked per group
+        long total = 1;
+        for (int num : groups) total = (total * num) % MOD;
+
+        // Step 3: If target length k is ≤ group count, all combinations are valid
+        if (k <= groups.size()) return (int)total;
+
+        // Step 4: Use DP to count invalid combinations where sum of lengths > allowed
+        int[] dp = new int[k];
+        dp[0] = 1;
+
+        for (int num : groups) {
+            int[] newDp = new int[k];
+            long sum = 0;
+
+            for (int s = 0; s < k; s++) {
+                if (s > 0) sum = (sum + dp[s - 1]) % MOD;
+
+                // Subtract the invalid cases where current segment would exceed group size
+                if (s > num) sum = (sum - dp[s - num - 1] + MOD) % MOD;
+
+                newDp[s] = (int)sum;
+            }
+            dp = newDp;
+        }
+
+        // Step 5: Count the number of invalid combinations where length > actual group total
+        long invalid = 0;
+        for (int s = groups.size(); s < k; s++) invalid = (invalid + dp[s]) % MOD;
+
+        // Step 6: Final valid combinations = total - invalid
+        return (int)((total - invalid + MOD) % MOD);
+    }
+}
