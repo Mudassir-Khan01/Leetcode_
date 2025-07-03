@@ -1,0 +1,31 @@
+class Solution {
+    public char kthCharacter(int k) {
+        // Start with initial string "a"
+        String str = "a";
+
+        // StringBuilder to efficiently build the final string
+        StringBuilder sb = new StringBuilder();
+        sb.append(str);
+
+        // Keep building the string until it reaches or exceeds length k
+        while (sb.length() <= k) {
+            String nextString = "";
+
+            // For each character in the current string,
+            // generate the next character in the alphabet
+            for (char ch : str.toCharArray()) {
+                char nextCharacter = (ch == 'z') ? 'a' : (char) (ch + 1); // wrap around from 'z' to 'a'
+                nextString += nextCharacter;
+            }
+
+            // Append the newly generated nextString to str
+            str += nextString;
+
+            // Also append it to the final string builder
+            sb.append(nextString);
+        }
+
+        // Return the k-th character (1-based index, so k - 1)
+        return sb.charAt(k - 1);
+    }
+}
