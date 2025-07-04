@@ -1,0 +1,19 @@
+class Solution {
+
+    public char kthCharacter(long k, int[] operations) {
+        int ans = 0;
+        k--; // Convert 1-based index to 0-based index
+
+        // Loop through bits from the most significant bit of k down to 0
+        for (int i = 63 - Long.numberOfLeadingZeros(k); i >= 0; i--) {
+            // Check if the i-th bit of k is set (i.e., equal to 1)
+            if (((k >> i) & 1) == 1) {
+                ans += operations[i]; // Accumulate the shift operation for that bit
+            }
+        }
+
+        // Convert the result to a character by shifting from 'a'
+        // Use modulo 26 to ensure wrap-around in the alphabet
+        return (char) ('a' + (ans % 26));
+    }
+}
