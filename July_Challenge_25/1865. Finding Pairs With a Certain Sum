@@ -1,0 +1,45 @@
+class FindSumPairs {
+    int[] nums1;
+    int[] nums2;
+    HashMap<Integer, Integer> map; // frequency map for nums2 values
+
+    // Constructor: Initializes nums1, nums2 and builds frequency map for nums2
+    public FindSumPairs(int[] nums1, int[] nums2) {
+        this.nums1 = nums1;
+        this.nums2 = nums2;
+        this.map = new HashMap<>();
+
+        // Count frequencies of each number in nums2
+        for (int num : nums2) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+    }
+
+    // Add 'val' to nums2[index] and update the frequency map accordingly
+    public void add(int index, int val) {
+        int oldVal = nums2[index];
+
+        // Decrease frequency of old value
+        map.put(oldVal, map.get(oldVal) - 1);
+
+        // Update the number at index
+        nums2[index] += val;
+        int newVal = nums2[index];
+
+        // Increase frequency of new value
+        map.put(newVal, map.getOrDefault(newVal, 0) + 1);
+    }
+
+    // Return count of pairs (i, j) such that nums1[i] + nums2[j] == tot
+    public int count(int tot) {
+        int ans = 0;
+
+        // For each number in nums1, check if complement exists in nums2
+        for (int num : nums1) {
+            int target = tot - num; // We want nums2[j] = tot - nums1[i]
+            ans += map.getOrDefault(target, 0); // Add how many such targets exist in nums2
+        }
+
+        return ans;
+    }
+}
