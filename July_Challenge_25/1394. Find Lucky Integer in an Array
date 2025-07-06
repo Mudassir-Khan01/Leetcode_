@@ -1,0 +1,20 @@
+class Solution {
+    public int findLucky(int[] arr) {
+        // store the frequency of all integer in map
+     HashMap<Integer, Integer> map=new HashMap<>();
+     for(int i : arr){
+        map.put(i,map.getOrDefault(i,0)+1);
+     }   
+     int max=Integer.MIN_VALUE;
+     int ans=-1;
+     // go through the keyset and apply the condn , store it in temp ans and get maxm of all
+     for(int key:map.keySet()){
+        int value=map.get(key);
+        if(value==key){
+            ans=value;
+        }
+        max=Math.max(ans,max);
+     }
+     return max;
+    }
+}
