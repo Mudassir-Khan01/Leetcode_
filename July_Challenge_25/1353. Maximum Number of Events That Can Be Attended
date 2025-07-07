@@ -1,0 +1,37 @@
+class Solution {
+    public int maxEvents(int[][] events) {
+        Arrays.sort(events, (a, b) -> a[0] - b[0]);
+        
+        int n = events.length;
+        int pos = 0;
+        int time = 1;
+        int attended = 0;
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        
+        while (pos < n || !minHeap.isEmpty()) {
+            // Time skip: to cover only timeline covered by at least one event
+            if (minHeap.isEmpty()) {
+                time = Math.max(time, events[pos][0]);
+            }
+            
+            // Add events starting at current time
+            while (pos < n && events[pos][0] == time) {
+                minHeap.offer(events[pos][1]);
+                pos++;
+            }
+            
+            // Remove all already ended (unattended) events
+            while (!minHeap.isEmpty() && minHeap.peek() < time) {
+                minHeap.poll();
+            }
+            
+            // Pop 1 event at current time
+            if (!minHeap.isEmpty()) {
+                minHeap.poll();
+                attended++;
+            }
+            time++;
+        }
+        return attended;
+    }
+}
