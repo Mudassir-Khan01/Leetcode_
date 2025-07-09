@@ -1,0 +1,39 @@
+class Solution {
+    public int maxFreeTime(int eventTime, int k, int[] startTime, int[] endTime) {
+        int n = startTime.length;
+
+        // Array to store the free time between events (gaps)
+        int[] freeArray = new int[n + 1];
+
+        // First gap: Time before the first event starts (from 0 to startTime[0])
+        freeArray[0] = startTime[0];
+
+        // Calculate the gaps between the end of one event and the start of the next
+        for (int i = 1; i < n; i++) {
+            freeArray[i] = startTime[i] - endTime[i - 1]; // Free time between event i-1 and i
+        }
+
+        // Last gap: Time after the last event ends (from endTime[n-1] to eventTime)
+        freeArray[n] = eventTime - endTime[n - 1];
+
+        int maxSum = 0;    // Stores the maximum total free time over any (k+1) gaps
+        int currSum = 0;   // Current sum of the sliding window
+        int left = 0;      // Left pointer for sliding window
+
+        // Sliding window to find the maximum sum of (k + 1) free intervals
+        for (int right = 0; right < freeArray.length; right++) {
+            currSum += freeArray[right]; // Add the current right value to the window
+
+            // Maintain a window of size at most (k + 1)
+            while (right - left + 1 > k + 1) {
+                currSum -= freeArray[left]; // Shrink window from the left
+                left++;
+            }
+
+            // Update the maximum sum encountered
+            maxSum = Math.max(maxSum, currSum);
+        }
+
+        return maxSum; // Return the maximum total free time for any (k+1) consecutive free periods
+    }
+}
