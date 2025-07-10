@@ -1,0 +1,50 @@
+class Solution {
+    public int maxFreeTime(int eventTime, int[] startTime, int[] endTime) {
+        int n = startTime.length;
+        
+        // Step 1: Compute the free time gaps between and around events
+        int[] freeArray = new int[n + 1]; // n+1 gaps: before first, between events, after last
+        freeArray[0] = startTime[0]; // Time before first event starts
+        for (int i = 1; i < n; i++) {
+            freeArray[i] = startTime[i] - endTime[i - 1]; // Gap between events i-1 and i
+        }
+        freeArray[n] = eventTime - endTime[n - 1]; // Time after last event ends
+
+        int m = freeArray.length;
+
+        // Arrays to track maximum free time to the left and right of each gap
+        int[] maxRightFree = new int[m]; 
+        int[] maxLeftFree = new int[m];
+
+        // Step 2: Precompute the maximum free time to the right for each index
+        // maxRightFree[i] = max(freeArray[i+1], ..., freeArray[n])
+        for (int i = m - 2; i >= 0; i--) {
+            maxRightFree[i] = Math.max(maxRightFree[i + 1], freeArray[i + 1]);
+        }
+
+        // Step 3: Precompute the maximum free time to the left for each index
+        // maxLeftFree[i] = max(freeArray[0], ..., freeArray[i-1])
+        for (int i = 1; i < m; i++) {
+            maxLeftFree[i] = Math.max(maxLeftFree[i - 1], freeArray[i - 1]);
+        }
+
+        int result = 0;
+
+        // Step 4: Iterate through possible movements or shifts of events
+        for (int i = 1; i < m; i++) {
+            // Duration of current event (we're considering removing/moving it)
+            int currEventTime = endTime[i - 1] - startTime[i - 1];
+
+            // Case 1: If the event duration fits into another max free space (to left or right)
+            if (currEventTime <= Math.max(maxLeftFree[i - 1], maxRightFree[i])) {
+                // Remove current event and add its time to the adjacent free spaces
+                result = Math.max(result, freeArray[i - 1] + currEventTime + freeArray[i]);
+            }
+
+            // Case 2: Merge current adjacent free slots (without moving any event)
+            result = Math.max(result, freeArray[i - 1] + freeArray[i]);
+        }
+
+        return result; // Return the maximum accumulated free time
+    }
+}
