@@ -1,7 +1,7 @@
 class Solution {
     public int maxEvents(int[][] events) {
         Arrays.sort(events, (a, b) -> a[0] - b[0]);
-        
+    
         int n = events.length;
         int pos = 0;
         int time = 1;
