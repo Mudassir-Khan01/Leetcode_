@@ -1,0 +1,23 @@
+import java.util.Arrays;
+
+class Solution {
+    public int matchPlayersAndTrainers(int[] players, int[] trainers) {
+        Arrays.sort(players); // Sort players by their abilities
+        Arrays.sort(trainers); // Sort trainers by their capacities
+        
+        int i = 0; // Pointer for players (also tracks the count of matches)
+        int j = 0; // Pointer for trainers
+        
+        // Traverse both arrays with two pointers
+        while (i < players.length && j < trainers.length) {
+            if (players[i] <= trainers[j]) {
+                // The player can be matched with the trainer
+                i++; // Move to the next player
+            }
+            // Move to the next trainer in both cases (whether matched or not)
+            j++;
+        }
+        
+        return i; // Return the total number of matches (which is tracked by i)
+    }
+}
