@@ -1,0 +1,45 @@
+class Solution {
+    public boolean isValid(String word) {
+        return hasMinimumLength(word) && hasOnlyValidCharacters(word) && hasVowelAndConsonant(word);
+    }
+
+    // Check if the word is at least 3 characters long
+    private boolean hasMinimumLength(String word) {
+        return word.length() >= 3;
+    }
+
+    // Check for invalid characters (must only contain letters and digits)
+    private boolean hasOnlyValidCharacters(String word) {
+        for (char ch : word.toCharArray()) {
+            if (!Character.isLetterOrDigit(ch)) {
+                return false; // Contains invalid character
+            }
+        }
+        return true;
+    }
+
+    // Check if the word contains at least one vowel and one consonant (both must be letters)
+    private boolean hasVowelAndConsonant(String word) {
+        boolean hasVowel = false;
+        boolean hasConsonant = false;
+
+        for (char ch : word.toCharArray()) {
+            if (Character.isLetter(ch)) {
+                char c = Character.toLowerCase(ch);
+                if (
+                    c == 'a' ||
+                    c == 'e' ||
+                    c== 'i' ||
+                    c == 'o' ||
+                    c == 'u'
+                ) {
+                    hasVowel = true;
+                } else {
+                    hasConsonant = true;
+                }
+            }
+        }
+
+        return hasVowel && hasConsonant;
+    }
+}
