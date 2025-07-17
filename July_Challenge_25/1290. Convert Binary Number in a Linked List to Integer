@@ -21,6 +21,5 @@ class Solution {
           anss+=Math.pow(2,ans.size()-i-1)*ans.get(i);
         }
         return anss;
-
     }
 }
