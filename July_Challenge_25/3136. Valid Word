@@ -2,7 +2,6 @@ class Solution {
     public boolean isValid(String word) {
         return hasMinimumLength(word) && hasOnlyValidCharacters(word) && hasVowelAndConsonant(word);
     }
-
     // Check if the word is at least 3 characters long
     private boolean hasMinimumLength(String word) {
         return word.length() >= 3;
