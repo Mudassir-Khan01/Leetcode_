@@ -2,7 +2,6 @@ class Solution {
     public int mostBooked(int n, int[][] meetings) {
         // sort by starting time of meetings
         Arrays.sort(meetings, (a, b) -> Integer.compare(a[0], b[0]));
-
         // Each room is used 0 times in the beginning
         int[] roomsUsedCount = new int[n];
 
