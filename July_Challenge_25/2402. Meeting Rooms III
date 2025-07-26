@@ -6,7 +6,8 @@ class Solution {
         int[] roomsUsedCount = new int[n];
         var usedRooms = new PriorityQueue<long[]>((a, b) -> a[0] != b[0] ? Long.compare(a[0], b[0]) : Long.compare(a[1], b[1]));
         var unusedRooms = new PriorityQueue<Integer>();
-        
+
+
         for (int room = 0; room < n; room++) {
             unusedRooms.add(room); // All rooms are unused in the beginning
         }
